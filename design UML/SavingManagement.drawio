@@ -1,0 +1,145 @@
+<mxfile host="app.diagrams.net" modified="2024-03-29T04:43:42.830Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="fwBTBZZUL2EG0b6hh1lK" version="24.0.6" type="device">
+  <diagram name="Trang-1" id="H9bNSSNECUzFOkqM3ai9">
+    <mxGraphModel dx="1034" dy="446" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-1" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="300" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-2" value="Thêm Saving Account" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="280" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-3" value="Thêm Saving Transaction" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="360" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-4" value="Saving History" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="450" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-5" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="Y_JQBl5OrL_WmU65u_dn-1" target="Y_JQBl5OrL_WmU65u_dn-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="120" y="464" as="sourcePoint" />
+            <mxPoint x="274" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-6" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="Y_JQBl5OrL_WmU65u_dn-1" target="Y_JQBl5OrL_WmU65u_dn-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="100" y="341" as="sourcePoint" />
+            <mxPoint x="351" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-7" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="Y_JQBl5OrL_WmU65u_dn-1" target="Y_JQBl5OrL_WmU65u_dn-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="110" y="351" as="sourcePoint" />
+            <mxPoint x="361" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-8" value="Cập nhật Saving History" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="360" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-9" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="Y_JQBl5OrL_WmU65u_dn-2" target="Y_JQBl5OrL_WmU65u_dn-8">
+          <mxGeometry x="-0.0396" y="4" width="160" relative="1" as="geometry">
+            <mxPoint x="250" y="390" as="sourcePoint" />
+            <mxPoint x="410" y="390" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-10" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="Y_JQBl5OrL_WmU65u_dn-3" target="Y_JQBl5OrL_WmU65u_dn-8">
+          <mxGeometry x="-0.0396" y="4" width="160" relative="1" as="geometry">
+            <mxPoint x="469" y="290" as="sourcePoint" />
+            <mxPoint x="571" y="340" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-11" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="Y_JQBl5OrL_WmU65u_dn-8" target="Y_JQBl5OrL_WmU65u_dn-4">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="250" y="390" as="sourcePoint" />
+            <mxPoint x="410" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-12" value="Saving Knowledge" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="140" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-13" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="Y_JQBl5OrL_WmU65u_dn-1" target="Y_JQBl5OrL_WmU65u_dn-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="90" y="237" as="sourcePoint" />
+            <mxPoint x="361" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-15" value="Biểu đồ và thống kê" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="590" y="450" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-16" value="" style="endArrow=block;html=1;rounded=0;align=center;verticalAlign=bottom;endFill=0;labelBackgroundColor=none;endSize=8;" edge="1" parent="1" source="Y_JQBl5OrL_WmU65u_dn-4" target="Y_JQBl5OrL_WmU65u_dn-15">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="396" y="641" as="sourcePoint" />
+            <mxPoint x="924" y="541" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-17" value="" style="resizable=0;html=1;align=center;verticalAlign=top;labelBackgroundColor=none;" connectable="0" vertex="1" parent="Y_JQBl5OrL_WmU65u_dn-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-19" value="Choose Saving Strategy" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="180" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-20" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" target="Y_JQBl5OrL_WmU65u_dn-19" source="Y_JQBl5OrL_WmU65u_dn-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="100" y="337" as="sourcePoint" />
+            <mxPoint x="371" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-21" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="Y_JQBl5OrL_WmU65u_dn-19" target="Y_JQBl5OrL_WmU65u_dn-2">
+          <mxGeometry x="0.3333" y="30" width="160" relative="1" as="geometry">
+            <mxPoint x="260" y="400" as="sourcePoint" />
+            <mxPoint x="571" y="340" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-22" value="Saving Notification" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="344" y="90" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-23" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" target="Y_JQBl5OrL_WmU65u_dn-22" source="Y_JQBl5OrL_WmU65u_dn-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="90" y="421" as="sourcePoint" />
+            <mxPoint x="351" y="445" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-24" value="Notification Management" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="90" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-25" value="" style="endArrow=block;html=1;rounded=0;align=center;verticalAlign=bottom;endFill=0;labelBackgroundColor=none;endSize=8;" edge="1" parent="1" source="Y_JQBl5OrL_WmU65u_dn-22" target="Y_JQBl5OrL_WmU65u_dn-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="396" y="726" as="sourcePoint" />
+            <mxPoint x="924" y="626" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-26" value="" style="resizable=0;html=1;align=center;verticalAlign=top;labelBackgroundColor=none;" connectable="0" vertex="1" parent="Y_JQBl5OrL_WmU65u_dn-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-27" value="Cập nhật Saving Notification" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="210" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-29" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" target="Y_JQBl5OrL_WmU65u_dn-27" source="Y_JQBl5OrL_WmU65u_dn-2">
+          <mxGeometry x="-0.0396" y="4" width="160" relative="1" as="geometry">
+            <mxPoint x="630" y="320" as="sourcePoint" />
+            <mxPoint x="571" y="177.5" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-31" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="Y_JQBl5OrL_WmU65u_dn-27" target="Y_JQBl5OrL_WmU65u_dn-22">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="672" y="160" as="sourcePoint" />
+            <mxPoint x="568" y="204" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y_JQBl5OrL_WmU65u_dn-32" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="Y_JQBl5OrL_WmU65u_dn-3" target="Y_JQBl5OrL_WmU65u_dn-27">
+          <mxGeometry x="-0.0396" y="4" width="160" relative="1" as="geometry">
+            <mxPoint x="478" y="306" as="sourcePoint" />
+            <mxPoint x="572" y="274" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

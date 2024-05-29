@@ -1,0 +1,142 @@
+<mxfile host="app.diagrams.net" modified="2024-03-29T08:09:32.781Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="BvlGRXhtmWjjGHlQkV3L" version="24.0.6" type="device">
+  <diagram name="Trang-1" id="7DZ9N6SEp0gPJrGK6GA9">
+    <mxGraphModel dx="1034" dy="446" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-25" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="300" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-26" value="Thêm Debt/Loan" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="280" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-27" value="Thêm Debt/Loan Transaction" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="360" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-28" value="Debt/Loan&amp;nbsp;History" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="450" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-29" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-25" target="aCHT1MBOv_W_PS-Ieg7h-27">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="120" y="464" as="sourcePoint" />
+            <mxPoint x="274" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-30" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-25" target="aCHT1MBOv_W_PS-Ieg7h-28">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="100" y="341" as="sourcePoint" />
+            <mxPoint x="351" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-31" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-25" target="aCHT1MBOv_W_PS-Ieg7h-26">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="110" y="351" as="sourcePoint" />
+            <mxPoint x="361" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-32" value="Cập nhật Debt/Loan History" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="360" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-33" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-26" target="aCHT1MBOv_W_PS-Ieg7h-32">
+          <mxGeometry x="-0.0396" y="4" width="160" relative="1" as="geometry">
+            <mxPoint x="250" y="390" as="sourcePoint" />
+            <mxPoint x="410" y="390" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-34" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-27" target="aCHT1MBOv_W_PS-Ieg7h-32">
+          <mxGeometry x="-0.0396" y="4" width="160" relative="1" as="geometry">
+            <mxPoint x="469" y="290" as="sourcePoint" />
+            <mxPoint x="571" y="340" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-35" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-32" target="aCHT1MBOv_W_PS-Ieg7h-28">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="250" y="390" as="sourcePoint" />
+            <mxPoint x="410" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-36" value="Biểu đồ và thống kê" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="590" y="450" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-37" value="" style="endArrow=block;html=1;rounded=0;align=center;verticalAlign=bottom;endFill=0;labelBackgroundColor=none;endSize=8;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-28" target="aCHT1MBOv_W_PS-Ieg7h-36">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="396" y="641" as="sourcePoint" />
+            <mxPoint x="924" y="541" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-38" value="" style="resizable=0;html=1;align=center;verticalAlign=top;labelBackgroundColor=none;" connectable="0" vertex="1" parent="aCHT1MBOv_W_PS-Ieg7h-37">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-39" value="Cập nhật thay đổi trong Wallet" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="274" y="150" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-42" value="Debt/Loan Notification" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="150" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-43" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-25" target="aCHT1MBOv_W_PS-Ieg7h-42">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="90" y="421" as="sourcePoint" />
+            <mxPoint x="351" y="445" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-44" value="Notification Management" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="150" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-45" value="" style="endArrow=block;html=1;rounded=0;align=center;verticalAlign=bottom;endFill=0;labelBackgroundColor=none;endSize=8;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-42" target="aCHT1MBOv_W_PS-Ieg7h-44">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="396" y="726" as="sourcePoint" />
+            <mxPoint x="924" y="626" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-46" value="" style="resizable=0;html=1;align=center;verticalAlign=top;labelBackgroundColor=none;" connectable="0" vertex="1" parent="aCHT1MBOv_W_PS-Ieg7h-45">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-47" value="Cập nhật Debt/Loan Notification" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="570" y="240" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-48" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-26" target="aCHT1MBOv_W_PS-Ieg7h-47">
+          <mxGeometry x="-0.0396" y="4" width="160" relative="1" as="geometry">
+            <mxPoint x="630" y="320" as="sourcePoint" />
+            <mxPoint x="571" y="177.5" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-49" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-47" target="aCHT1MBOv_W_PS-Ieg7h-42">
+          <mxGeometry x="-0.8083" y="-16" width="160" relative="1" as="geometry">
+            <mxPoint x="672" y="160" as="sourcePoint" />
+            <mxPoint x="568" y="204" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-50" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-27" target="aCHT1MBOv_W_PS-Ieg7h-47">
+          <mxGeometry x="-0.0396" y="4" width="160" relative="1" as="geometry">
+            <mxPoint x="478" y="306" as="sourcePoint" />
+            <mxPoint x="572" y="274" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-51" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;" edge="1" parent="1" source="aCHT1MBOv_W_PS-Ieg7h-39" target="aCHT1MBOv_W_PS-Ieg7h-26">
+          <mxGeometry x="0.2782" y="-35" width="160" relative="1" as="geometry">
+            <mxPoint x="447" y="270" as="sourcePoint" />
+            <mxPoint x="410" y="240" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-53" value="Wallet Management" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="150" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-54" value="" style="endArrow=block;html=1;rounded=0;align=center;verticalAlign=bottom;endFill=0;labelBackgroundColor=none;endSize=8;" edge="1" parent="1" target="aCHT1MBOv_W_PS-Ieg7h-53" source="aCHT1MBOv_W_PS-Ieg7h-39">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-10" y="175" as="sourcePoint" />
+            <mxPoint x="314" y="616" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aCHT1MBOv_W_PS-Ieg7h-55" value="" style="resizable=0;html=1;align=center;verticalAlign=top;labelBackgroundColor=none;" connectable="0" vertex="1" parent="aCHT1MBOv_W_PS-Ieg7h-54">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
