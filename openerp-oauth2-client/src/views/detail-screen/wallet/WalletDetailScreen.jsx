@@ -5,16 +5,11 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import { Box, Typography, Grid, Tabs, Tab, Card, CardContent, Divider } from '@mui/material';
 import { useTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import { Menu, MenuItem } from '@mui/material';
 import WalletRoundedIcon from '@mui/icons-material/WalletRounded';
-import Divider from '@mui/material/Divider';
 import UpdateWalletModal from "components/modal/UpdateWalletModal";
 import ConfirmationModal from "components/modal/ConfirmationModal";
 import {formatDate, formatDateTime} from "utils/formatDate";
@@ -27,6 +22,7 @@ function WalletDetailScreen() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [updateWallet, setUpdateWallet] = React.useState(false);
+    const [period, setPeriod] = useState('all');
     const [changeStatusForm, setChangeStatusForm] = useState(
         {
             userId: localStorage.getItem('userId'),
@@ -44,22 +40,21 @@ function WalletDetailScreen() {
         "credit": "Credit Card",
         "other": "Other",
     };
-    const exchangesByTime = groupExchangesByTime(exchanges);
     const handleOpenUpdateWalletDialog = () => {
         setUpdateWallet(true);
         handleClose();
     };
-
+    
     const handleCloseUpdateWalletDialog = () => {
         setUpdateWallet(false);
         // setWalletId(null);
     };
-
+    
     const handleClickOpenModalDelete = () => {
         setIsModalDeleteOpen(true);
         handleClose();
     };
-
+    
     const handleClickCloseModalDelete = () => {
         setIsModalDeleteOpen(false);
     };
@@ -77,20 +72,20 @@ function WalletDetailScreen() {
         setIsModalDeleteOpen(false);
         history.push(`/wallets`);
     };
-
+    
     useEffect(() => {
         // console.log("Wallet ID:", walletId);
         request("get", `/wallet/${walletId}`, (res) => {
-        console.log(res.data);
-        setWallet(res.data);
+            console.log(res.data);
+            setWallet(res.data);
         }).then();
-
+        
         request("get", `/exchanges/wallet/${walletId}`, (res) => {
             console.log(res.data.sort((a, b) => new Date(b.exchangeDate) - new Date(a.exchangeDate)));
             setExchanges(res.data);
         }).then();
     }, []);
-
+    
     const useStyles = makeStyles((theme) => ({
         cardContainer: {
             display: "flex",
@@ -142,19 +137,19 @@ function WalletDetailScreen() {
     }));
     const theme = useTheme();
     const classes = useStyles();
-
+    
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-
+    
     const handleClose = () => {
         setAnchorEl(null);
     };
-
+    
     const handleCardClick = (exchangeId) => {
         history.push(`/exchanges/${exchangeId}`);
     }
-
+    
     const handleUpdateWalletData = (updatedWallets) => {
         // Cập nhật dữ liệu danh sách ví trong WalletManagementScreen
         // console.log(updatedWallets);
@@ -162,46 +157,38 @@ function WalletDetailScreen() {
         console.log(updateWalletItem);
         setWallet(updateWalletItem);
     };
-
-    // const calculateInitialBalance = (currentBalance, exchanges) => {
-    //     // Tính toán số dư ban đầu bằng cách lùi lại các giao dịch
-    //     let initialBalance = currentBalance;
-    //     exchanges.slice().reverse().forEach(exchange => {
-    //         if (exchange.exchange_type_id === 'spend') {
-    //             initialBalance += exchange.amount;
-    //         } else if (exchange.exchange_type_id === 'income') {
-    //             initialBalance -= exchange.amount;
-    //         } else if (exchange.exchange_type_id === 'wallet_wallet'){
-    //             if(exchange.wallet_id === walletId){
-    //                 initialBalance += exchange.amount;
-    //             } else if(exchange.destination_id === walletId){
-    //                 initialBalance -= exchange.amount;
-    //             }
-    //         }
-    //     });
-    //     return initialBalance;
-    // };
-    // const prepareChartDate = (exchanges, currentBalance) => {
-    //     let balance = calculateInitialBalance(exchanges, currentBalance);
-    //     const data = exchanges.map(exchange => {
-    //         if (exchange.type === 'Spend') {
-    //             balance -= exchange.amount;
-    //         } else if (exchange.type === 'Income') {
-    //             balance += exchange.amount;
-    //         } else if (exchange.exchange_type_id === 'wallet_wallet'){
-    //             if(exchange.wallet_id === walletId){
-    //                 balance -= exchange.amount;
-    //             } else if(exchange.destination_id === walletId){
-    //                 balance += exchange.amount;
-    //             }
-    //         }
-    //         return {
-    //             date: new Date(exchange.date).toLocaleDateString(),
-    //             balance: balance
-    //         };
-    //     });
-    //     return data;
-    // }
+    
+    const filterExchanges = (exchanges, period) => {
+        const now = new Date();
+        let startDate;
+        
+        switch (period) {
+            case 'week':
+                startDate = new Date(now.setDate(now.getDate() - now.getDay()));
+                break;
+                case 'month':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                    break;
+                    case 'year':
+                        startDate = new Date(now.getFullYear(), 0, 1);
+                break;
+                default:
+                    startDate = null;
+                }
+                
+                if (startDate) {
+                    return exchanges.filter(exchange => new Date(exchange.exchangeDate) >= startDate);
+                } else {
+            return exchanges;
+        }
+    };
+    
+    const handlePeriodChange = (event, newValue) => {
+        setPeriod(newValue);
+    };
+    
+    const filteredExchanges = filterExchanges(exchanges, period);
+    const exchangesByTime = groupExchangesByTime(filteredExchanges);
 
     return (
         <Box sx={{ flex: 1 }}>
@@ -268,11 +255,17 @@ function WalletDetailScreen() {
                             </CardContent>
                         </Card>
                     </div>
+                    <Tabs value={period} onChange={handlePeriodChange} centered>
+                        <Tab label="All" value="all" />
+                        <Tab label="This Year" value="year" />
+                        <Tab label="This Month" value="month" />
+                        <Tab label="This Week" value="week" />
+                    </Tabs>
                     <Box sx={{ marginTop: theme.spacing(2), display: 'flex', maxHeight: '60vh', overflowY: 'auto', }}>
                         {/* <Typography variant="h5" gutterBottom style={{ marginTop: theme.spacing(3), marginLeft: theme.spacing(2), alignItems: 'center'}}>
                             Exchange History
                         </Typography> */}
-                        {exchanges && exchanges.length > 0 ? 
+                        {filteredExchanges && filteredExchanges.length > 0 ? 
                         <Grid container spacing={2} item xs={6} justifyContent="center" alignItems="center" key={exchanges.exchangeId}>
                             {
                                 Object.entries(exchangesByTime).map(([label, exchangesInTime]) => (
@@ -344,8 +337,8 @@ function WalletDetailScreen() {
                         <div style={{ width: theme.spacing(4) }} />  
 
                         {/* Phần Graph */}
-                        {exchanges && exchanges.length > 0 && 
-                        <WalletGraph exchanges={exchanges} currentBalance={wallet.amount} walletId={walletId} createAt={wallet.createdAt}/>
+                        {filteredExchanges && filteredExchanges.length > 0 && 
+                        <WalletGraph exchanges={filteredExchanges} currentBalance={wallet.amount} walletId={walletId} createAt={wallet.createdAt}/>
                         }
                     </Box>
                 </>

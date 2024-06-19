@@ -1,7 +1,7 @@
 export const budgets = {
   id: "MENU_BUDGETS",
-  icon: "LeaderboardIcon",
-  text: "LeaderboardIcon",
+  icon: "AssignmentOutlinedIcon",
+  text: "AssignmentOutlinedIcon",
   child: [
     {
       id: "MENU_DEMO.BUDGETS",

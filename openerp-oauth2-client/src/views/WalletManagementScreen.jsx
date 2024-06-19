@@ -133,7 +133,9 @@ function WalletManagementScreen() {
                     aria-label="add"
                     color="primary"
                     size="large"
-                    style={{ backgroundColor: '#BDDAFE ', fontSize: '4rem' }} // Điều chỉnh kích thước
+                    style={{ backgroundColor: '#BDDAFE ', fontSize: '4rem', transition: 'transform 0.3s ease', }} // Điều chỉnh kích thước
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
                     <WalletRoundedIcon fontSize="150%"/>
                 </IconButton>

@@ -28,4 +28,6 @@ public interface WalletService {
     List<Wallet> deleteWallet(WalletStatusDTO statusDTO, UUID walletId);
 
     Wallet updateWalletAfterUpdateExchange(UUID walletId, BigDecimal amount);
+
+    BigDecimal getCurrentTotalAmount(String userId);
 }

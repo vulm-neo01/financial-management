@@ -8,8 +8,11 @@ function ColorSelection({ onSelect, type, colorId }) {
     useEffect(() => {
         request("get", `/color/${type}`, (res) => {
             setColors(res.data);
+            if(colorId){
+                setSelectedColor(colorId);
+            }
         }).then();
-    }, []);
+    }, [colorId]);
 
     const handleColorSelect = (colorId) => {
         setSelectedColor(colorId);

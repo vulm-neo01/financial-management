@@ -32,6 +32,10 @@ function UpdateSpendModal({ onUpdateExchange, open, onClose, exchangeId }) {
     const [isImageModalOpen, setIsImageModalOpen] = useState(false);
     const [budgetCategories, setBudgetCategories] = useState(null);
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+    const [currentWalletSendingAmount, setCurrentWalletSendingAmount] = useState();
+    const [oldAmount, setOldAmount] = useState(0);
+    const [oldWalletId, setOldWalletId] = useState('');
+    const [warningOverAmount, setWarningOverAmount] = useState('');
 
     const handleFormChange = (event) => {
         const { name, value } = event.target;
@@ -39,6 +43,12 @@ function UpdateSpendModal({ onUpdateExchange, open, onClose, exchangeId }) {
             ...formData,
             [name]: value
         });
+
+        if (name === 'amount' && value > currentWalletSendingAmount) {
+            setWarningOverAmount(`The amount exceeds the current wallet sending balance: ${value} > ${currentWalletSendingAmount}`);
+        } else {
+            setWarningOverAmount('');
+        }
     };
 
     const handleUpdateExchange = (updatedExchanges) => {
@@ -96,11 +106,17 @@ function UpdateSpendModal({ onUpdateExchange, open, onClose, exchangeId }) {
         }, formData);
         onClose();
     };
-    const handleWalletSendingSelect = (walletId) => {
+    const handleWalletSendingSelect = (walletId, walletAmount) => {
         setFormData({
             ...formData,
             walletId: walletId
         });
+
+        if(walletId === oldWalletId){
+            setCurrentWalletSendingAmount(walletAmount + oldAmount);
+        } else {
+            setCurrentWalletSendingAmount(walletAmount);
+        }
     };
     const handleSelectCategory = (categoryId) => {
         setFormData({ ...formData, category: categoryId });
@@ -120,8 +136,8 @@ function UpdateSpendModal({ onUpdateExchange, open, onClose, exchangeId }) {
                 imageUrl: res.data.imageUrl,
                 walletId: res.data.wallet.walletId
             }));
-            // handleWalletSendingSelect(res.data.wallet.walletId);
-            // console.log(formData);
+            setOldAmount(res.data.amount);
+            setOldWalletId(res.data.wallet.walletId);
         }).then();
         request("get", `/budgets/spend/${localStorage.getItem('userId')}`, (res) => {
             const category = res.data;
@@ -175,6 +191,11 @@ function UpdateSpendModal({ onUpdateExchange, open, onClose, exchangeId }) {
                         <InputLabel htmlFor="amount">Amount</InputLabel>
                         <Input id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
                     </FormControl>
+                    {warningOverAmount && (
+                    <Typography color="error" sx={{ mb: 2 }}>
+                        {warningOverAmount}
+                    </Typography>
+                    )}
                     <FormControl fullWidth sx={{ mb: 2 }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
@@ -182,6 +203,7 @@ function UpdateSpendModal({ onUpdateExchange, open, onClose, exchangeId }) {
                                 value={formData.exchangeDate}
                                 onChange={handleDateChange}
                                 textField={(params) => <Input {...params} />}
+                                maxDate={dayjs()}
                             />
                         </LocalizationProvider>
                     </FormControl>
@@ -221,6 +243,7 @@ function UpdateSpendModal({ onUpdateExchange, open, onClose, exchangeId }) {
                             variant="contained"
                             color="error"
                             onClick={handleCreateExchange}
+                            disabled={warningOverAmount !== ''}
                             style={{ fontSize: '1.3rem', marginTop: '1rem' }}
                         >
                             Update

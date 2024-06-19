@@ -8,7 +8,6 @@ import openerp.openerpresourceserver.entity.UserInfo;
 import openerp.openerpresourceserver.entity.Wallet;
 import openerp.openerpresourceserver.entity.support.Color;
 import openerp.openerpresourceserver.entity.support.Logo;
-import openerp.openerpresourceserver.repo.UserInfoRepository;
 import openerp.openerpresourceserver.repo.WalletRepository;
 import openerp.openerpresourceserver.repo.support.ColorRepo;
 import openerp.openerpresourceserver.repo.support.LogoRepo;
@@ -16,7 +15,6 @@ import openerp.openerpresourceserver.service.UserInfoService;
 import openerp.openerpresourceserver.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.messaging.core.AbstractMessageSendingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -167,7 +165,16 @@ public class WalletServiceImpl implements WalletService {
         wallet.setAmount(wallet.getAmount().add(amount));
         wallet.setUpdatedAt(new Date());
         walletRepository.save(wallet);
-        // còn vấn đề reset lại thời gian update ví thì mình nghĩ là thôi
         return wallet;
+    }
+
+    @Override
+    public BigDecimal getCurrentTotalAmount(String userId) {
+        List<Wallet> wallets = getListWalletByUserId(userId);
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        for (Wallet wallet : wallets) {
+            totalAmount = totalAmount.add(wallet.getAmount());
+        }
+        return totalAmount;
     }
 }

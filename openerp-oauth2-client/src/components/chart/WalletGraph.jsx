@@ -6,10 +6,12 @@ import { useTheme } from '@mui/material/styles';
 // Hàm tính toán số dư ban đầu
 const calculateInitialBalance = (currentBalance, exchanges, walletId) => {
     let initialBalance = currentBalance;
+    const subtractTypes = ['spend', 'wallet_saving', 'wallet_debt', 'wallet_loan']
+    const addTypes = ['spend', 'saving_wallet', 'debt_wallet', 'loan_wallet']
     exchanges.slice().reverse().forEach(exchange => {
-        if (exchange.exchangeType.exchangeTypeId === 'spend') {
+        if (subtractTypes.includes(exchange.exchangeType.exchangeTypeId)) {
             initialBalance += exchange.amount;
-        } else if (exchange.exchangeType.exchangeTypeId === 'income') {
+        } else if (addTypes.includes(exchange.exchangeType.exchangeTypeId)) {
             initialBalance -= exchange.amount;
         } else if (exchange.exchangeType.exchangeTypeId === 'wallet_wallet'){
             if(exchange.wallet.walletId === walletId){
@@ -32,9 +34,11 @@ const prepareChartData = (exchanges, initialBalance, walletId, createAt) => {
         if (!dailyChanges[date]) {
             dailyChanges[date] = 0;
         }
-        if (exchange.exchangeType.exchangeTypeId === 'spend') {
+        const subtractTypes = ['spend', 'wallet_saving', 'wallet_debt', 'wallet_loan']
+        const addTypes = ['spend', 'saving_wallet', 'debt_wallet', 'loan_wallet']
+        if (subtractTypes.includes(exchange.exchangeType.exchangeTypeId)) {
             dailyChanges[date] -= exchange.amount;
-        } else if (exchange.exchangeType.exchangeTypeId === 'income') {
+        } else if (addTypes.includes(exchange.exchangeType.exchangeTypeId)) {
             dailyChanges[date] += exchange.amount;
         } else if (exchange.exchangeType.exchangeTypeId === 'wallet_wallet') {
             if (exchange.wallet.walletId === walletId) {

@@ -5,6 +5,7 @@ import WalletSelection from 'components/selection/WalletSelection';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import WalletAcceptSendingSelection from 'components/selection/WalletAcceptSendingSelection';
 
 function UpdateWalletExchangeModal({ onUpdateExchange, open, onClose, exchangeId }) {
     const currency = localStorage.getItem('currency');
@@ -28,12 +29,23 @@ function UpdateWalletExchangeModal({ onUpdateExchange, open, onClose, exchangeId
     const options = Array.from({ length: 11 }, (_, i) => i);
     const [warning, setWarning] = useState(false);
     const [warningSubmit, setWarningSubmit] = useState(false);
+    const [warningOverAmount, setWarningOverAmount] = useState('');
+    const [currentWalletSendingAmount, setCurrentWalletSendingAmount] = useState();
+    const [oldAmount, setOldAmount] = useState(0);
+    const [oldWalletId, setOldWalletId] = useState('');
+
     const handleFormChange = (event) => {
         const { name, value } = event.target;
         setFormData({
             ...formData,
             [name]: value
         });
+
+        if (name === 'amount' && value > currentWalletSendingAmount) {
+            setWarningOverAmount(`The amount exceeds the current wallet sending balance: ${value} > ${currentWalletSendingAmount}`);
+        } else {
+            setWarningOverAmount('');
+        }
     };
 
     const handleUpdateExchange = (updatedExchanges) => {
@@ -58,7 +70,7 @@ function UpdateWalletExchangeModal({ onUpdateExchange, open, onClose, exchangeId
             }, 3000);
             return;
         }
-        if (!formData.walletId || !formData.destinationId || !formData.exchangeDate || !formData.amount || !formData.category) {
+        if (!formData.walletId || !formData.destinationId || !formData.exchangeDate || !formData.amount) {
             setWarningSubmit(true);
             setTimeout(() => {
                 setWarningSubmit(false);
@@ -94,11 +106,17 @@ function UpdateWalletExchangeModal({ onUpdateExchange, open, onClose, exchangeId
         }, formData);
         onClose();
     };
-    const handleWalletSendingSelect = (walletId) => {
+    const handleWalletSendingSelect = (walletId, walletAmount) => {
         setFormData({
             ...formData,
             walletId: walletId
         });
+
+        if(walletId === oldWalletId){
+            setCurrentWalletSendingAmount(walletAmount + oldAmount);
+        } else {
+            setCurrentWalletSendingAmount(walletAmount);
+        }
     };
     const handleWalletReceivingSelect = (destinationId) => {
         setFormData({
@@ -118,10 +136,10 @@ function UpdateWalletExchangeModal({ onUpdateExchange, open, onClose, exchangeId
                 exchangeDate: dayjs(res.data.exchangeDate),
                 // category: res.data.category,
                 description: res.data.description,
-                walletId: res.data.wallet.walletId
             }));
-            // handleWalletSendingSelect(res.data.wallet.walletId);
-            // console.log(formData);
+
+            setOldAmount(res.data.amount);
+            setOldWalletId(res.data.wallet.walletId);
         }).then();
     }, [])
 
@@ -149,7 +167,7 @@ function UpdateWalletExchangeModal({ onUpdateExchange, open, onClose, exchangeId
                 </Typography>
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <InputLabel htmlFor="walletId" sx={{ marginBottom: '8px' }}>Wallet Sending</InputLabel>
-                    <WalletSelection onSelect={handleWalletSendingSelect} initialWalletId={formData.walletId}/>
+                    <WalletAcceptSendingSelection onSelect={handleWalletSendingSelect} initialWalletId={formData.walletId}/>
                 </FormControl>
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <InputLabel htmlFor="destinationId" sx={{ marginBottom: '8px' }}>Wallet Receiving</InputLabel>
@@ -164,6 +182,11 @@ function UpdateWalletExchangeModal({ onUpdateExchange, open, onClose, exchangeId
                     <InputLabel htmlFor="amount">Amount</InputLabel>
                     <Input id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
                 </FormControl>
+                {warningOverAmount && (
+                    <Typography color="error" sx={{ mb: 2 }}>
+                        {warningOverAmount}
+                    </Typography>
+                )}
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
@@ -171,6 +194,7 @@ function UpdateWalletExchangeModal({ onUpdateExchange, open, onClose, exchangeId
                             value={formData.exchangeDate}
                             onChange={handleDateChange}
                             textField={(params) => <Input {...params} />}
+                            maxDate={dayjs()}
                         />
                     </LocalizationProvider>
                 </FormControl>
@@ -189,6 +213,7 @@ function UpdateWalletExchangeModal({ onUpdateExchange, open, onClose, exchangeId
                         color="info"
                         onClick={handleCreateExchange}
                         style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                        disabled={warningOverAmount !== ''}
                     >
                         Update
                     </Button>

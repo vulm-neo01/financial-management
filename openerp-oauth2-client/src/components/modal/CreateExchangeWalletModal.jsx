@@ -5,6 +5,8 @@ import WalletSelection from 'components/selection/WalletSelection';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CircularProgress from '@mui/material/CircularProgress';
+import WalletAcceptSendingSelection from 'components/selection/WalletAcceptSendingSelection';
+import dayjs from 'dayjs';
 
 function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
     const currency = localStorage.getItem('currency');
@@ -29,6 +31,8 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
     const [warningSubmit, setWarningSubmit] = useState(false);
     const [image, setImage] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
+    const [warningOverAmount, setWarningOverAmount] = useState('');
+    const [currentWalletSendingAmount, setCurrentWalletSendingAmount] = useState(0);
 
     const handleFormChange = (event) => {
         const { name, value } = event.target;
@@ -36,6 +40,12 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
             ...formData,
             [name]: value
         });
+
+        if (name === 'amount' && value > currentWalletSendingAmount) {
+            setWarningOverAmount(`The amount exceeds the current wallet sending balance: ${value} > ${currentWalletSendingAmount}`);
+        } else {
+            setWarningOverAmount('');
+        }
     };
     const handleFileChange = (event) => {
         setImage(event.target.files[0]);
@@ -72,23 +82,25 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
         }
         
         try {
-            const imageData = new FormData();
-            imageData.append('image', image); // Append the selected file
-            console.log(imageData);
-            setIsUploading(true)
-
-            const imageUploadResponse = await request("post", "/exchanges/image", () => {
-                console.log("success")
-            }, (err) => {
-                console.log("failure: " + err)
-            }, imageData);
-            console.log(imageUploadResponse.data);
-            const updatedFormData = {
-                ...formData,
-                imageUrl: imageUploadResponse.data, // Assuming the response contains an 'url' property
-            };
-
-            console.log(updatedFormData);
+            let updatedFormData = { ...formData };
+            if(image){
+                const imageData = new FormData();
+                imageData.append('image', image); // Append the selected file
+                // console.log(imageData);
+                setIsUploading(true)
+    
+                const imageUploadResponse = await request("post", "/exchanges/image", () => {
+                    // console.log("success")
+                }, (err) => {
+                    console.log("failure: " + err)
+                }, imageData);
+                console.log(imageUploadResponse.data);
+                updatedFormData = {
+                    ...formData,
+                    imageUrl: imageUploadResponse.data, // Assuming the response contains an 'url' property
+                };
+                setImage(null);
+            }
 
             const formUploadResponse = await request("post", "/exchanges/new_exchange", () => {
                 console.log("success")
@@ -139,24 +151,15 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
             });
             onClose();
         }
-        // Gửi dữ liệu lên cơ sở dữ liệu
-        // request("post", "/exchanges/image", (res) => {
-        //     console.log(res.data);
-        //     setFormData({
-        //         ...formData,
-        //         imageUrl: res.data
-        //     });
-        // }, (error) => {
-        //     console.error("Error upload image:", error);
-        //     // Xử lý lỗi nếu cần thiết
-        // }, imageData);
     };
-    const handleWalletSendingSelect = (walletId) => {
+    const handleWalletSendingSelect = (walletId, walletAmount) => {
         setFormData({
             ...formData,
             walletId: walletId
         });
+        setCurrentWalletSendingAmount(walletAmount);
     };
+
     const handleWalletReceivingSelect = (destinationId) => {
         setFormData({
             ...formData,
@@ -189,7 +192,7 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
                 </Typography>
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <InputLabel htmlFor="walletId" sx={{ marginBottom: '8px' }}>Wallet Sending</InputLabel>
-                    <WalletSelection onSelect={handleWalletSendingSelect}/>
+                    <WalletAcceptSendingSelection onSelect={handleWalletSendingSelect}/>
                 </FormControl>
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <InputLabel htmlFor="destinationId" sx={{ marginBottom: '8px' }}>Wallet Receiving</InputLabel>
@@ -204,6 +207,11 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
                     <InputLabel htmlFor="amount">Amount</InputLabel>
                     <Input id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
                 </FormControl>
+                {warningOverAmount && (
+                    <Typography color="error" sx={{ mb: 2 }}>
+                        {warningOverAmount}
+                    </Typography>
+                )}
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
@@ -211,6 +219,7 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
                             value={formData.exchangeDate}
                             onChange={handleDateChange}
                             textField={(params) => <Input {...params} />}
+                            maxDate={dayjs()}
                         />
                     </LocalizationProvider>
                 </FormControl>
@@ -261,6 +270,7 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
                         color="primary"
                         onClick={handleCreateExchange}
                         style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                        disabled={warningOverAmount !== ''}
                     >
                         Submit
                     </Button>

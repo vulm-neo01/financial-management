@@ -50,7 +50,7 @@ export default function NotificationMenu({
   next,
   hasMore,
 }) {
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
 
   //
   const [displayInfiniteScroll, setDisplayInfiniteScroll] =
@@ -147,7 +147,7 @@ export default function NotificationMenu({
                                 <Notification
                                   key={notification.id.get()}
                                   notification={notification}
-                                  currentURL={pathname}
+                                  // currentURL={pathname}
                                   handleClose={handleClose}
                                 />
                               ))}

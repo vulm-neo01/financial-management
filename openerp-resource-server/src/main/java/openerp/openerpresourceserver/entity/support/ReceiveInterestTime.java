@@ -1,6 +1,7 @@
 package openerp.openerpresourceserver.entity.support;
 
 public enum ReceiveInterestTime {
+    EMPTY,
     DAILY,
     WEEKLY,
     MONTHLY,

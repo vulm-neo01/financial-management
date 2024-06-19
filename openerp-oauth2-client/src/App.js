@@ -12,7 +12,7 @@ import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { menuState } from "state/MenuState";
 import { notificationState } from "state/NotificationState";
-import { ReactComponent as Logo } from "./assets/icons/logo.svg";
+import { ReactComponent as Logo } from "./assets/icons/new_logo.svg";
 import history from "./history.js";
 
 export const theme = createTheme({

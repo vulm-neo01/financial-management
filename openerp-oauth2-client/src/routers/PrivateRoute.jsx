@@ -1,5 +1,5 @@
 import { useKeycloak } from "@react-keycloak/web";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { Route } from "react-router-dom";
 
 /**

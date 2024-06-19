@@ -47,7 +47,7 @@ MENUS.push(general);
 MENUS.push(user);
 MENUS.push(teacher);
 MENUS.push(student);
-MENUS.push(demo);
+// MENUS.push(demo);
 MENUS.push(wallets);
 MENUS.push(exchanges);
 MENUS.push(budgets);

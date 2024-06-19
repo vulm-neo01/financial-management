@@ -1,0 +1,53 @@
+.saving-detail {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.saving-detail img {
+    width: 50%;
+    margin-bottom: 16px;
+    border-radius: 12px;
+}
+
+.saving-detail .info {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.saving-detail .info .field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.saving-detail .info .field label {
+    font-weight: bold;
+}
+
+.saving-detail .info .field span {
+    color: #555;
+}
+
+.action-buttons {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.action-buttons .MuiButton-root {
+    margin: 0 10px;
+}
+
+.action-buttons .MuiButton-root:first-child {
+    margin-left: 0;
+}
+
+.action-buttons .MuiButton-root:last-child {
+    margin-right: 0;
+}

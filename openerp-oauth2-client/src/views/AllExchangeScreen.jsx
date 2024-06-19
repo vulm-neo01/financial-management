@@ -32,6 +32,8 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import UpdateIncomeModal from "components/modal/UpdateIncomeModal";
 import UpdateSpendModal from "components/modal/UpdateSpendModal";
 import UpdateWalletExchangeModal from "components/modal/UpdateWalletExchangeModal";
+import SavingCreateExchangeModal from "components/modal/SavingCreateExchangeModal";
+import SavingUpdateExchangeModal from "components/modal/SavingExchangeUpdateModal";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,7 +67,9 @@ function AllExchangeScreen() {
   const [updateIncome, setUpdateIncome] = React.useState(false);
   const [updateSpend, setUpdateSpend] = React.useState(false);
   const [updateWalletToWallet, setUpdateWalletToWallet] = React.useState(false);
+  const [updateSavingExchange, setUpdateSavingExchange] = React.useState(false);
   const [addSpend, setAddSpend] = React.useState(false);
+  const [addSavingExchange, setAddSavingExchange] = React.useState(false);
   const userId = localStorage.getItem("userId");
   const history = useHistory ();
 
@@ -99,6 +103,15 @@ function AllExchangeScreen() {
       setAddIncome(false);
   };
 
+  const handleOpenSavingExchangeDialog = () => {
+    setAddSavingExchange(true);
+    handleClose();
+  };
+
+  const handleCloseSavingExchangeDialog = () => {
+      setAddSavingExchange(false);
+  };
+
   const handleOpenUpdateExchangeDialog = (rowData) => {
     console.log(rowData.exchangeType.exchangeTypeId);
     setExchangeId(rowData.exchangeId);
@@ -108,6 +121,8 @@ function AllExchangeScreen() {
       setUpdateSpend(true);
     } else if(rowData.exchangeType.exchangeTypeId === 'wallet_wallet'){
       setUpdateWalletToWallet(true);
+    } else if(rowData.exchangeType.exchangeTypeId === 'wallet_saving' || rowData.exchangeType.exchangeTypeId === 'saving_wallet'){
+      setUpdateSavingExchange(true);
     }
     handleClose();
   };
@@ -116,6 +131,7 @@ function AllExchangeScreen() {
       setExchangeId(null);
       setUpdateIncome(false);
       setUpdateSpend(false);
+      setUpdateSavingExchange(false);
       setUpdateWalletToWallet(false);
   };
 
@@ -169,7 +185,7 @@ function AllExchangeScreen() {
 
   useEffect(() => {
     request("get", `/exchanges/all/${userId}`, (res) => {
-      console.log(res.data);
+      // console.log(res.data);
       setExchanges(res.data);
     }).then();
   }, []);
@@ -189,13 +205,15 @@ function AllExchangeScreen() {
       return (
         <div>
           {logoUrl ? (
-            <a href={`/budgets/${budgetCategoryId}`} target="_blank" rel="noopener noreferrer">
+            <IconButton onClick={() => history.push(`/budgets/${budgetCategoryId}`)}>
               <img
                 src={logoUrl}
                 alt="Category Logo"
                 style={{ width: 40, height: 40, borderRadius: "10%" }}
               />
-            </a>
+            </IconButton>
+            // <a href={`/budgets/${budgetCategoryId}`} target="_blank" rel="noopener noreferrer">
+            // </a>
           ) : (
             <>{rowData.category?.name}</>
           )}
@@ -303,6 +321,8 @@ function AllExchangeScreen() {
           <Tab label="Spend" {...a11yProps(1)} />
           <Tab label="Income" {...a11yProps(2)} />
           <Tab label="Wallet To Wallet" {...a11yProps(3)} />
+          <Tab label="Saving" {...a11yProps(4)} />
+          <Tab label="Debt and Loan" {...a11yProps(5)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -358,6 +378,35 @@ function AllExchangeScreen() {
         />
       </TabPanel>
 
+      <TabPanel value={value} index={4}>
+        <StandardTable
+          title="Saving Exchanges"
+          columns={columns}
+          data={filteredExchanges.filter(exchange => exchange.exchangeType.exchangeTypeId === "wallet_saving" 
+          || exchange.exchangeType.exchangeTypeId === "saving_wallet")}
+          options={{
+            selection: false,
+            pageSize: 20,
+            search: true,
+            sorting: true,
+          }}
+        />
+      </TabPanel>
+      <TabPanel value={value} index={5}>
+        <StandardTable
+          title="Saving Exchanges"
+          columns={columns}
+          data={filteredExchanges.filter(exchange => exchange.exchangeType.exchangeTypeId === "wallet_loan" 
+          || exchange.exchangeType.exchangeTypeId === "loan_wallet" || exchange.exchangeType.exchangeTypeId === "debt_wallet"
+          || exchange.exchangeType.exchangeTypeId === "wallet_debt")}
+          options={{
+            selection: false,
+            pageSize: 20,
+            search: true,
+            sorting: true,
+          }}
+        />
+      </TabPanel>
       <div style={{ position: 'fixed', bottom: 40, right: 40 }}>
           <IconButton
               aria-controls="simple-menu"
@@ -366,7 +415,9 @@ function AllExchangeScreen() {
               aria-label="add"
               color="primary"
               size="large"
-              style={{ backgroundColor: '#BDDAFE ', fontSize: '4rem' }} // Điều chỉnh kích thước
+              style={{ backgroundColor: '#BDDAFE ', fontSize: '4rem', transition: 'transform 0.3s ease', }} // Điều chỉnh kích thước
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
               <CurrencyExchangeRoundedIcon fontSize="150%"/>
           </IconButton>
@@ -398,14 +449,15 @@ function AllExchangeScreen() {
             </MenuItem>
             <CreateExchangeWallet onCreateExchange={handleUpdateExchange} open={addWalletExchange} onClose={handleCloseWalletExchangeDialog}/>
 
-            <MenuItem onClick={handleClose} style={{ fontSize: '1.4rem', color: 'orange' }}>
-                <SavingsIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Wallet To Saving
+            <MenuItem onClick={handleOpenSavingExchangeDialog} style={{ fontSize: '1.4rem', color: 'orange' }}>
+                <SavingsIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Wallet - Saving
             </MenuItem>
+            <SavingCreateExchangeModal onUpdateExchange={handleUpdateExchange} onClose={handleCloseSavingExchangeDialog} open={addSavingExchange}/>
             <MenuItem onClick={handleClose} style={{ fontSize: '1.4rem', color: 'purple' }}>
-                <MoneyOffIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Wallet To Debt
+                <MoneyOffIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Wallet - Debt
             </MenuItem>
             <MenuItem onClick={handleClose} style={{ fontSize: '1.4rem', color: 'black' }}>
-                <PaymentsIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Wallet To Loan
+                <PaymentsIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Wallet - Loan
             </MenuItem>
           </Menu>
           {
@@ -444,6 +496,16 @@ function AllExchangeScreen() {
               <UpdateWalletExchangeModal 
                 onUpdateExchange={handleUpdateExchange} 
                 open={updateWalletToWallet} 
+                onClose={handleCloseUpdateExchangeDialog} 
+                exchangeId={exchangeId}
+              />
+              : null
+            }
+            {
+              updateSavingExchange ?
+              <SavingUpdateExchangeModal 
+                onUpdateExchange={handleUpdateExchange} 
+                open={updateSavingExchange} 
                 onClose={handleCloseUpdateExchangeDialog} 
                 exchangeId={exchangeId}
               />

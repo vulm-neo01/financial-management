@@ -6,6 +6,7 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CircularProgress from '@mui/material/CircularProgress';
 import BudgetCategorySelection from 'components/selection/BudgetCategorySelection';
+import dayjs from 'dayjs';
 
 function CreateSpendModal({ onCreateExchange, open, onClose }) {
     const currency = localStorage.getItem('currency');
@@ -33,6 +34,8 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
     const [isUploading, setIsUploading] = useState(false);
     const [budgetCategories, setBudgetCategories] = useState(null);
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+    const [warningOverAmount, setWarningOverAmount] = useState('');
+    const [currentWalletSendingAmount, setCurrentWalletSendingAmount] = useState(0);
 
     const handleFormChange = (event) => {
         const { name, value } = event.target;
@@ -40,6 +43,12 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
             ...formData,
             [name]: value
         });
+
+        if (name === 'amount' && value > currentWalletSendingAmount) {
+            setWarningOverAmount(`The amount exceeds the current wallet sending balance: ${value.toLocaleString()} > ${currentWalletSendingAmount.toLocaleString()}`);
+        } else {
+            setWarningOverAmount('');
+        }
     };
 
     const handleFileChange = (event) => {
@@ -90,6 +99,7 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
                     ...formData,
                     imageUrl: imageUploadResponse.data, // Assuming the response contains an 'url' property
                 };
+                setImage(null);
             }
 
             const formUploadResponse = await request("post", "/exchanges/new_exchange", () => {
@@ -143,11 +153,12 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
         }
     };
 
-    const handleWalletSendingSelect = (walletId) => {
+    const handleWalletSendingSelect = (walletId, walletAmount) => {
         setFormData({
             ...formData,
             walletId: walletId
         });
+        setCurrentWalletSendingAmount(walletAmount);
     };
 
     useEffect(() => {
@@ -202,6 +213,11 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
                         <InputLabel htmlFor="amount">Amount</InputLabel>
                         <Input id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
                     </FormControl>
+                    {warningOverAmount && (
+                    <Typography color="error" sx={{ mb: 2 }}>
+                        {warningOverAmount}
+                    </Typography>
+                    )}
                     <FormControl fullWidth sx={{ mb: 2 }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
@@ -209,6 +225,7 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
                                 value={formData.exchangeDate}
                                 onChange={handleDateChange}
                                 textField={(params) => <Input {...params} />}
+                                maxDate={dayjs()}
                             />
                         </LocalizationProvider>
                     </FormControl>
@@ -281,6 +298,7 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
                             color="error"
                             onClick={handleCreateExchange}
                             style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                            disabled={warningOverAmount !== ''}
                         >
                             Submit
                         </Button>

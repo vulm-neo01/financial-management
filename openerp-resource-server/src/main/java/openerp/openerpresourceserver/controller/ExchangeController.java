@@ -2,9 +2,14 @@ package openerp.openerpresourceserver.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import openerp.openerpresourceserver.dto.DeleteRequest;
-import openerp.openerpresourceserver.dto.ExchangeDTO;
+import openerp.openerpresourceserver.dto.*;
 import openerp.openerpresourceserver.entity.Exchange;
+import openerp.openerpresourceserver.dto.request.BudgetGraphRequest;
+import openerp.openerpresourceserver.dto.request.DeleteRequest;
+import openerp.openerpresourceserver.dto.response.BudgetGraphResponse;
+import openerp.openerpresourceserver.dto.response.OverviewExchangeBudgetDTO;
+import openerp.openerpresourceserver.dto.response.OverviewWalletDTO;
+import openerp.openerpresourceserver.dto.response.SavingOverviewGraphResponse;
 import openerp.openerpresourceserver.service.ExchangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +37,13 @@ public class ExchangeController {
 
     @GetMapping("/all/{userId}")
     public ResponseEntity<?> getAllUserExchanges(@PathVariable String userId){
-        List<Exchange> exchanges = exchangeService.getAllUserExchanges(userId);
+        List<Exchange> exchanges = exchangeService.getAllExchangesByUserId(userId);
+        return ResponseEntity.ok().body(exchanges);
+    }
+
+    @GetMapping("/all-last-30days/{userId}")
+    public ResponseEntity<?> getAllLast30daysUserExchanges(@PathVariable String userId){
+        List<Exchange> exchanges = exchangeService.getAllLast30daysUserExchanges(userId);
         return ResponseEntity.ok().body(exchanges);
     }
 
@@ -54,6 +65,12 @@ public class ExchangeController {
         return ResponseEntity.ok().body(exchanges);
     }
 
+    @PostMapping("/budget/graph-overview")
+    public ResponseEntity<?> getExchangeByBudgetInOneMonth(@RequestBody BudgetGraphRequest request){
+        List<BudgetGraphResponse> exchanges = exchangeService.getBudgetExchangesDataGraph(request);
+        return ResponseEntity.ok().body(exchanges);
+    }
+
     @PostMapping("/new_exchange")
     public ResponseEntity<?> createNewExchange(@RequestBody ExchangeDTO exchangeDTO){
         String exchangeType = exchangeDTO.getExchangeTypeId();
@@ -69,17 +86,14 @@ public class ExchangeController {
                 exchanges = exchangeService.createSpendExchange(exchangeDTO);
                 break;
 //            case "loan_wallet":
-//            case "wallet_loan":
-//                exchanges = exchangeService.createLoanWalletExchange(exchangeDTO, exchangeType);
-//                break;
-//            case "debt_wallet":
-//            case "wallet_debt":
-//                exchanges = exchangeService.createDebtWalletExchange(exchangeDTO, exchangeType);
-//                break;
-            case "saving_wallet":
-                exchanges = exchangeService.createSavingWalletExchange(exchangeDTO);
+            case "wallet_loan":
+                exchanges = exchangeService.createWalletLoanExchange(exchangeDTO);
                 break;
-            case "wallet_saving":
+//            case "debt_wallet":
+            case "wallet_debt":
+                exchanges = exchangeService.createWalletDebtExchange(exchangeDTO);
+                break;
+            case "saving_wallet", "wallet_saving":
                 exchanges = exchangeService.createWalletSavingExchange(exchangeDTO);
                 break;
             default:
@@ -113,7 +127,6 @@ public class ExchangeController {
             return ResponseEntity.ok(savedExchanges);
         } catch (IllegalArgumentException e) {
             // Xử lý ngoại lệ khi id không hợp lệ
-
             return ResponseEntity.badRequest().body("Invalid User ID or Exchange Id!");
         } catch (Exception e) {
             // Xử lý các ngoại lệ khác
@@ -132,4 +145,33 @@ public class ExchangeController {
         return ResponseEntity.ok(exchanges);
     }
 
+    @GetMapping("/wallet/last-30-days/{userId}")
+    public ResponseEntity<List<OverviewWalletDTO>> getWalletChangesInLast30Days(@PathVariable String userId) {
+        List<OverviewWalletDTO> changes = exchangeService.getWalletChangesInLast30Days(userId);
+        return ResponseEntity.ok(changes);
+    }
+
+    @GetMapping("/overview/{userId}")
+    public ResponseEntity<List<OverviewExchangeBudgetDTO>> getExchangeBudgetChanges(@PathVariable String userId) {
+        List<OverviewExchangeBudgetDTO> changes = exchangeService.getExchangeBudgetChanges(userId);
+        return ResponseEntity.ok(changes);
+    }
+
+    @GetMapping("/saving/{savingId}")
+    public ResponseEntity<?> getExchangeByExchangeType(@PathVariable UUID savingId){
+        List<Exchange> exchanges = exchangeService.getAllExchangesBySavingId(savingId);
+        return ResponseEntity.ok(exchanges);
+    }
+
+    @GetMapping("/saving-history/{savingId}")
+    public ResponseEntity<?> getSavingHistory(@PathVariable UUID savingId){
+        List<SavingHistoryDTO> histories = exchangeService.getAllSavingHistory(savingId);
+        return ResponseEntity.ok(histories);
+    }
+
+    @GetMapping("/saving-graph/{userId}")
+    public ResponseEntity<?> getAllDataForSavingGraphOverview(@PathVariable String userId){
+        SavingOverviewGraphResponse response = exchangeService.getSavingOverviewInOneMonth(userId);
+        return ResponseEntity.ok(response);
+    }
 }

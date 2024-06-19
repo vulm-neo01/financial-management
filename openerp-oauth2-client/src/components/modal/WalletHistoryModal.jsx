@@ -29,7 +29,7 @@ function WalletHistoryModal({open, onClose }) {
             );
             // Sắp xếp dữ liệu theo ngày giao dịch
             const sortedData = filteredData.sort((a, b) => new Date(b.exchangeDate) - new Date(a.exchangeDate));
-            console.log(sortedData);
+            // console.log(sortedData);
             setExchanges(sortedData);
         }).then();
     }, []);

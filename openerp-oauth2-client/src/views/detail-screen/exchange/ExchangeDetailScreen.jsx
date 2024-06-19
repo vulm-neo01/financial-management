@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
-import { Menu, MenuItem, Tooltip } from '@mui/material';
+import { Link, Menu, MenuItem, Tooltip } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import ConfirmationModal from "components/modal/ConfirmationModal";
 import {formatDate, formatDateTime} from "utils/formatDate";
@@ -21,6 +21,7 @@ import UpdateSpendModal from "components/modal/UpdateSpendModal";
 import UpdateIncomeModal from "components/modal/UpdateIncomeModal";
 import UpdateWalletExchangeModal from "components/modal/UpdateWalletExchangeModal";
 import ImageZoomModal from "components/modal/ImageZoomModal";
+import SavingUpdateExchangeModal from "components/modal/SavingExchangeUpdateModal";
 
 function ExchangeDetailScreen() {
     const [exchange, setExchange] = useState(null);
@@ -29,6 +30,7 @@ function ExchangeDetailScreen() {
     const [updateIncome, setUpdateIncome] = React.useState(false);
     const [updateSpend, setUpdateSpend] = React.useState(false);
     const [updateWalletToWallet, setUpdateWalletToWallet] = React.useState(false);
+    const [updateSaving, setUpdateSaving] = React.useState(false);
     const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
     const [changeStatusForm, setChangeStatusForm] = useState(
@@ -72,11 +74,13 @@ function ExchangeDetailScreen() {
     const handleOpenUpdateExchangeDialog = () => {
         console.log(exchange.exchangeType.exchangeTypeId);
         if(exchange.exchangeType.exchangeTypeId === 'income'){
-        setUpdateIncome(true);
+            setUpdateIncome(true);
         } else if(exchange.exchangeType.exchangeTypeId === 'spend'){
-        setUpdateSpend(true);
+            setUpdateSpend(true);
         } else if(exchange.exchangeType.exchangeTypeId === 'wallet_wallet'){
-        setUpdateWalletToWallet(true);
+            setUpdateWalletToWallet(true);
+        } else if(exchange.exchangeType.exchangeTypeId === 'saving_wallet' || exchange.exchangeType.exchangeTypeId === 'wallet_saving'){
+            setUpdateSaving(true);
         }
         handleClose();
     };
@@ -85,6 +89,7 @@ function ExchangeDetailScreen() {
         setUpdateIncome(false);
         setUpdateSpend(false);
         setUpdateWalletToWallet(false);
+        setUpdateSaving(false);
     };
 
     const handleClickOpenModalDelete = () => {
@@ -108,11 +113,11 @@ function ExchangeDetailScreen() {
         if (fromType === 'wallet' || exchangeTypeId === 'spend') {
             history.push(`/wallets/${exchange.wallet.walletId}`);
         } else if (fromType === 'saving'){
-            history.push(`/savings/${exchange.walletId}`);
+            history.push(`/savings/${exchange.destinationId}`);
         } else if (fromType === 'debt'){
-            history.push(`/debts/${exchange.walletId}`);
+            history.push(`/debts/${exchange.destinationId}`);
         } else if (fromType === 'loan'){
-            history.push(`/loans/${exchange.walletId}`);
+            history.push(`/loans/${exchange.destinationId}`);
         }
     };
     
@@ -123,8 +128,10 @@ function ExchangeDetailScreen() {
         console.log("ToType:" + toType)
         if (exchangeTypeId === 'income') {
             history.push(`/wallets/${exchange.wallet.walletId}`);
-        } else if (toType === 'wallet'){
+        } else if (exchangeTypeId === 'wallet_wallet'){
             history.push(`/wallets/${exchange.destinationId}`);
+        } else if (toType === 'wallet'){
+            history.push(`/wallets/${exchange.wallet.walletId}`);
         } else if (toType === 'saving'){
             history.push(`/savings/${exchange.destinationId}`);
         } else if (toType === 'debt'){
@@ -228,6 +235,11 @@ function ExchangeDetailScreen() {
         "spend": "Chi tiêu",
         "wallet_wallet": "Chuyển từ Ví qua Ví",
         "wallet_saving": "Chuyển từ Ví qua Tiết kiệm",
+        "saving_wallet": "Rút tiền từ Tiết kiệm về Ví",
+        "debt_wallet": "Lấy tiền nợ",
+        "loan_wallet": "Vay nợ",
+        "wallet_debt": "Cho vay nợ",
+        "wallet_loan": "Trả nợ",
         "other": "Khác",
     };
     return (
@@ -248,13 +260,20 @@ function ExchangeDetailScreen() {
                 <div className={classes.cardContainer}>
                     <Card className={classes.card}>
                         {exchange.category?.logo && exchange.category?.logo?.url ? (
-                            <a href={`/budgets/${exchange.category.budgetCategoryId}`} target="_blank" rel="noopener noreferrer" className={classes.linkLogo}>
-                                <img 
-                                src={exchange.category.logo.url} 
-                                alt={exchange.category.name} 
-                                className={classes.logo} 
+                            // <a href={`/budgets/${exchange.category.budgetCategoryId}`} target="_blank" rel="noopener noreferrer" className={classes.linkLogo}>
+                            //     <img 
+                            //     src={exchange.category.logo.url} 
+                            //     alt={exchange.category.name} 
+                            //     className={classes.logo} 
+                            //     />
+                            // </a>
+                            <IconButton onClick={() => history.push(`/budgets/${exchange.category.budgetCategoryId}`)} className={classes.linkLogo}>
+                                <img
+                                    src={exchange.category.logo.url} 
+                                    alt={exchange.category.name} 
+                                    className={classes.logo} 
                                 />
-                            </a>
+                            </IconButton>
                         ) : null}
 
                         <CardContent className={classes.info}>
@@ -283,7 +302,7 @@ function ExchangeDetailScreen() {
                             <div className={classes.infoRow}>
                                 <span className={classes.infoLabel}>Budget:</span>
                                 {exchange.category && exchange.category.name ?
-                                    (<span className={classes.infoValue}>{exchange.category.name}</span>)
+                                    (<span className={classes.infoValue}><Link className={classes.link} href={`/budgets/${exchange.category.budgetCategoryId}`}>{exchange.category.name}</Link></span>)
                                     :
                                     (<span className={classes.infoValue}>No Budget Available!</span>)
                                 }
@@ -403,6 +422,16 @@ function ExchangeDetailScreen() {
                 <UpdateWalletExchangeModal 
                     onUpdateExchange={handleUpdateExchange} 
                     open={updateWalletToWallet} 
+                    onClose={handleCloseUpdateExchangeDialog} 
+                    exchangeId={exchangeId}
+                />
+                : null
+            }
+            {
+                updateSaving ?
+                <SavingUpdateExchangeModal 
+                    onUpdateExchange={handleUpdateExchange} 
+                    open={updateSaving} 
                     onClose={handleCloseUpdateExchangeDialog} 
                     exchangeId={exchangeId}
                 />

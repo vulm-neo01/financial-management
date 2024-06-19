@@ -1,0 +1,42 @@
+.budget-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    /* justify-content: space-around; */
+}
+
+.budget-card {
+    width: calc(16.66% - 16px); /* Adjust to fit 6 items in a row */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.budget-card:hover {
+    transform: scale(1.05);
+}
+
+.budget-logo {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.add-budget-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border: 2px dashed #ccc;
+    color: #777;
+}
+
+.add-budget-card:hover {
+    transform: scale(1.05);
+}

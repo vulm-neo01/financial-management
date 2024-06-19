@@ -120,12 +120,12 @@ function UpdateWalletModal({ onUpdateWallet, open, onClose, walletId }) {
                     <Input id="name" name="name" value={formData.name} onChange={handleFormChange} />
                 </FormControl>
                 <Box sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="logoId" sx={{ marginBottom: '8px' }}>Logo</InputLabel>
+                    <InputLabel htmlFor="logoId" sx={{ marginBottom: '8px' }}>Select Logo</InputLabel>
                     <LogoSelection onSelect={handleLogoSelect} type="wallet" logoId={formData.logoId} />
                 </Box>
                 <Box sx={{ mb: 2 }}>
                     <InputLabel htmlFor="colorId" sx={{ marginBottom: '8px' }}>Color</InputLabel>
-                    <ColorSelection onSelect={handleColorSelect} type="all" walletId={formData.colorId} />
+                    <ColorSelection onSelect={handleColorSelect} type="all" colorId={formData.colorId} />
                 </Box>
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <InputLabel htmlFor="type">Wallet Type</InputLabel>

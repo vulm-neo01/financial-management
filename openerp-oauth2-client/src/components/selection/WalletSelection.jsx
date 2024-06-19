@@ -39,7 +39,7 @@ function WalletSelection({ onSelect, initialWalletId }) {
     useEffect(() => {
         request('get', `/wallet/user/${userId}`, (res) => {
             setWallets(res.data);
-            console.log(initialWalletId)
+            // console.log(initialWalletId)
             if (initialWalletId) {
                 setSelectedWallet(initialWalletId);
             }
@@ -48,7 +48,12 @@ function WalletSelection({ onSelect, initialWalletId }) {
 
     const handleWalletSelect = (event) => {
         setSelectedWallet(event.target.value);
-        onSelect(event.target.value);
+        const type = wallets.find(wallet => wallet.walletId === event.target.value).type;
+        if(type === 'credit'){
+            onSelect(event.target.value);
+        } else {
+            onSelect(event.target.value, wallets.find(wallet => wallet.walletId === event.target.value).amount);
+        }
     };
 
     return (

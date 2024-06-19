@@ -6,6 +6,7 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CircularProgress from '@mui/material/CircularProgress';
 import BudgetCategorySelection from 'components/selection/BudgetCategorySelection';
+import dayjs from 'dayjs';
 
 function CreateIncomeModal({ onCreateExchange, open, onClose }) {
     const currency = localStorage.getItem('currency');
@@ -87,6 +88,7 @@ function CreateIncomeModal({ onCreateExchange, open, onClose }) {
                     ...formData,
                     imageUrl: imageUploadResponse.data, // Assuming the response contains an 'url' property
                 };
+                setImage(null);
             }
 
             const formUploadResponse = await request("post", "/exchanges/new_exchange", () => {
@@ -153,7 +155,7 @@ function CreateIncomeModal({ onCreateExchange, open, onClose }) {
     useEffect(() => {
         request("get", `/budgets/income/${localStorage.getItem('userId')}`, (res) => {
             const category = res.data;
-            console.log(category);
+            // console.log(category);
             const sortedCategories = category.sort((a, b) => {
                 if (a.name < b.name) return -1;
                 if (a.name > b.name) return 1;
@@ -210,6 +212,7 @@ function CreateIncomeModal({ onCreateExchange, open, onClose }) {
                                 value={formData.exchangeDate}
                                 onChange={handleDateChange}
                                 textField={(params) => <Input {...params} />}
+                                maxDate={dayjs()}
                             />
                         </LocalizationProvider>
                     </FormControl>

@@ -178,6 +178,7 @@ function UpdateWalletExchangeModal({ onUpdateExchange, open, onClose, exchangeId
                                 value={formData.exchangeDate}
                                 onChange={handleDateChange}
                                 textField={(params) => <Input {...params} />}
+                                maxDate={dayjs()}
                             />
                         </LocalizationProvider>
                     </FormControl>

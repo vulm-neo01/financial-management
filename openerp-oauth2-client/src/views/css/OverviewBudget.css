@@ -1,0 +1,111 @@
+.overview-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.overview-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.overview-logo-name {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.overview-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.overview-timeline {
+    margin-top: 8px;
+}
+
+.timeline-income-bar {
+    background-color: #bae5e2;
+    height: 20px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-bar {
+    background-color: #edc4c4;
+    height: 20px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.spent-income-bar {
+    background-color: #76c7c0;
+    height: 100%;
+    border-radius: 10px 0 0 10px;
+}
+
+.spent-bar {
+    background-color: #fd8282;
+    height: 100%;
+    border-radius: 10px 0 0 10px;
+}
+
+.timeline-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.overview-budget {
+    /* padding: 20px; */
+    background-color: #f9f9f9;
+}
+
+.month-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.month-controls button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    margin: 0 10px;
+    transition: transform 0.2s;
+}
+
+.month-controls button:hover {
+    transform: scale(1.1);
+}
+
+.month-controls button svg {
+    font-size: 2rem;
+    color: #555;
+}
+
+.month-controls button:focus {
+    outline: none;
+}
+
+.month-controls .MuiTypography-h6 {
+    margin: 0 20px;
+}
+
+.budget-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}

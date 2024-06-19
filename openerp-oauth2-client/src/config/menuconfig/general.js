@@ -1,7 +1,7 @@
 export const general = {
   id: "MENU_GENERAL",
-  icon: "StarBorder",
-  text: "StarBorder",
+  icon: "DashboardIcon",
+  text: "Dashboard",
   child: [
     {
       id: "MENU_GENERAL.DASHBOARD",

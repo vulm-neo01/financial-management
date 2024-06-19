@@ -1,0 +1,82 @@
+.overview-card {
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.overview-logo-name {
+    display: flex;
+    align-items: center;
+}
+
+.overview-logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 16px;
+}
+
+.timeline-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.timeline-bar, .timeline-income-bar {
+    height: 20px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.spent-bar {
+    height: 100%;
+    background-color: #ff4d4f;
+}
+
+.spent-income-bar {
+    height: 100%;
+    background-color: #52c41a;
+}
+
+.month-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.month-controls button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    margin: 0 10px;
+    transition: transform 0.2s;
+}
+
+.month-controls button:hover {
+    transform: scale(1.1);
+}
+
+.month-controls button svg {
+    font-size: 2rem;
+    color: #555;
+}
+
+.month-controls button:focus {
+    outline: none;
+}
+
+.month-controls .MuiTypography-h6 {
+    margin: 0 20px;
+}
+
+.budget-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}

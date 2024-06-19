@@ -4,15 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import openerp.openerpresourceserver.dto.ExchangeDTO;
 import openerp.openerpresourceserver.dto.SavingDTO;
+import openerp.openerpresourceserver.dto.SavingHistoryDTO;
+import openerp.openerpresourceserver.entity.Exchange;
 import openerp.openerpresourceserver.entity.Saving;
 import openerp.openerpresourceserver.entity.UserInfo;
 import openerp.openerpresourceserver.entity.support.*;
 import openerp.openerpresourceserver.repo.SavingRepo;
 import openerp.openerpresourceserver.repo.support.SavingCategoryRepo;
-import openerp.openerpresourceserver.service.ColorService;
-import openerp.openerpresourceserver.service.LogoService;
-import openerp.openerpresourceserver.service.SavingService;
-import openerp.openerpresourceserver.service.UserInfoService;
+import openerp.openerpresourceserver.service.*;
+import openerp.openerpresourceserver.utils.time.CalculateTimes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +22,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor(onConstructor_ = @Autowired)
@@ -45,8 +42,8 @@ public class SavingServiceImpl implements SavingService {
     @Override
     public Saving getBySavingId(UUID savingId) {
         Saving saving = savingRepo.findById(savingId).orElseThrow(() -> new IllegalArgumentException("SavingId is not exist!"));
-        saving.setExpectedInterest(calculateExpectedInterest(saving));
-        saving.setCurrentAmount(saving.getCurrentAmount().add(saving.getExpectedInterest()));
+        saving.setExpectedInterest(calculateExpectedInterest(saving, LocalDate.now()));
+        saving.setCurrentAmount(saving.getOriginAmount().add(saving.getExpectedInterest()));
         return savingRepo.save(saving);
     }
 
@@ -85,8 +82,9 @@ public class SavingServiceImpl implements SavingService {
         saving.setSavingType(savingDTO.getSavingType());
         saving.setWalletId(savingDTO.getWalletId());
         saving.setStartDate(savingDTO.getStartDate());
+        saving.setChangeDate(saving.getStartDate());
         saving.setReceiveInterestTime(savingDTO.getReceiveInterestTime());
-        saving.setExpectedInterest(calculateExpectedInterest(saving));
+        saving.setExpectedInterest(calculateExpectedInterest(saving, LocalDate.now()));
         saving.setCurrentAmount(savingDTO.getOriginAmount().add(saving.getExpectedInterest()));
 
         savingRepo.save(saving);
@@ -117,9 +115,10 @@ public class SavingServiceImpl implements SavingService {
 
         saving.setSavingType(savingDTO.getSavingType());
         saving.setWalletId(savingDTO.getWalletId());
-        saving.setStartDate(savingDTO.getStartDate());
+//        saving.setStartDate(savingDTO.getStartDate());
+//        saving.setChangeDate(savingDTO.getStartDate());
         saving.setReceiveInterestTime(savingDTO.getReceiveInterestTime());
-        saving.setExpectedInterest(calculateExpectedInterest(saving));
+        saving.setExpectedInterest(calculateExpectedInterest(saving, LocalDate.now()));
         saving.setCurrentAmount(savingDTO.getOriginAmount().add(saving.getExpectedInterest()));
 
         return savingRepo.save(saving);
@@ -127,35 +126,104 @@ public class SavingServiceImpl implements SavingService {
 
     @Override
     public void updateSavingFromExchange(ExchangeDTO exchangeDTO) {
+        System.out.println("Start update from exchange");
         Saving saving = getBySavingId(exchangeDTO.getDestinationId());
-
+        System.out.println("Done get saving");
         if(exchangeDTO.getExchangeTypeId().equals("wallet_saving")){
+            if(saving.getSavingType().equals(SavingType.ACCUMULATE_COMPOUND) || saving.getSavingType().equals(SavingType.NO_INTEREST) ){
+                LocalDate exchangeDate = exchangeDTO.getExchangeDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate startDate = saving.getChangeDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
+                if (exchangeDate.isAfter(LocalDate.now())) {
+                    throw new IllegalArgumentException("Exchange date cannot be before the saving start date or after date now.");
+                }
+                BigDecimal additionalAmount = exchangeDTO.getAmount();
+                LocalDate newStartDate = CalculateTimes.calculateNewStartDate(startDate, exchangeDate, saving.getReceiveInterestTime());
+                BigDecimal interestBefore = calculateExpectedInterest(saving, newStartDate);
+                BigDecimal newOriginAmount = saving.getOriginAmount().add(interestBefore).add(additionalAmount);
+                saving.setOriginAmount(newOriginAmount);
+                saving.setChangeDate(Date.from(newStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                BigDecimal totalInterest = calculateExpectedInterest(saving, LocalDate.now());;
+                saving.setExpectedInterest(totalInterest);
+                saving.setCurrentAmount(newOriginAmount.add(totalInterest));
+
+                savingRepo.save(saving);
+            } else {
+                throw new IllegalArgumentException("This type of Saving is not accept change amount: " + exchangeDTO.getExchangeTypeId());
+            }
         } else if(exchangeDTO.getExchangeTypeId().equals("saving_wallet")){
+            LocalDate exchangeDate = exchangeDTO.getExchangeDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate startDate = saving.getChangeDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
+            if (exchangeDate.isAfter(LocalDate.now())) {
+                throw new IllegalArgumentException("Exchange date cannot be before the saving start date or after date now.");
+            }
+            BigDecimal subtractAmount = exchangeDTO.getAmount();
+
+            LocalDate newStartDate = CalculateTimes.calculatePreviousInterestDate(startDate, exchangeDate, saving.getReceiveInterestTime());
+
+            BigDecimal interestBefore = calculateExpectedInterest(saving, newStartDate);
+
+            BigDecimal newOriginAmount = saving.getOriginAmount().add(interestBefore).subtract(subtractAmount);
+            saving.setOriginAmount(newOriginAmount);
+            saving.setChangeDate(Date.from(newStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+            BigDecimal totalInterest = calculateExpectedInterest(saving, LocalDate.now());;
+
+            saving.setExpectedInterest(totalInterest);
+            saving.setCurrentAmount(newOriginAmount.add(totalInterest));
+
+            savingRepo.save(saving);
         }
-
-        // CÓ cách nào tính ngược lại số tiền gốc khi biết currentAmount k :v
-
     }
 
+    @Override
+    public List<SavingCategory> getAllSavingCategory() {
+        return savingCategoryRepo.findAll();
+    }
 
-    private BigDecimal calculateExpectedInterest(Saving saving) {
-        if (saving.getSavingType().equals(SavingType.NO_INTEREST) || saving.getInterestRate() == null || saving.getStartDate() == null) {
+    @Override
+    public List<Saving> removeSaving(UUID savingId) {
+        Saving saving = getBySavingId(savingId);
+        String userId = saving.getUser().getUserId();
+        savingRepo.delete(saving);
+        return getAllByUserId(userId);
+    }
+
+    @Override
+    public void updateSavingAfterUpdateExchange(UUID savingId, BigDecimal amount, OffsetDateTime exchangeDate) {
+        Saving saving = getBySavingId(savingId);
+        System.out.println("Start updating saving after update exchange");
+
+        LocalDate exchangeDateOld = exchangeDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        System.out.println("Exchange date old");
+        BigDecimal interest = calculateRemoveInterest(saving, amount, exchangeDateOld);
+        System.out.println("Calculated remove interest: " + interest.toString());
+
+        saving.setOriginAmount(saving.getOriginAmount().add(amount).add(interest));
+        System.out.println("Updated origin amount: " + saving.getOriginAmount().toString());
+        saving.setExpectedInterest(calculateExpectedInterest(saving, LocalDate.now()));
+        System.out.println("Calculated expected interest: " + saving.getExpectedInterest().toString());
+        saving.setCurrentAmount(saving.getOriginAmount().add(saving.getExpectedInterest()));
+        savingRepo.save(saving);
+    }
+
+    private BigDecimal calculateExpectedInterest(Saving saving, LocalDate endDate) {
+        if (saving.getSavingType().equals(SavingType.NO_INTEREST) || saving.getInterestRate() == null || saving.getStartDate() == null || saving.getReceiveInterestTime() == null) {
             return BigDecimal.ZERO;
         }
-        LocalDate startDate = saving.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate currentDate = LocalDate.now();
+        LocalDate startDate = saving.getChangeDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//        LocalDate currentDate = LocalDate.now();
         BigDecimal principal = saving.getOriginAmount();
         BigDecimal annualRate = saving.getInterestRate();
-        long divider = calculatePeriodsBetween(startDate, startDate.plusYears(1), saving.getReceiveInterestTime());
-        BigDecimal rate = saving.getInterestRate().divide(BigDecimal.valueOf(100).multiply(BigDecimal.valueOf(divider)), 5, RoundingMode.HALF_UP);
+        long divider = CalculateTimes.calculatePeriodsBetween(startDate, startDate.plusYears(1), saving.getReceiveInterestTime());
+        BigDecimal rate = saving.getInterestRate().divide(BigDecimal.valueOf(100).multiply(BigDecimal.valueOf(divider)), 10, RoundingMode.HALF_UP);
 
-        long periodsBetween = calculatePeriodsBetween(startDate, currentDate, saving.getReceiveInterestTime());
+        long periodsBetween = CalculateTimes.calculatePeriodsBetween(startDate, endDate, saving.getReceiveInterestTime());
 
         BigDecimal expectedInterest = BigDecimal.ZERO;
 
-        if (saving.getSavingType() == SavingType.COMPOUND) {
+        if (saving.getSavingType() == SavingType.COMPOUND || saving.getSavingType() == SavingType.ACCUMULATE_COMPOUND) {
             expectedInterest = principal.multiply(BigDecimal.ONE.add(rate).pow((int) periodsBetween)).subtract(principal);
         } else if (saving.getSavingType() == SavingType.SIMPLE_INTEREST || saving.getSavingType() == SavingType.INTEREST_RETURN_WALLET) {
             expectedInterest = principal.multiply(rate).multiply(BigDecimal.valueOf(periodsBetween));
@@ -163,42 +231,31 @@ public class SavingServiceImpl implements SavingService {
 
         // Nếu có thể thì cần cải thiện thuật toán thêm cho một số trường hợp khác
 
+        return expectedInterest.setScale(5, RoundingMode.HALF_UP);
+    }
+
+    private BigDecimal calculateRemoveInterest(Saving saving, BigDecimal amount, LocalDate endDate) {
+        if (saving.getSavingType().equals(SavingType.NO_INTEREST) || saving.getInterestRate() == null || saving.getStartDate() == null || saving.getReceiveInterestTime() == null) {
+            return BigDecimal.ZERO;
+        }
+        LocalDate startDate = saving.getChangeDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//        LocalDate currentDate = LocalDate.now();
+        BigDecimal annualRate = saving.getInterestRate();
+        long divider = CalculateTimes.calculatePeriodsBetween(startDate, startDate.plusYears(1), saving.getReceiveInterestTime());
+        BigDecimal rate = saving.getInterestRate().divide(BigDecimal.valueOf(100).multiply(BigDecimal.valueOf(divider)), 5, RoundingMode.HALF_UP);
+
+        long periodsBetween = CalculateTimes.calculatePeriodsBetween(endDate, startDate, saving.getReceiveInterestTime());
+
+        BigDecimal expectedInterest = BigDecimal.ZERO;
+
+        if (saving.getSavingType() == SavingType.COMPOUND || saving.getSavingType() == SavingType.ACCUMULATE_COMPOUND) {
+            expectedInterest = amount.multiply(BigDecimal.ONE.add(rate).pow((int) periodsBetween)).subtract(amount);
+        } else if (saving.getSavingType() == SavingType.SIMPLE_INTEREST || saving.getSavingType() == SavingType.INTEREST_RETURN_WALLET) {
+            expectedInterest = amount.multiply(rate).multiply(BigDecimal.valueOf(periodsBetween));
+        }
+
+        // Nếu có thể thì cần cải thiện thuật toán thêm cho một số trường hợp khác
+
         return expectedInterest.setScale(2, RoundingMode.HALF_UP);
     }
-
-    private long calculatePeriodsBetween(LocalDate startDate, LocalDate currentDate, ReceiveInterestTime period) {
-        switch (period) {
-            case DAILY:
-                return ChronoUnit.DAYS.between(startDate, currentDate);
-            case WEEKLY:
-                return ChronoUnit.WEEKS.between(startDate, currentDate);
-            case MONTHLY:
-                return ChronoUnit.MONTHS.between(startDate, currentDate);
-            case EVERY_TWO_MONTH:
-                return (ChronoUnit.MONTHS.between(startDate, currentDate))/2;
-            case EVERY_THREE_MONTH:
-                return (ChronoUnit.MONTHS.between(startDate, currentDate))/3;
-            case EVERY_SIX_MONTH:
-                return (ChronoUnit.MONTHS.between(startDate, currentDate))/6;
-            case YEARLY:
-                return ChronoUnit.YEARS.between(startDate, currentDate);
-            default:
-                throw new IllegalArgumentException("Unknown period: " + period);
-        }
-    }
-
-    // Người dùng sẽ lựa chọn sử dụng kết quả tính toán hay không
-    // Nếu đồng ý thì sử dụng, còn không thì tự update tay. Khi user đồng ý thì gọi hàm tính interest.
-
-    // Expected amount sẽ là giá trị lưu giữ số tiền dự kiến ở cuối chu kỳ lãi với type "COMPOUND".
-    // Ví dụ như ban đầu saving có 1000USD, lãi 1% thì expected amount cuối chu kỳ là 1010USD
-    // Nếu giữa chu kỳ có thêm 100USD chuyển vào thì current amount và expected amount đều được tăng lên từng đó
-    // Nghĩa là expected amount sẽ là 1110USD.
-
-    // Tiếp theo là hàm tính lãi kép, ý tưởng cho hàm này là dựa vào startDate và currentAmount
-    // cùng với interestRate và repeatedTime (Tháng, Năm, Tuần,...)
-    // Ví dụ startDate là 01/05, MONTHLY, 1% mỗi Month, currentAmount là 1000USD.
-    // Vậy thì ngay khi đó sẽ tính toán expectedAmount 1010USD vào cuối chu kỳ.
-    // Trong lúc đó người dùng chỉnh sửa tỉ lệ lên 2% nhưng vẫn giữa nguyên startDate chẳng hạn
-    // expectedAmount cũng sẽ đuợc tính toán lại. Và nếu
 }

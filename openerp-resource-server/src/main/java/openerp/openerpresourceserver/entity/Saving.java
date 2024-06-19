@@ -66,7 +66,7 @@ public class Saving {
     @Column(name = "receive_interest_time")
     private ReceiveInterestTime receiveInterestTime;
 
-    @Column(name = "interestRate")
+    @Column(name = "interest_rate")
     private BigDecimal interestRate;
 
     @Column(name = "expected_interest")
@@ -77,6 +77,9 @@ public class Saving {
 
     @Column(name = "start_date")
     private Date startDate;
+
+    @Column(name = "change_date")
+    private Date changeDate;
 
     @Column(name = "target_date")
     private Date targetDate;

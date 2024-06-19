@@ -1,113 +1,162 @@
-import React, {useEffect, useState} from "react";
-import {request} from "../api";
-import {StandardTable} from "erp-hust/lib/StandardTable";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import React, { useState, useEffect } from "react";
+import { request } from "../api";
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import { useHistory } from 'react-router-dom';
+import './css/ListBudgetScreen.css';
+import AddIcon from '@mui/icons-material/Add';
+import OverviewBudget from "./budget/OverviewBudget";
+import {BudgetCreateSpendModal} from "components/modal/BudgetCreateModal";
+import {BudgetCreateIncomeModal} from "components/modal/BudgetCreateModal";
+
+function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+CustomTabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 
 function ListBudgetScreen() {
+    const [budgets, setBudgets] = useState([]);
+    const [value, setValue] = useState(0);
+    const [addBudgetSpend, setAddBudgetSpend] = useState(false);
+    const [addBudgetIncome, setAddBudgetIncome] = useState(false);
+    const userId = localStorage.getItem('userId');
+    const history = useHistory();
 
-    const [users, setUsers] = useState([]);
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     useEffect(() => {
-        request("get", "/wallet/user/aaaaaaaaaakkkkkkkkkeeeeeeeeeeeeeaaaaaaaaaa", (res) => {
-            console.log(res.data);
-            setUsers(res.data);
+        request("get", `/budgets/user/${userId}`, (res) => {
+            // console.log(res.data);
+            const sortedBudgets = res.data.sort((a, b) => {
+                if (a.name < b.name) return -1;
+                if (a.name > b.name) return 1;
+                return 0;
+            });
+            setBudgets(sortedBudgets);
         }).then();
-    }, [])
+    }, [budgets.length]);
 
-    // const user_info = user
+    const handleBudgetClick = (budgetCategoryId) => {
+        history.push(`/budgets/${budgetCategoryId}`);
+    };
 
-    const columns = [
-        {
-            title: "Wallet",
-            field: "walletId",
-        },
-        {
-            title: "Username",
-            // render: (row) => row.user.user.id,
-            // field: "user?.user?.id",    
-            render: (rowData) => {
-                const nestedUser = rowData.user?.user;
-                return nestedUser ? nestedUser.id : null; // Return null or handle missing nestedUser appropriately
-            },
-        },
-        {
-            title: "Wallet Type",
-            field: "type",
-        },
-        {
-            title: "Name",
-            field: "name",
-        },
-        {
-            title: "Amount",
-            field: "amount",
-        },
-        {
-            title: "Currency",
-            field: "currency.code",
-        },
-        // {
-        //     title: "User",
-        //     field: "id",
-        // },
-        // {
-        //     title: "Creation time",
-        //     field: "createdOn",
-        // },
-        {
-            title: "Edit",
-            sorting: false,
-            render: (rowData) => (
-                <IconButton
-                    onClick={() => {
-                        demoFunction(rowData)
-                    }}
-                    variant="contained"
-                    color="success"
-                >
-                    <EditIcon/>
-                </IconButton>
-            ),
-        },
-        {
-            title: "Delete",
-            sorting: false,
-            render: (rowData) => (
-                <IconButton
-                    onClick={() => {
-                        demoFunction(rowData)
-                    }}
-                    variant="contained"
-                    color="error"
-                >
-                    <DeleteIcon/>
-                </IconButton>
-            ),
-        },
-    ];
+    const handleOpenAddBudgetSpendDialog = (event) => {
+        setAddBudgetSpend(true);
+    };
 
-    const demoFunction = (user) => {
-        alert("You clicked on User: " + user.id)
-    }
+    const handleCloseAddBudgetSpendDialog = () => {
+        setAddBudgetSpend(false);
+    };
+
+    const handleOpenAddBudgetIncomeDialog = (event) => {
+        setAddBudgetIncome(true);
+    };
+
+    const handleCloseAddBudgetIncomeDialog = () => {
+        setAddBudgetIncome(false);
+    };
+
+    const handleUpdateBudgetData = (updatedBudgets) => {
+        const sortedBudgets = updatedBudgets.sort((a, b) => {
+            if (a.name < b.name) return -1;
+            if (a.name > b.name) return 1;
+            return 0;
+        });
+        setBudgets(sortedBudgets);
+    };
+
+    const renderIncomeBudgets = (type) => {
+        return budgets
+            .filter(budget => budget.type === type)
+            .map(budget => (
+                <div key={budget.budgetCategoryId} className="budget-card" onClick={() => handleBudgetClick(budget.budgetCategoryId)}>
+                    <img src={budget.logo.url} alt={budget.name} className="budget-logo" />
+                    <Typography variant="h6">{budget.name}</Typography>
+                </div>
+            ));
+    };
+
+    const renderSpendBudgets = (type) => {
+        return budgets
+            .filter(budget => budget.type !== type)
+            .map(budget => (
+                <div key={budget.budgetCategoryId} className="budget-card" onClick={() => handleBudgetClick(budget.budgetCategoryId)}>
+                    <img src={budget.logo.url} alt={budget.name} className="budget-logo" />
+                    <Typography variant="h6">{budget.name}</Typography>
+                </div>
+            ));
+    };
 
     return (
         <div>
-            <StandardTable
-                title="User List"
-                columns={columns}
-                data={users}
-                // hideCommandBar
-                options={{
-                    selection: false,
-                    pageSize: 20,
-                    search: true,
-                    sorting: true,
-                }}
-            />
-        </div>
+            <Typography variant="h4" gutterBottom>
+                Budgets Category
+            </Typography>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tab label="Overview" {...a11yProps(0)} />
+                    <Tab label="Spend" {...a11yProps(1)} />
+                    <Tab label="Income" {...a11yProps(2)} />
+                </Tabs>
+            </Box>
+            <CustomTabPanel value={value} index={0}>
+                <OverviewBudget budgets={budgets} />
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={1}>
+                <div className="budget-grid">
+                    {renderSpendBudgets("income")}
+                    <div className="budget-card add-budget-card" onClick={handleOpenAddBudgetSpendDialog}>
+                        <AddIcon style={{ fontSize: 50 }} />
+                        <Typography variant="h6">Add Budget</Typography>
+                    </div>
+                </div>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={2}>
+                <div className="budget-grid">
+                    {renderIncomeBudgets("income")}
+                    <div className="budget-card add-budget-card" onClick={handleOpenAddBudgetIncomeDialog}>
+                        <AddIcon style={{ fontSize: 50 }} />
+                        <Typography variant="h6">Add Budget</Typography>
+                    </div>
+                </div>
+            </CustomTabPanel>
+            <BudgetCreateSpendModal onCreateBudget={handleUpdateBudgetData} open={addBudgetSpend} onClose={handleCloseAddBudgetSpendDialog}/>
+            <BudgetCreateIncomeModal onCreateBudget={handleUpdateBudgetData} open={addBudgetIncome} onClose={handleCloseAddBudgetIncomeDialog}/>
 
+        </div>
     );
 }
 
