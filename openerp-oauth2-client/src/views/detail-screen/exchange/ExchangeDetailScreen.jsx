@@ -309,7 +309,7 @@ function ExchangeDetailScreen() {
                             </div>
                             <div className={classes.infoRow}>
                                 <span className={classes.infoLabel}>Exchange Type:</span>
-                                <span className={classes.infoValue}>{typeLabels[exchange.exchangeType.exchangeTypeId]}</span>
+                                <span className={classes.infoValue}>{exchange.exchangeType.exchangeTypeName}</span>
                             </div>
                             <div className={classes.infoRow}>
                                 <span className={classes.infoLabel}>Exchange Date:</span>

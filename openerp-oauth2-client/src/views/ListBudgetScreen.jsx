@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import { useHistory } from 'react-router-dom';
 import './css/ListBudgetScreen.css';
 import AddIcon from '@mui/icons-material/Add';
-import OverviewBudget from "./budget/OverviewBudget";
+import OverviewBudget from "./detail-screen/budget/OverviewBudget";
 import {BudgetCreateSpendModal} from "components/modal/BudgetCreateModal";
 import {BudgetCreateIncomeModal} from "components/modal/BudgetCreateModal";
 

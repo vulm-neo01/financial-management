@@ -11,7 +11,8 @@ import WalletAcceptSendingSelection from 'components/selection/WalletAcceptSendi
 function LoanCreateModal({ onCreateLoan, open, onClose }) {
     const currency = localStorage.getItem('currency');
     const [warningSubmit, setWarningSubmit] = useState(false);
-    const [currentWalletSendingAmount, setCurrentWalletSendingAmount] = useState(0);
+    const [currentWalletSendingAmount, setCurrentWalletSendingAmount] = useState();
+    const [warningOverAmount, setWarningOverAmount] = useState('');
 
     const [formData, setFormData] = useState({
         userId: localStorage.getItem('userId'),
@@ -34,6 +35,12 @@ function LoanCreateModal({ onCreateLoan, open, onClose }) {
             ...formData,
             [name]: value
         });
+
+        if (name === 'originAmount' && value > currentWalletSendingAmount) {
+            setWarningOverAmount(`The amount exceeds the current wallet sending balance: ${value.toLocaleString()} > ${currentWalletSendingAmount.toLocaleString()}`);
+        } else {
+            setWarningOverAmount('');
+        }
     };
 
     const handleCheckBoxChange = (event) => {
@@ -164,6 +171,11 @@ function LoanCreateModal({ onCreateLoan, open, onClose }) {
                     <InputLabel htmlFor="originAmount">Origin Amount</InputLabel>
                     <Input id="originAmount" name="originAmount" value={formData.originAmount} onChange={handleFormChange} endAdornment={currency}/>
                 </FormControl>
+                {warningOverAmount && (
+                    <Typography color="error" sx={{ mb: 2 }}>
+                        {warningOverAmount}
+                    </Typography>
+                )}
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <FormControlLabel
                         control={
@@ -180,7 +192,7 @@ function LoanCreateModal({ onCreateLoan, open, onClose }) {
                 {formData.isCreateExchange &&
                     <FormControl fullWidth sx={{ mb: 2, maxWidth: 250 }}>
                         <InputLabel htmlFor="walletId">Wallet Selection</InputLabel>
-                        <WalletAcceptSendingSelection onSelect={handleWalletSendingSelect} initialWalletId={formData.walletId} />
+                        <WalletAcceptSendingSelection onSelect={handleWalletSendingSelect} />
                     </FormControl>
                 }
                 <FormControl fullWidth sx={{ mb: 2 }}>
@@ -261,6 +273,7 @@ function LoanCreateModal({ onCreateLoan, open, onClose }) {
                         color="primary"
                         onClick={handleCreateLoan}
                         style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                        disabled={warningOverAmount !== ''}
                     >
                         Create Loan
                     </Button>

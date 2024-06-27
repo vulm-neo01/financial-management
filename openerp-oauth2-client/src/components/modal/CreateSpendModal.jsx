@@ -35,7 +35,7 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
     const [budgetCategories, setBudgetCategories] = useState(null);
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
     const [warningOverAmount, setWarningOverAmount] = useState('');
-    const [currentWalletSendingAmount, setCurrentWalletSendingAmount] = useState(0);
+    const [currentWalletSendingAmount, setCurrentWalletSendingAmount] = useState();
 
     const handleFormChange = (event) => {
         const { name, value } = event.target;

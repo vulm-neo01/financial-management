@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import AddIcon from "@mui/icons-material/Add";
 import LoanCreateModal from "components/modal/LoanCreateModal";
 import DebtCreateModal from "components/modal/DebtCreateModal";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 function ListLoanAndDebtScreen() {
     const [loans, setLoans] = useState([]);
@@ -17,9 +18,10 @@ function ListLoanAndDebtScreen() {
     const [addDebt, setAddDebt] = useState(false);
     const userId = localStorage.getItem('userId');
     const history = useHistory();
+    const location = useLocation();
 
     useEffect(() => {
-        request("get", `/loan-debt/loan/${userId}`, (res) => {
+        request("get", `/loan-debt/loan/user/${userId}`, (res) => {
             const sortedLoans = res.data.sort((a, b) => {
                 if (a.openStatus === b.openStatus) {
                     return new Date(a.returnDate) - new Date(b.returnDate);
@@ -28,7 +30,7 @@ function ListLoanAndDebtScreen() {
             });
             setLoans(sortedLoans);
         }).then();
-        request("get", `/loan-debt/debt/${userId}`, (res) => {
+        request("get", `/loan-debt/debt/user/${userId}`, (res) => {
             const sortedDebts = res.data.sort((a, b) => {
                 if (a.openStatus === b.openStatus) {
                     return new Date(a.returnDate) - new Date(b.returnDate);
@@ -37,7 +39,7 @@ function ListLoanAndDebtScreen() {
             });
             setDebts(sortedDebts);
         }).then();
-    }, [])
+    }, [location.state])
 
 
     const handleCardClick = (id, type) => {
@@ -108,12 +110,12 @@ function ListLoanAndDebtScreen() {
                 >
                     <Box>
                         <Typography variant="h6">{name || "Unnamed"}</Typography>
-                        <Typography variant="body2" className="current-amount">{currentAmount ? `${currentAmount.toLocaleString()} VNĐ` : 'N/A'}</Typography>
+                        <Typography variant="body2" className="current-amount">{currentAmount ? `${currentAmount.toLocaleString()} VNĐ` : '0 VNĐ'}</Typography>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography variant="body2">From: {formattedStartDate}</Typography>
                             <Typography variant="body2">To: {formattedReturnDate}</Typography>
                         </div>
-                        {description && <Typography variant="body2">{description}</Typography>}
+                        {/* {description && <Typography variant="body2">{description}</Typography>} */}
                     </Box>
                 </Paper>
             </Grid>

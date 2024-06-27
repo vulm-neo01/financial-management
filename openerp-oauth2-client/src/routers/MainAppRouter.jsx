@@ -18,9 +18,12 @@ import WalletDetailScreen from "views/detail-screen/wallet/WalletDetailScreen";
 import WalletManagementScreen from "views/WalletManagementScreen";
 import ExchangeDetailScreen from "views/detail-screen/exchange/ExchangeDetailScreen";
 import { request } from "api";
-import BudgetDetail from "views/budget/BudgetDetail";
+import BudgetDetail from "views/detail-screen/budget/BudgetDetail";
 import SavingDetailScreen from "views/detail-screen/saving/SavingDetailScreen";
 import Dashboard from "views/DashBoardScreen";
+import LoanDebtDetailScreen from "views/detail-screen/loan-debt/LoanDetailScreen";
+import LoanDetailScreen from "views/detail-screen/loan-debt/LoanDetailScreen";
+import DebtDetailScreen from "views/detail-screen/loan-debt/DebtDetailScreen";
 
 const styles = {
   loadingProgress: {
@@ -63,6 +66,8 @@ function MainAppRouter(props) {
             <PrivateRoute component={ListSavingScreen} exact path="/savings" />
             <PrivateRoute component={SavingDetailScreen} exact path="/savings/:savingId" />
             <PrivateRoute component={ListLoanAndDebtScreen} exact path="/all-loan-debt" />
+            <PrivateRoute component={LoanDetailScreen} exact path="/loan/:loanId" />
+            <PrivateRoute component={DebtDetailScreen} exact path="/debt/:debtId" />
             <PrivateRoute component={GroupWalletScreen} exact path="/group-wallets" />
             <PrivateRoute component={TeacherRouter} path="/teacher" />
 

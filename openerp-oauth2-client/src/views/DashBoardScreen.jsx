@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { useTheme } from "@mui/material/styles";
 import { groupExchangesByTime } from 'utils/groupExchangesByTime';
 import { formatDate } from 'utils/formatDate';
-import BudgetOverview from './budget/BudgetOverviewGraph';
+import BudgetOverview from './detail-screen/budget/BudgetOverviewGraph';
 import CreateSpendModal from 'components/modal/CreateSpendModal';
 import CreateIncomeModal from 'components/modal/CreateIncomeModal';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
