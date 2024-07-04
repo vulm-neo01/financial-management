@@ -18,7 +18,7 @@ public interface GroupBudgetService {
 
     List<GroupBudget> createGroupBudget(GroupBudgetDTO groupBudgetDTO, GroupWallet groupWallet) throws IllegalAccessException;
 
-    GroupBudget updateGroupBudget(GroupBudgetDTO groupBudgetDTO, GroupWallet groupWallet, UUID groupBudgetId) throws IllegalAccessException;
+    List<GroupBudget> updateGroupBudget(GroupBudgetDTO groupBudgetDTO, GroupWallet groupWallet, UUID groupBudgetId) throws IllegalAccessException;
 
     List<GroupBudget> deleteBudget(GroupBudgetDTO groupBudgetDTO, UUID groupBudgetId) throws IllegalAccessException;
 }

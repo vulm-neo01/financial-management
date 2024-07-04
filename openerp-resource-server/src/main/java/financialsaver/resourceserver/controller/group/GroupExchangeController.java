@@ -1,5 +1,11 @@
 package financialsaver.resourceserver.controller.group;
 
+import financialsaver.resourceserver.dto.request.BudgetGraphRequest;
+import financialsaver.resourceserver.dto.request.BudgetGroupGraphRequest;
+import financialsaver.resourceserver.dto.response.BudgetComparisonResult;
+import financialsaver.resourceserver.dto.response.BudgetGraphResponse;
+import financialsaver.resourceserver.dto.response.OverviewExchangeBudgetDTO;
+import financialsaver.resourceserver.dto.response.OverviewGroupExchangeBudget;
 import lombok.AllArgsConstructor;
 import financialsaver.resourceserver.dto.GroupExchangeDTO;
 import financialsaver.resourceserver.entity.group.GroupExchange;
@@ -54,5 +60,23 @@ public class GroupExchangeController {
     public ResponseEntity<?> deleteExchange(@PathVariable UUID groupExchangeId){
         List<GroupExchange> groupExchanges = groupExchangeService.deleteExchange(groupExchangeId);
         return ResponseEntity.ok().body(groupExchanges);
+    }
+
+    @GetMapping("/total-amount/{groupWalletId}")
+    public ResponseEntity<?> getBudgetsComparisonByGroupWalletId(@PathVariable UUID groupWalletId){
+        List<BudgetComparisonResult> res = groupExchangeService.getTotalAmountByBudget(groupWalletId);
+        return ResponseEntity.ok().body(res);
+    }
+
+    @GetMapping("/overview/{groupWalletId}")
+    public ResponseEntity<List<OverviewGroupExchangeBudget>> getExchangeBudgetChanges(@PathVariable UUID groupWalletId) {
+        List<OverviewGroupExchangeBudget> changes = groupExchangeService.getExchangeBudgetChanges(groupWalletId);
+        return ResponseEntity.ok(changes);
+    }
+
+    @PostMapping("/graph-overview")
+    public ResponseEntity<?> getExchangeByBudgetInOneMonth(@RequestBody BudgetGroupGraphRequest request){
+        List<BudgetGraphResponse> exchanges = groupExchangeService.getBudgetExchangesDataGraph(request);
+        return ResponseEntity.ok().body(exchanges);
     }
 }

@@ -199,7 +199,7 @@ function LoanDetailScreen() {
                 loan 
                 && 
                 <Box sx={{ display: 'flex', maxHeight: '100vh' }}>
-                    <Box sx={{ backgroundColor: `${loan.color && loan.color.colorId}`, width: '25%', padding: 2, borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <Box sx={{ backgroundColor: `${loan.color && loan.color.colorId}`, width: '25%', padding: 2, borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderRadius: '12px'  }}>
                         <Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                                 <IconButton onClick={() => history.push("/all-loan-debt")}>

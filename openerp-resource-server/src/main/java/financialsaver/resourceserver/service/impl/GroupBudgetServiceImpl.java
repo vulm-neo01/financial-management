@@ -48,6 +48,7 @@ public class GroupBudgetServiceImpl implements GroupBudgetService {
                 .limitAmount(BigDecimal.valueOf(1000000))
                 .logo(logoService.getLogoById("income_01"))
                 .name("Demo Income Budget")
+                .isActive(true)
                 .build();
 
         GroupBudget groupBudgetSpendDefault = GroupBudget.builder()
@@ -59,6 +60,7 @@ public class GroupBudgetServiceImpl implements GroupBudgetService {
                 .limitAmount(BigDecimal.valueOf(1000000))
                 .logo(logoService.getLogoById("food_00"))
                 .name("Demo Spend Budget")
+                .isActive(true)
                 .build();
 
         groupBudgetRepo.save(groupBudgetIncomeDefault);
@@ -95,7 +97,7 @@ public class GroupBudgetServiceImpl implements GroupBudgetService {
     }
 
     @Override
-    public GroupBudget updateGroupBudget(GroupBudgetDTO groupBudgetDTO, GroupWallet groupWallet, UUID groupBudgetId) throws IllegalAccessException {
+    public List<GroupBudget> updateGroupBudget(GroupBudgetDTO groupBudgetDTO, GroupWallet groupWallet, UUID groupBudgetId) throws IllegalAccessException {
         if(!groupMemberService.IsAdminOfGroupWallet(groupBudgetDTO.getCreatedUserId(), groupBudgetDTO.getGroupWalletId())){
             log.info("Group Create User ID: " + groupBudgetDTO.getCreatedUserId());
             throw new IllegalAccessException("Only Admin can change a budget");
@@ -106,7 +108,9 @@ public class GroupBudgetServiceImpl implements GroupBudgetService {
         groupBudget.setDescription(groupBudgetDTO.getDescription());
         groupBudget.setName(groupBudgetDTO.getName());
         groupBudget.setLimitAmount(groupBudgetDTO.getLimitAmount());
-        return groupBudgetRepo.save(groupBudget);
+        groupBudgetRepo.save(groupBudget);
+
+        return findAllByGroupWalletID(groupBudgetDTO.getGroupWalletId());
     }
 
     @Override

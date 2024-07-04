@@ -25,6 +25,12 @@ public class GroupMemberController {
         return ResponseEntity.ok().body(groupMembers);
     }
 
+    @GetMapping("/check/{userId}/{groupWalletId}")
+    public ResponseEntity<?> checkIsAdmin(@PathVariable String userId, @PathVariable UUID groupWalletId){
+        Boolean isAdmin = groupMemberService.checkIsAdmin(userId, groupWalletId);
+        return ResponseEntity.ok().body(isAdmin);
+    }
+
     @GetMapping("/all/{groupWalletId}")
     public ResponseEntity<?> getAllByGroupWallet(@PathVariable UUID groupWalletId){
         List<GroupMember> groupMembers = groupMemberService.findAllByGroupWalletId(groupWalletId);

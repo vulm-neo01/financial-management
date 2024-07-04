@@ -24,4 +24,6 @@ public interface GroupMemberService {
     List<GroupMember> deleteFromGroup(GroupMemberDTO groupMemberDTO, UUID groupMemberId) throws IllegalAccessException;
 
     List<GroupMember> findAllByUserId(String userId);
+
+    Boolean checkIsAdmin(String userId, UUID groupWalletId);
 }

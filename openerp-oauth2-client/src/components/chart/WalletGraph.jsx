@@ -82,16 +82,18 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 // Component biểu đồ Wallet
 const WalletChart = ({ data }) => (
-    <ResponsiveContainer width="100%" height={400} >
-        <LineChart data={data} margin={{ top: 20, right: 30, left: 50, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis tickFormatter={formatCurrency}/>
-            <Tooltip content={<CustomTooltip />}/>
-            <Legend />
-            <Line type="monotone" dataKey="balance" stroke="#8884d8" activeDot={{ r: 8 }} />
-        </LineChart>
-    </ResponsiveContainer>
+    <div >
+        <ResponsiveContainer width="100%" height={350} >
+            <LineChart data={data} margin={{ top: 20, right: 50, left: 50, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis tickFormatter={formatCurrency}/>
+                <Tooltip content={<CustomTooltip />}/>
+                <Legend />
+                <Line type="monotone" dataKey="balance" stroke="#8884d8" activeDot={{ r: 8 }} />
+            </LineChart>
+        </ResponsiveContainer>
+    </div>
 );
 
 const WalletGraph = ({ exchanges, currentBalance, walletId, createAt }) => {
@@ -100,24 +102,12 @@ const WalletGraph = ({ exchanges, currentBalance, walletId, createAt }) => {
     const data = prepareChartData(exchanges, initialBalance, walletId, createAt);
 
     return (
-        <Box sx={{ marginTop: theme.spacing(2), display: 'flex', maxHeight: '80vh', overflowY: 'auto' }}>
-            {exchanges && exchanges.length > 0 ? (
-                <Grid container alignItems="center">
-                    <Grid item xs={12}>
-                        <Typography variant="h5" gutterBottom style={{ marginTop: theme.spacing(3) }}>
-                            Wallet Graph Statistics
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12} style={{ width: '100%' }}>
-                        {/* Hiển thị biểu đồ */}
-                        <WalletChart data={data} />
-                    </Grid>
+        <Box sx={{  marginTop: theme.spacing(2), display: 'flex', justifyContent: 'center', alignItems: 'center'  }}>
+            <Grid container alignItems="center">
+                <Grid item xs={12} style={{ width: '75%' }}>
+                    <WalletChart data={data} />
                 </Grid>
-            ) : (
-                <Typography variant="h6" gutterBottom style={{ marginTop: theme.spacing(3), marginLeft: theme.spacing(2), alignItems: 'center' }}>
-                    Nothing to Show here, create your first Exchange!
-                </Typography>
-            )}
+            </Grid>
         </Box>
     );
 };

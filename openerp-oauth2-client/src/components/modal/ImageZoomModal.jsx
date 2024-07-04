@@ -31,7 +31,7 @@ const ImageZoomModal = ({ imageUrl, onClose }) => {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-            <img src={imageUrl} alt="Exchange Image" style={{ width: '50%'}} /> {/* Set image width to 100% */}
+            <img src={imageUrl} alt="Exchange Image" style={{ width: '40%'}} /> {/* Set image width to 100% */}
             </Box>
         </Modal>
         </>

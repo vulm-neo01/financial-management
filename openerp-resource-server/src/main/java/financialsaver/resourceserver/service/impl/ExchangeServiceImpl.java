@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -619,6 +620,20 @@ public class ExchangeServiceImpl implements ExchangeService {
         return exchanges;
     }
 
+    private BigDecimal calculatePeriodAmount(List<Exchange> exchanges, BigDecimal currentAmount){
+        exchanges.sort(Comparator.comparing(Exchange::getExchangeDate).reversed());
+        for (Exchange exchange : exchanges){
+            String exchangeType = exchange.getExchangeType().getExchangeTypeId();
+            if(exchangeType.equals("wallet_saving")){
+                currentAmount = currentAmount.subtract(exchange.getAmount());
+            } else {
+                currentAmount = currentAmount.add(exchange.getAmount());
+            }
+        }
+
+        return currentAmount;
+    }
+
     @Override
     public List<SavingHistoryDTO> getAllSavingHistory(UUID savingId) {
         Saving saving = savingService.getBySavingId(savingId);
@@ -630,38 +645,98 @@ public class ExchangeServiceImpl implements ExchangeService {
         histories.add(new SavingHistoryDTO(currentAmount, LocalDate.now()));
         Stack<LocalDate> stackTimes = CalculateTimes.calculatePreviousHistoryDate(startDate, LocalDate.now(), saving.getReceiveInterestTime());
         if(!stackTimes.isEmpty()){
-            histories.add(new SavingHistoryDTO(currentAmount, stackTimes.pop()));
+            if(exchanges.isEmpty() || stackTimes.peek().isAfter(exchanges.get(0).getExchangeDate().toLocalDate())){
+                log.info("CurrentAmount: " + currentAmount + " And time: " + stackTimes.peek().format(DateTimeFormatter.ofPattern("YYYY-MM-DD")));
+                histories.add(new SavingHistoryDTO(currentAmount, stackTimes.pop()));
+            }
+//            log.info("CurrentAmount: " + currentAmount + " And time: " + stackTimes.peek().format(DateTimeFormatter.ofPattern("YYYY-MM-DD")));
+//            histories.add(new SavingHistoryDTO(currentAmount, stackTimes.pop()));
         }
         while(!stackTimes.isEmpty() || !exchanges.isEmpty()){
             if(!exchanges.isEmpty() && (stackTimes.isEmpty() || stackTimes.peek().isBefore(exchanges.get(0).getExchangeDate().toLocalDate()))){
                 long divider = CalculateTimes.calculatePeriodsBetween(startDate, startDate.plusYears(1), saving.getReceiveInterestTime());
                 BigDecimal rate = (divider > 0) ? saving.getInterestRate().divide(BigDecimal.valueOf(100).multiply(BigDecimal.valueOf(divider)), 10, RoundingMode.HALF_UP) : BigDecimal.ZERO;
-                // THêm logic cho những exchange chuyển tiền ra ngoài nữa
-                String exchangeType = exchanges.get(0).getExchangeType().getExchangeTypeId();
-                BigDecimal previousAmount = exchangeType.equals("wallet_saving") ?
-                        currentAmount.subtract(exchanges.get(0).getAmount())
-                        : currentAmount.add(exchanges.get(0).getAmount()) ;
+
                 if(!stackTimes.isEmpty()){
-                    if(exchangeType.equals("wallet_saving")){
-                        currentAmount = previousAmount.divide(BigDecimal.ONE.add(rate), 10, RoundingMode.HALF_UP);
-                        histories.add(new SavingHistoryDTO(currentAmount, stackTimes.pop()));
+                    LocalDate latestStackTime = stackTimes.peek();
 
-                        histories.add(new SavingHistoryDTO(currentAmount.add(exchanges.get(0).getAmount()), exchanges.get(0).getExchangeDate().toLocalDate()));
-                        log.info("Wallet - Saving work");
+                    List<Exchange> filteredExchanges = exchanges.stream()
+                            .filter(e -> e.getExchangeDate().toLocalDate().isAfter(latestStackTime))
+                            .collect(Collectors.toList());
+                    BigDecimal amount = calculatePeriodAmount(filteredExchanges, currentAmount);
+                    if(!saving.getSavingType().equals(SavingType.SIMPLE_INTEREST)){
+                        log.info("COMPOUND INTEREST");
+                        amount = amount.divide(BigDecimal.ONE.add(rate), 10, RoundingMode.HALF_UP);
                     } else {
-                        currentAmount = currentAmount.divide(BigDecimal.ONE.add(rate), 10, RoundingMode.HALF_UP);
-                        histories.add(new SavingHistoryDTO(currentAmount.add(exchanges.get(0).getAmount()), stackTimes.pop()));
-
-                        histories.add(new SavingHistoryDTO(currentAmount, exchanges.get(0).getExchangeDate().toLocalDate()));
-                        log.info("Saving - Wallet work");
+                        log.info("SIMPLE INTEREST");
+                        amount = amount.subtract(saving.getOriginAmount().multiply(rate));
                     }
+                    currentAmount = amount;
+                    histories.add(new SavingHistoryDTO(amount, stackTimes.pop()));
+                    filteredExchanges.sort(Comparator.comparing(Exchange::getExchangeDate));
+                    List<Exchange> exchangesToRemove = new ArrayList<>();
+                    for (Exchange exchange : filteredExchanges){
+                        String exchangeType = exchange.getExchangeType().getExchangeTypeId();
+                        if(exchangeType.equals("wallet_saving")){
+                            amount = amount.add(exchange.getAmount());
+                        } else {
+                            amount = amount.subtract(exchange.getAmount());
+                        }
+                        histories.add(new SavingHistoryDTO(amount, exchange.getExchangeDate().toLocalDate()));
+                        exchangesToRemove.add(exchange);
+                    }
+                    exchanges.removeAll(exchangesToRemove);
                 } else {
-                    currentAmount = previousAmount;
-                    log.info("Exchange work");
-                    histories.add(new SavingHistoryDTO(currentAmount, exchanges.get(0).getExchangeDate().toLocalDate()));
+                    List<Exchange> exchangesToRemove = new ArrayList<>();
+                    BigDecimal startAmount = BigDecimal.ZERO;
+                    for (Exchange exchange : exchanges){
+                        String exchangeType = exchange.getExchangeType().getExchangeTypeId();
+                        histories.add(new SavingHistoryDTO(currentAmount, exchange.getExchangeDate().toLocalDate()));
+                        if(exchangeType.equals("wallet_saving")){
+                            currentAmount = currentAmount.subtract(exchange.getAmount());
+                        } else {
+                            currentAmount = currentAmount.add(exchange.getAmount());
+                        }
+//                        histories.add(new SavingHistoryDTO(currentAmount, exchange.getExchangeDate().toLocalDate()));
+                        exchangesToRemove.add(exchange);
+                        startAmount = currentAmount;
+                    }
+                    exchanges.removeAll(exchangesToRemove);
+                    histories.add(new SavingHistoryDTO(startAmount, startDate));
+
                 }
-                exchanges.remove(0);
+
+                // THêm logic cho những exchange chuyển tiền ra ngoài nữa
+//                String exchangeType = exchanges.get(0).getExchangeType().getExchangeTypeId();
+//                BigDecimal previousAmount = exchangeType.equals("wallet_saving") ?
+//                        currentAmount.subtract(exchanges.get(0).getAmount())
+//                        : currentAmount.add(exchanges.get(0).getAmount()) ;
+//                if(!stackTimes.isEmpty()){
+//                    if(exchangeType.equals("wallet_saving")){
+//                        currentAmount = previousAmount.divide(BigDecimal.ONE.add(rate), 10, RoundingMode.HALF_UP);
+//                        log.info("CurrentAmount: " + currentAmount + " And time: " + stackTimes.peek().format(DateTimeFormatter.ofPattern("YYYY-MM-DD")));
+//                        histories.add(new SavingHistoryDTO(currentAmount, stackTimes.pop()));
+//
+//                        log.info("CurrentAmount: " + currentAmount.add(exchanges.get(0).getAmount()) + " And time: " + exchanges.get(0).getExchangeDate().toLocalDate());
+//                        histories.add(new SavingHistoryDTO(currentAmount.add(exchanges.get(0).getAmount()), exchanges.get(0).getExchangeDate().toLocalDate()));
+//                        log.info("Wallet - Saving work");
+//                    } else {
+//                        currentAmount = currentAmount.divide(BigDecimal.ONE.add(rate), 10, RoundingMode.HALF_UP);
+//                        log.info("CurrentAmount: " + currentAmount.subtract(exchanges.get(0).getAmount()) + " And time: " + stackTimes.peek().format(DateTimeFormatter.ofPattern("YYYY-MM-DD")));
+//                        histories.add(new SavingHistoryDTO(currentAmount.subtract(exchanges.get(0).getAmount()), stackTimes.pop()));
+//
+//                        log.info("CurrentAmount: " + currentAmount + " And time: " + exchanges.get(0).getExchangeDate().toLocalDate());
+//                        histories.add(new SavingHistoryDTO(currentAmount, exchanges.get(0).getExchangeDate().toLocalDate()));
+//                        log.info("Saving - Wallet work");
+//                    }
+//                } else {
+//                    currentAmount = previousAmount;
+//                    log.info("Exchange work");
+//                    histories.add(new SavingHistoryDTO(currentAmount, exchanges.get(0).getExchangeDate().toLocalDate()));
+//                }
+//                exchanges.remove(0);
             } else {
+
                 log.info("Stack work");
                 long divider = CalculateTimes.calculatePeriodsBetween(startDate, startDate.plusYears(1), saving.getReceiveInterestTime());
                 BigDecimal rate = (divider > 0) ? saving.getInterestRate().divide(BigDecimal.valueOf(100).multiply(BigDecimal.valueOf(divider)), 10, RoundingMode.HALF_UP) : BigDecimal.ZERO;

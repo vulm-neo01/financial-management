@@ -26,7 +26,7 @@ public class GroupBudget {
 
     @ManyToOne
     @JsonManagedReference
-//    @JsonIgnore
+    @JsonIgnore
     @JoinColumn(name = "group_wallet_id", referencedColumnName = "group_wallet_id")
     private GroupWallet groupWallet;
 
@@ -36,7 +36,7 @@ public class GroupBudget {
 
     @ManyToOne
     @JsonManagedReference
-    @JsonIgnore
+//    @JsonIgnore
     @JoinColumn(name = "created_user_id", referencedColumnName = "user_id")
     private UserInfo createdUser;
 

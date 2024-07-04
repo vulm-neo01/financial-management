@@ -49,8 +49,8 @@ public class GroupBudgetController {
     public ResponseEntity<?> updateGrBudget(@RequestBody GroupBudgetDTO groupBudgetDTO, @PathVariable UUID groupBudgetId) throws IllegalAccessException {
         GroupWallet groupWallet = groupWalletService.getById(groupBudgetDTO.getGroupWalletId());
 
-        GroupBudget groupBudget = groupBudgetService.updateGroupBudget(groupBudgetDTO, groupWallet, groupBudgetId);
-        return ResponseEntity.ok().body(groupBudget);
+        List<GroupBudget> groupBudgets = groupBudgetService.updateGroupBudget(groupBudgetDTO, groupWallet, groupBudgetId);
+        return ResponseEntity.ok().body(groupBudgets);
     }
 
     @PatchMapping("/delete/{groupBudgetId}")

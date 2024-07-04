@@ -1,5 +1,6 @@
 package financialsaver.resourceserver.service.impl;
 
+import financialsaver.resourceserver.entity.UserInfo;
 import financialsaver.resourceserver.service.UserInfoService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -42,6 +43,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
                 .role(GroupRole.ADMIN)
                 .user(groupWallet.getOwner())
                 .wallet(groupWallet)
+                .actionStatus(true)
                 .build();
 
         groupMemberRepo.save(groupMember);
@@ -69,10 +71,32 @@ public class GroupMemberServiceImpl implements GroupMemberService {
             throw new IllegalAccessException("Only Admin can add new member");
         }
 
+//        UserInfo user = userInfoService.getUserById(groupMemberDTO.getUserId());
+        // Get user by username or email
+        UserInfo user = userInfoService.getUserByUsernameOrEmail(groupMemberDTO.getUserId());
+
+        // Check if user is null
+        if (user == null) {
+            log.info("User not found for identifier: " + groupMemberDTO.getUserId());
+            return null; // or throw an exception if preferred
+        }
+
+        List<GroupMember> groupMemberList = findAllByGroupWalletId(groupWallet.getGroupWalletId());
+        // Check if the user is already a member of the group
+        for (GroupMember existingMember : groupMemberList) {
+            if (existingMember.getUser().getUserId().equals(user.getUserId())) {
+                // If the user is already a member, update the action status and save
+                existingMember.setActionStatus(true);
+                existingMember.setRole(groupMemberDTO.getRole());
+                groupMemberRepo.save(existingMember);
+                return findAllByGroupWalletId(groupWallet.getGroupWalletId());
+            }
+        }
+
         GroupMember groupMember = GroupMember.builder()
                 .wallet(groupWallet)
                 .groupMemberId(UUID.randomUUID())
-                .user(userInfoService.getUserById(groupMemberDTO.getUserId()))
+                .user(user)
                 .role(groupMemberDTO.getRole())
                 .joinedAt(new Date())
                 .actionStatus(true)
@@ -89,7 +113,11 @@ public class GroupMemberServiceImpl implements GroupMemberService {
         }
 
         GroupMember groupMember = findById(groupMemberId);
-        groupMember.setRole(groupMemberDTO.getRole());
+        if(groupMember.getRole().equals(GroupRole.MEMBER)){
+            groupMember.setRole(GroupRole.ADMIN);
+        } else {
+            groupMember.setRole(GroupRole.MEMBER);
+        }
         groupMemberRepo.save(groupMember);
         return findAllByGroupWalletId(groupMemberDTO.getGroupWalletId());
     }
@@ -111,5 +139,10 @@ public class GroupMemberServiceImpl implements GroupMemberService {
         return groupMemberRepo.findAllByUser_UserId(userId).stream().filter(
                 groupMember -> groupMember.getActionStatus().equals(true)
         ).collect(Collectors.toList());
+    }
+
+    @Override
+    public Boolean checkIsAdmin(String userId, UUID groupWalletId) {
+        return IsAdminOfGroupWallet(userId, groupWalletId);
     }
 }

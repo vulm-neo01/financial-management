@@ -58,6 +58,17 @@ function SavingDetailScreen() {
 
     const handleUpdateSaving = (updatedSaving) => {
         setSaving(updatedSaving);
+        request('get', `/exchanges/saving/${savingId}`, (res) => {
+            // console.log(res.data);
+            setExchanges(res.data);
+        });
+        request('get', `/exchanges/saving-history/${savingId}`, (res) => {
+            const transformedData = res.data.map(item => ({
+                ...item,
+                date: new Date(item.exchangeDate).toLocaleDateString('vi-VN')
+            }));
+            setExchangesHistory(transformedData);
+        });
     }
 
     const handlePeriodChange = (event, newValue) => {
@@ -166,7 +177,11 @@ function SavingDetailScreen() {
         });
         request('get', `/exchanges/saving-history/${savingId}`, (res) => {
             console.log(res.data);
-            setExchangesHistory(res.data);
+            const transformedData = res.data.map(item => ({
+                ...item,
+                date: new Date(item.exchangeDate).toLocaleDateString('vi-VN')
+            }));
+            setExchangesHistory(transformedData);
         });
     }, [savingId]);
 
@@ -176,7 +191,7 @@ function SavingDetailScreen() {
                 saving 
                 && 
                 <Box sx={{ display: 'flex', maxHeight: '100vh' }}>
-                    <Box sx={{ backgroundColor: `${saving.color && saving.color.colorId}`, width: '25%', padding: 2, borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <Box sx={{ backgroundColor: `${saving.color && saving.color.colorId}`, width: '25%', padding: 2, borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderRadius: '12px'  }}>
                         <Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                                 <IconButton onClick={() => history.push("/savings")}>
@@ -294,7 +309,7 @@ function SavingDetailScreen() {
                         <Card sx={{ mb: 2 }}>
                             <CardContent>
                                 <Typography variant="h6">Biểu đồ tiết kiệm</Typography>
-                                <SavingGraph savingId={savingId} targetAmount={saving.targetAmount}/>
+                                <SavingGraph history={exchangesHistory} targetAmount={saving.targetAmount}/>
                             </CardContent>
                         </Card>
 

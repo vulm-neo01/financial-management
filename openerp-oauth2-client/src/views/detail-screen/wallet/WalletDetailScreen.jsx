@@ -5,9 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
-import { Box, Typography, Grid, Tabs, Tab, Card, CardContent, Divider } from '@mui/material';
-import { useTheme } from "@mui/material/styles";
-import { makeStyles } from "@mui/styles";
+import { Box, Typography, Grid, Tabs, Tab, Card, CardContent, Divider, Button } from '@mui/material';
 import { Menu, MenuItem } from '@mui/material';
 import WalletRoundedIcon from '@mui/icons-material/WalletRounded';
 import UpdateWalletModal from "components/modal/UpdateWalletModal";
@@ -15,6 +13,8 @@ import ConfirmationModal from "components/modal/ConfirmationModal";
 import {formatDate, formatDateTime} from "utils/formatDate";
 import { groupExchangesByTime } from "utils/groupExchangesByTime";
 import WalletGraph from "components/chart/WalletGraph";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import '../../css/WalletDetail.css'
 
 function WalletDetailScreen() {
     const [wallet, setWallet] = useState(null);
@@ -86,58 +86,6 @@ function WalletDetailScreen() {
         }).then();
     }, []);
     
-    const useStyles = makeStyles((theme) => ({
-        cardContainer: {
-            display: "flex",
-            justifyContent: "center",
-        },
-        card: {
-            marginTop: theme.spacing(2),
-            backgroundColor: wallet?.color?.hexCode || defaultColor, // Sử dụng màu nền từ dữ liệu ví
-            width: "60%",
-        },
-        logo: {
-            borderRadius: "20%",
-            background: "rgba(255, 255, 255, 0.9)", // Màu trắng nhẹ cho nền logo
-            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)", // Hiệu ứng bóng cho logo
-            padding: theme.spacing(2), // Thêm một số khoảng trắng xung quanh logo
-            width: "100px",
-            height: "100px",
-            margin: "0 auto",
-            display: "block",
-            marginTop: theme.spacing(1),
-            border: "2px solid white", // Thêm viền màu trắng
-        },
-        title: {
-            fontWeight: "bold",
-            color: theme.palette.text.primary,
-            textAlign: "center",
-            marginBottom: theme.spacing(2),
-        },
-        info: {
-            padding: theme.spacing(2),
-        },
-        infoRow: {
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: theme.spacing(1),
-        },
-        infoLabel: {
-            fontWeight: "bold",
-            marginLeft: theme.spacing(10),
-            marginRight: theme.spacing(1),
-            minWidth: "150px", // Đặt chiều rộng tối thiểu cho nhãn thông tin
-        },
-        infoValue: {
-            marginLeft: theme.spacing(1),
-            marginRight: theme.spacing(10),
-            minWidth: "150px", // Đặt chiều rộng tối thiểu cho nhãn thông tin
-            textAlign: "right",
-        },
-    }));
-    const theme = useTheme();
-    const classes = useStyles();
-    
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -191,193 +139,169 @@ function WalletDetailScreen() {
     const exchangesByTime = groupExchangesByTime(filteredExchanges);
 
     return (
-        <Box sx={{ flex: 1 }}>
-            <Typography variant="h4" align="center" sx={{ fontWeight: 'bold'}}>
-                Wallet Detail Information
-            </Typography>
-            <Divider variant="middle" sx={{ margin: '0 auto', width: '50%', backgroundColor: wallet?.color?.hexCode || defaultColor }} />
-            {wallet && (
-                <>
-                    <div className={classes.cardContainer}>
-                        <Card className={classes.card}>
-                            {wallet.logo && wallet.logo.url && (
-                                <img src={wallet.logo.url} alt="logo" className={classes.logo} />
-                            )}
-                            <Typography variant="h4" component="h1" className={classes.title}>
-                            {wallet.name}
-                            </Typography>
-                            <Typography variant="h5" component="h1" className={classes.title}>
-                            Số dư: {wallet.amount.toLocaleString()} {localStorage.getItem("currency")}
-                            </Typography>
-                            {/* <div className={classes.infoRow}>
-                                <span className={classes.infoLabel}>Số tiền:</span>
-                                <span className={classes.infoValue}>
-                                    {wallet.amount} {localStorage.getItem("currency")}
-                                </span>
-                            </div> */}
-                            <CardContent className={classes.info}>
-                            <div className={classes.infoRow}>
-                                <span className={classes.infoLabel}>Tên người sở hữu:</span>
-                                <span className={classes.infoValue}>
-                                    {wallet.user && `${wallet.user.firstName} ${wallet.user.lastName}`}
-                                </span>
+            <Box sx={{ display: 'flex', height: '80vh' }}>
+                {wallet && 
+                    <Box sx={{ backgroundColor: `${wallet.color && wallet.color.colorId}`, width: '25%', padding: 2, borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderRadius: '12px' }}>
+                        <Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                                <IconButton onClick={() => history.push("/wallets")}>
+                                    <ArrowBackIcon />
+                                </IconButton>
+                                <Typography variant="h5" sx={{ flexGrow: 1 }}>{wallet.name}</Typography>
+                            </Box>
+                            <div className="wallet-detail">
+                                <Box className="info" sx={{ textAlign: 'center', mt: 2 }}>
+                                    <img src={wallet.logo.url} alt={wallet.name} style={{ width: '50%', marginBottom: 16 }} />
+                                    <Typography className="field" variant="h6">
+                                        <label>
+                                            Số dư: 
+                                        </label>
+                                        {wallet.amount.toLocaleString()} {localStorage.getItem("currency")}
+                                    </Typography>
+                                    <Typography className="field" variant="body1">
+                                        <label>
+                                            Loại ví: 
+                                        </label>
+                                        {typeLabels[wallet.type]}
+                                    </Typography>
+                                    <Typography className="field" variant="body1">
+                                        <label>
+                                            Email: 
+                                        </label>
+                                        {wallet.user && wallet.user.email}
+                                    </Typography>
+                                    <Typography className="field" variant="body1">
+                                        <label>
+                                            Mô tả: 
+                                        </label>
+                                        {wallet.description}
+                                    </Typography>
+                                    <Typography className="field" variant="body1">
+                                        <label>
+                                            Ngày tạo: 
+                                        </label>
+                                        {formatDate(wallet.createdAt)}
+                                    </Typography>
+                                    <Typography className="field" variant="body1">
+                                        <label>
+                                            Ngày cập nhật: 
+                                        </label>
+                                        {formatDate(wallet.updatedAt)}
+                                    </Typography>
+                                    
+                                </Box>
                             </div>
-                            <div className={classes.infoRow}>
-                                <span className={classes.infoLabel}>Email:</span>
-                                <span className={classes.infoValue}>
-                                    {wallet.user && wallet.user.email}
-                                </span>
-                            </div>
-                            <div className={classes.infoRow}>
-                                <span className={classes.infoLabel}>Loại ví:</span>
-                                <span className={classes.infoValue}>
-                                    {typeLabels[wallet.type]}
-                                </span>
-                            </div>
-                            <div className={classes.infoRow}>
-                                <span className={classes.infoLabel}>Miêu tả chi tiết:</span>
-                                <span className={classes.infoValue}>
-                                    {wallet.description}
-                                </span>
-                            </div>
-                            <div className={classes.infoRow}>
-                                <span className={classes.infoLabel}>Created At:</span>
-                                <span className={classes.infoValue}>
-                                    {formatDateTime(wallet.createdAt)}
-                                </span>
-                            </div>
-                            <div className={classes.infoRow}>
-                                <span className={classes.infoLabel}>Updated At:</span>
-                                <span className={classes.infoValue}>
-                                    {formatDateTime(wallet.updatedAt)}
-                                </span>
-                            </div>
-                            </CardContent>
-                        </Card>
-                    </div>
-                    <Tabs value={period} onChange={handlePeriodChange} centered>
-                        <Tab label="All" value="all" />
-                        <Tab label="This Year" value="year" />
-                        <Tab label="This Month" value="month" />
-                        <Tab label="This Week" value="week" />
-                    </Tabs>
-                    <Box sx={{ marginTop: theme.spacing(2), display: 'flex', maxHeight: '60vh', overflowY: 'auto', }}>
-                        {/* <Typography variant="h5" gutterBottom style={{ marginTop: theme.spacing(3), marginLeft: theme.spacing(2), alignItems: 'center'}}>
-                            Exchange History
-                        </Typography> */}
-                        {filteredExchanges && filteredExchanges.length > 0 ? 
-                        <Grid container spacing={2} item xs={6} justifyContent="center" alignItems="center" key={exchanges.exchangeId}>
-                            {
-                                Object.entries(exchangesByTime).map(([label, exchangesInTime]) => (
-                                    <>  
-                                        {exchangesInTime && exchangesInTime.length > 0 &&
-                                            <Typography variant="h6" gutterBottom style={{ marginTop: theme.spacing(3), alignItems: 'center'}}>
-                                                {label}
-                                            </Typography>            
-                                        }
-                                        {exchangesInTime.map((exchange) => (
-                                            <Grid item xs={12} key={exchange.exchangeId}>
-                                                <Card
-                                                    onClick={() => handleCardClick(exchange.exchangeId)} 
-                                                    style={{ cursor: 'pointer', transition: 'background-color 0.3s' }}
-                                                    sx={{ '&:hover': { backgroundColor: '#f0f0f0' } }}
-                                                    key={exchange.exchangeId}
-                                                >
-                                                    <CardContent>
-                                                        <Grid container spacing={2}>
-                                                            {/* Cột thứ nhất */}
-                                                            <Grid item xs={6}>
-                                                                <Typography variant="h5" component="h2">
-                                                                    {exchange.exchangeType.exchangeTypeName}
-                                                                </Typography>
-                                                                <Typography variant="body1" color="textSecondary" gutterBottom>
-                                                                    From: {exchange.from}
-                                                                </Typography>
-                                                                <Typography variant="body1" color="textSecondary" gutterBottom>
-                                                                    To: {exchange.to}
-                                                                </Typography>
-                                                            </Grid>
-
-                                                            {/* Cột thứ hai */}
-                                                            <Grid item xs={6}>
-                                                                <Typography variant="h6" component="h2">
-                                                                    Amount: {exchange.amount.toLocaleString()} {localStorage.getItem("currency")}
-                                                                </Typography>
-                                                                <Typography variant="body1" color="textSecondary" gutterBottom>
-                                                                    Happen Time: {formatDate(exchange.exchangeDate)}
-                                                                </Typography>
-                                                                {/* Thêm các thông tin khác của giao dịch nếu cần */}
-                                                            </Grid>
-                                                        </Grid>
-                                                    </CardContent>
-                                                    {/* Đường viền màu */}
-                                                    <div style={{
-                                                        height: '5px',
-                                                        width: '100%',
-                                                        backgroundColor: exchange.exchangeType.exchangeTypeId === 'wallet_wallet' ? '#106BB6' :
-                                                                        exchange.exchangeType.exchangeTypeId === 'income' ? '#008000' :
-                                                                        exchange.exchangeType.exchangeTypeId === 'spend' ? '#FF0000' :
-                                                                        exchange.exchangeType.exchangeTypeId === 'wallet_saving' || exchange.exchangeType.exchangeTypeId === 'saving_wallet' ? '#FFD700' :
-                                                                        exchange.exchangeType.exchangeTypeId === 'wallet_debt' || exchange.exchangeType.exchangeTypeId === 'debt_wallet' ? '#D8BFD8' :
-                                                                        exchange.exchangeType.exchangeTypeId === 'wallet_loan' || exchange.exchangeType.exchangeTypeId === 'loan_wallet' ? '#000000' : 'transparent'
-                                                    }} />
-                                                </Card>
-                                            </Grid>
-                                        ))}
-                                    </>
-                                ))
-                            }
-                        </Grid>
-                        : 
-                            <Typography variant="h6" gutterBottom style={{ marginTop: theme.spacing(3), marginLeft: theme.spacing(2), alignItems: 'center'}}>
-                                Nothing to Show here, create your first Exchange!
-                            </Typography>
-                        }
-
-                        <div style={{ width: theme.spacing(4) }} />  
-
-                        {/* Phần Graph */}
-                        {filteredExchanges && filteredExchanges.length > 0 && 
-                        <WalletGraph exchanges={filteredExchanges} currentBalance={wallet.amount} walletId={walletId} createAt={wallet.createdAt}/>
-                        }
+                        </Box>
+                        <Box sx={{ textAlign: 'center', mb: 2 }}>
+                            <Button
+                                onClick={handleOpenUpdateWalletDialog}
+                                variant="contained"
+                                color="primary"
+                                startIcon={<EditIcon />}
+                                sx={{ m: 1, minWidth: 120 }}
+                            >
+                                Edit
+                            </Button>
+                            <Button
+                                onClick={handleClickOpenModalDelete}
+                                variant="contained"
+                                color="error"
+                                startIcon={<DeleteIcon />}
+                                sx={{ m: 1, minWidth: 120 }}
+                            >
+                                Delete
+                            </Button>
+                        </Box>
                     </Box>
-                </>
-            )}
-            <div style={{ position: 'fixed', bottom: 40, right: 40 }}>
-                <IconButton
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={handleClick}
-                    aria-label="add"
-                    color="primary"
-                    size="large"
-                    style={{ backgroundColor: '#BDDAFE ', fontSize: '4rem' }} // Điều chỉnh kích thước
-                >
-                    <WalletRoundedIcon fontSize="150%"/>
-                </IconButton>
-                <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: 'top', // Chỉnh sửa dòng này
-                        horizontal: 'top',
-                    }}
-                    transformOrigin={{
-                        vertical: 'bottom', // Chỉnh sửa dòng này
-                        horizontal: 'right',
-                    }}
-                >
-                    <MenuItem onClick={handleClickOpenModalDelete} style={{ fontSize: '1.4rem', color: 'red' }}>
-                        <DeleteIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Delete
-                    </MenuItem>
-                    <MenuItem onClick={handleOpenUpdateWalletDialog} style={{ fontSize: '1.4rem', color: 'blue' }}>
-                        <EditIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Edit
-                    </MenuItem>
-                </Menu>
-            </div>
+                }
+                <Box sx={{width: '75%', paddingLeft: 2, paddingRight: 2}}>
+                    {wallet && (
+                        <>
+                            <Tabs value={period} onChange={handlePeriodChange} centered>
+                                <Tab label="All" value="all" />
+                                <Tab label="This Year" value="year" />
+                                <Tab label="This Month" value="month" />
+                                <Tab label="This Week" value="week" />
+                            </Tabs>
+                            {/* Phần Graph */}
+                            {filteredExchanges && filteredExchanges.length > 0 && 
+                                <WalletGraph exchanges={filteredExchanges} currentBalance={wallet.amount} walletId={walletId} createAt={wallet.createdAt}/>
+                            }
+                            <Divider />
+                            
+                            <Box sx={{ display: 'flex',justifyContent: 'center', maxHeight: '80vh', overflowY: 'auto', }}>
+                                {filteredExchanges && filteredExchanges.length > 0 ? 
+                                <Grid container spacing={2} item xs={10} justifyContent="center" alignItems="center" key={exchanges.exchangeId}>
+                                    {
+                                        Object.entries(exchangesByTime).map(([label, exchangesInTime]) => (
+                                            <>  
+                                                {exchangesInTime && exchangesInTime.length > 0 &&
+                                                    <Typography variant="h6" gutterBottom style={{marginTop: '24px', alignItems: 'center'}}>
+                                                        {label}
+                                                    </Typography>            
+                                                }
+                                                {exchangesInTime.map((exchange) => (
+                                                    <Grid item xs={12} key={exchange.exchangeId}>
+                                                        <Card
+                                                            onClick={() => handleCardClick(exchange.exchangeId)} 
+                                                            style={{ cursor: 'pointer', transition: 'background-color 0.3s' }}
+                                                            sx={{ '&:hover': { backgroundColor: '#f0f0f0' } }}
+                                                            key={exchange.exchangeId}
+                                                        >
+                                                            <CardContent>
+                                                                <Grid container spacing={2}>
+                                                                    {/* Cột thứ nhất */}
+                                                                    <Grid item xs={6}>
+                                                                        <Typography variant="h5" component="h2">
+                                                                            {exchange.exchangeType.exchangeTypeName}
+                                                                        </Typography>
+                                                                        <Typography variant="body1" color="textSecondary" gutterBottom>
+                                                                            <strong>Từ:</strong> {exchange.from}
+                                                                        </Typography>
+                                                                        <Typography variant="body1" color="textSecondary" gutterBottom>
+                                                                            <strong>Đến:</strong> {exchange.to}
+                                                                        </Typography>
+                                                                    </Grid>
+
+                                                                    {/* Cột thứ hai */}
+                                                                    <Grid item xs={6}>
+                                                                        <Typography variant="h6" component="h2">
+                                                                            Số tiền: {exchange.amount.toLocaleString()} {localStorage.getItem("currency")}
+                                                                        </Typography>
+                                                                        <Typography variant="body1" color="textSecondary" gutterBottom>
+                                                                            <strong>Thời gian:</strong> {formatDate(exchange.exchangeDate)}
+                                                                        </Typography>
+                                                                        {/* Thêm các thông tin khác của giao dịch nếu cần */}
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </CardContent>
+                                                            {/* Đường viền màu */}
+                                                            <div style={{
+                                                                height: '3px',
+                                                                width: '100%',
+                                                                backgroundColor: exchange.exchangeType.exchangeTypeId === 'wallet_wallet' ? '#106BB6' :
+                                                                                exchange.exchangeType.exchangeTypeId === 'income' ? '#008000' :
+                                                                                exchange.exchangeType.exchangeTypeId === 'spend' ? '#FF0000' :
+                                                                                exchange.exchangeType.exchangeTypeId === 'wallet_saving' || exchange.exchangeType.exchangeTypeId === 'saving_wallet' ? '#FFD700' :
+                                                                                exchange.exchangeType.exchangeTypeId === 'wallet_debt' || exchange.exchangeType.exchangeTypeId === 'debt_wallet' ? '#D8BFD8' :
+                                                                                exchange.exchangeType.exchangeTypeId === 'wallet_loan' || exchange.exchangeType.exchangeTypeId === 'loan_wallet' ? '#000000' : 'transparent'
+                                                            }} />
+                                                        </Card>
+                                                    </Grid>
+                                                ))}
+                                            </>
+                                        ))
+                                    }
+                                </Grid>
+                                : 
+                                    <Typography variant="h6" gutterBottom style={{ marginTop: '8px', alignItems: 'center'}}>
+                                        Nothing to Show here, create your first Exchange!
+                                    </Typography>
+                                }
+                            </Box>
+                        </>
+                    )}
+                </Box>
             {updateWallet ? 
                 <UpdateWalletModal onUpdateWallet={handleUpdateWalletData} open={updateWallet} onClose={handleCloseUpdateWalletDialog} walletId={walletId}/>
                 : null

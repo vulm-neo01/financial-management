@@ -1,0 +1,77 @@
+/* OverviewGroupWallet.css */
+.add-group-wallet-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    text-align: center;
+
+    background-color: #fff;
+    padding: 12px;
+    width: 400px;   
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 8px;
+}
+
+.overview-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 12px;
+    width: 400px;   
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 16px;
+}
+
+.add-group-wallet-button:hover {
+    background-color: #e4e4e4;
+}
+
+.gr-wallet-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.modal-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    margin: 100px auto;
+}
+
+/* GroupWalletCard.css */
+.overview-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    background-color: #fff;
+}
+
+.overview-logo-name {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.overview-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.owner-indicator {
+    color: gold;
+    margin-left: 8px;
+}

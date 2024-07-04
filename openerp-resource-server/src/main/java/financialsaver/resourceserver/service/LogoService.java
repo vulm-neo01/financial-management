@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface LogoService {
 
-    List<Logo> getAllLogos(String type);
+    List<Logo> getAllLogosByType(String type);
 
     List<Logo> getListPredefinedLogo();
 
     Logo getLogoById(String id);
+
+    List<Logo> getAllLogos();
 }

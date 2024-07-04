@@ -1,6 +1,10 @@
 package financialsaver.resourceserver.service;
 
 import financialsaver.resourceserver.dto.GroupExchangeDTO;
+import financialsaver.resourceserver.dto.request.BudgetGroupGraphRequest;
+import financialsaver.resourceserver.dto.response.BudgetComparisonResult;
+import financialsaver.resourceserver.dto.response.BudgetGraphResponse;
+import financialsaver.resourceserver.dto.response.OverviewGroupExchangeBudget;
 import financialsaver.resourceserver.entity.group.GroupExchange;
 import financialsaver.resourceserver.entity.group.GroupWallet;
 
@@ -19,4 +23,10 @@ public interface GroupExchangeService {
     List<GroupExchange> updateExchange(GroupExchangeDTO groupExchangeDTO, GroupWallet groupWallet, UUID groupExchangeId);
 
     List<GroupExchange> deleteExchange(UUID groupExchangeId);
+
+    List<BudgetComparisonResult> getTotalAmountByBudget(UUID groupWalletId);
+
+    List<OverviewGroupExchangeBudget> getExchangeBudgetChanges(UUID groupWalletId);
+
+    List<BudgetGraphResponse> getBudgetExchangesDataGraph(BudgetGroupGraphRequest request);
 }

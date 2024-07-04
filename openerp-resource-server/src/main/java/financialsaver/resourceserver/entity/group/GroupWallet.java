@@ -28,7 +28,7 @@ public class GroupWallet {
     private UUID groupWalletId;
 
     @ManyToOne
-    @JsonIgnore
+//    @JsonIgnore
     @JsonManagedReference
     @JoinColumn(name = "owner_id", referencedColumnName = "user_id")
     private UserInfo owner;

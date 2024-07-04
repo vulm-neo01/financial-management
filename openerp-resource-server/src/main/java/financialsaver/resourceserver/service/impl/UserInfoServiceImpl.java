@@ -42,4 +42,13 @@ public class UserInfoServiceImpl implements UserInfoService {
     public UserInfo getUserInfo(String username) {
         return userInfoRepository.findByUsername(username);
     }
+
+    @Override
+    public UserInfo getUserByUsernameOrEmail(String identifier) {
+        UserInfo user = userInfoRepository.findByUsername(identifier);
+        if (user == null) {
+            user = userInfoRepository.findByEmail(identifier);
+        }
+        return user;
+    }
 }

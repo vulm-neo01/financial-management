@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { request } from 'api';
 
-const SavingGraph = ({savingId, targetAmount}) => {
-    const [history, setHistory] = useState([]);
+const SavingGraph = ({history, targetAmount}) => {
+    // const [history, setHistory] = useState([]);
 
-    useEffect(() => {
-        request('get', `/exchanges/saving-history/${savingId}`, (res) => {
-            const transformedData = res.data.map(item => ({
-                ...item,
-                date: new Date(item.exchangeDate).toLocaleDateString('vi-VN')
-            }));
-            setHistory(transformedData);
-        });
-    }, [savingId]);
+    // useEffect(() => {
+    //     request('get', `/exchanges/saving-history/${savingId}`, (res) => {
+    //         console.log(res.data);
+            // const transformedData = res.data.map(item => ({
+            //     ...item,
+            //     date: new Date(item.exchangeDate).toLocaleDateString('vi-VN')
+            // }));
+    //         setHistory(transformedData);
+    //     });
+    // }, []);
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);

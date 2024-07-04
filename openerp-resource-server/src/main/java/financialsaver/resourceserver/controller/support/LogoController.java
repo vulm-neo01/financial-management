@@ -20,7 +20,13 @@ public class LogoController {
 
     @GetMapping("/{type}")
     public ResponseEntity<?> getAllLogoByType(@PathVariable String type){
-        List<Logo> logos = logoService.getAllLogos(type);
+        List<Logo> logos = logoService.getAllLogosByType(type);
+        return ResponseEntity.ok().body(logos);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllLogo(){
+        List<Logo> logos = logoService.getAllLogos();
         return ResponseEntity.ok().body(logos);
     }
 }

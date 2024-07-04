@@ -12,4 +12,6 @@ public interface UserInfoService {
     UserInfo createNewUserInfo(UserInfo userInfo);
 
     UserInfo getUserInfo(String username);
+
+    UserInfo getUserByUsernameOrEmail(String identifier);
 }

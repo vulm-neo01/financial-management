@@ -18,7 +18,7 @@ public class LogoServiceImpl implements LogoService {
 
     private LogoRepo logoRepo;
     @Override
-    public List<Logo> getAllLogos(String type) {
+    public List<Logo> getAllLogosByType(String type) {
         List<Logo> logos = logoRepo.findAllByType(type);
         return logos;
     }
@@ -42,5 +42,10 @@ public class LogoServiceImpl implements LogoService {
     @Override
     public Logo getLogoById(String id) {
         return logoRepo.findById(id).orElseThrow(IllegalArgumentException::new);
+    }
+
+    @Override
+    public List<Logo> getAllLogos() {
+        return logoRepo.findAll();
     }
 }

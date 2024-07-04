@@ -193,7 +193,7 @@ function AllExchangeScreen() {
   const filteredExchanges =
     selectedExchangeType === "all"
       ? exchanges
-      : exchanges.filter((exchange) => exchange.exchangeType.exchangeTypeId === selectedExchangeType);
+      : exchanges.filter((exchange) => exchange.exchangeType && exchange.exchangeType.exchangeTypeId === selectedExchangeType);
 
   const columns = [
   {
@@ -342,7 +342,7 @@ function AllExchangeScreen() {
         <StandardTable
           title="Spend Exchanges"
           columns={columns}
-          data={filteredExchanges.filter(exchange => exchange.exchangeType.exchangeTypeId === "spend")}
+          data={filteredExchanges.filter(exchange => exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "spend")}
           options={{
             selection: false,
             pageSize: 20,
@@ -355,7 +355,7 @@ function AllExchangeScreen() {
         <StandardTable
           title="Income Exchanges"
           columns={columns}
-          data={filteredExchanges.filter(exchange => exchange.exchangeType.exchangeTypeId === "income")}
+          data={filteredExchanges.filter(exchange => exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "income")}
           options={{
             selection: false,
             pageSize: 20,
@@ -368,7 +368,7 @@ function AllExchangeScreen() {
         <StandardTable
           title="Wallet To Wallet Exchanges"
           columns={columns}
-          data={filteredExchanges.filter(exchange => exchange.exchangeType.exchangeTypeId === "wallet_wallet")}
+          data={filteredExchanges.filter(exchange => exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "wallet_wallet")}
           options={{
             selection: false,
             pageSize: 20,
@@ -382,8 +382,8 @@ function AllExchangeScreen() {
         <StandardTable
           title="Saving Exchanges"
           columns={columns}
-          data={filteredExchanges.filter(exchange => exchange.exchangeType.exchangeTypeId === "wallet_saving" 
-          || exchange.exchangeType.exchangeTypeId === "saving_wallet")}
+          data={filteredExchanges.filter(exchange => exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "wallet_saving" 
+          || exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "saving_wallet")}
           options={{
             selection: false,
             pageSize: 20,
@@ -396,9 +396,9 @@ function AllExchangeScreen() {
         <StandardTable
           title="Saving Exchanges"
           columns={columns}
-          data={filteredExchanges.filter(exchange => exchange.exchangeType.exchangeTypeId === "wallet_loan" 
-          || exchange.exchangeType.exchangeTypeId === "loan_wallet" || exchange.exchangeType.exchangeTypeId === "debt_wallet"
-          || exchange.exchangeType.exchangeTypeId === "wallet_debt")}
+          data={filteredExchanges.filter(exchange => exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "wallet_loan" 
+          || exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "loan_wallet" || exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "debt_wallet"
+          || exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "wallet_debt")}
           options={{
             selection: false,
             pageSize: 20,

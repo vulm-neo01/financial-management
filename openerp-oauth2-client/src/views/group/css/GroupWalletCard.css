@@ -1,0 +1,82 @@
+.overview-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 12px;
+    width: 400px;   
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 8px;
+}
+
+.overview-card:hover{
+    cursor: pointer;
+    background-color: #eaeaea;
+}
+
+.overview-logo-name {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.overview-logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.overview-timeline {
+    margin-top: 10px;
+}
+
+.timeline-income-bar {
+    background-color: #bae5e2;
+    height: 20px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-bar {
+    background-color: #edc4c4;
+    height: 20px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.spent-income-bar {
+    background-color: #62b9b2;
+    height: 100%;
+    border-radius: 10px 0 0 10px;
+}
+
+.spent-bar {
+    background-color: #fb7575;
+    height: 100%;
+    border-radius: 10px 0 0 10px;
+}
+
+.timeline-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #555;
+}
+
+.time-period {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.add-card-button {
+    margin: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}

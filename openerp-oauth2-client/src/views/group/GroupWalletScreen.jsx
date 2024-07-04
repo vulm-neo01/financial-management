@@ -4,108 +4,55 @@ import { StandardTable } from "erp-hust/lib/StandardTable";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Typography, Modal, Box, Button } from "@mui/material";
+import './css/OverviewGroupWallet.css';
+import GroupWalletCard from "./GroupWalletCard";
+import AddIcon from "@mui/icons-material/Add";
+import GroupWalletCreateModal from "components/modal/GroupWalletCreateModal";
+import AddWallet from "views/detail-screen/wallet/AddWallet";
 
 function GroupWalletScreen() {
 
-    const [users, setUsers] = useState([]);
+    const [groupWallets, setGroupWallets] = useState([]);
+    const userId = localStorage.getItem('userId');
+    const [openAddModal, setOpenAddModal] = useState(false);
 
     useEffect(() => {
-        request("get", "/wallet/user/aaaaaaaaaakkkkkkkkkeeeeeeeeeeeeeaaaaaaaaaa", (res) => {
+        request("get", `/group/wallets/all/${userId}`, (res) => {
             console.log(res.data);
-            setUsers(res.data);
+            setGroupWallets(res.data);
         }).then();
-    }, [])
+    }, [groupWallets.length])
 
-    // const user_info = user
+    const handleOpenAddGroupWalletModal = () => {
+        setOpenAddModal(true);
+    };
 
-    const columns = [
-        {
-            title: "Wallet",
-            field: "walletId",
-        },
-        {
-            title: "Username",
-            // render: (row) => row.user.user.id,
-            // field: "user?.user?.id",    
-            render: (rowData) => {
-                const nestedUser = rowData.user?.user;
-                return nestedUser ? nestedUser.id : null; // Return null or handle missing nestedUser appropriately
-            },
-        },
-        {
-            title: "Wallet Type",
-            field: "type",
-        },
-        {
-            title: "Name",
-            field: "name",
-        },
-        {
-            title: "Amount",
-            field: "amount",
-        },
-        {
-            title: "Currency",
-            field: "currency.code",
-        },
-        // {
-        //     title: "User",
-        //     field: "id",
-        // },
-        // {
-        //     title: "Creation time",
-        //     field: "createdOn",
-        // },
-        {
-            title: "Edit",
-            sorting: false,
-            render: (rowData) => (
-                <IconButton
-                    onClick={() => {
-                        demoFunction(rowData)
-                    }}
-                    variant="contained"
-                    color="success"
-                >
-                    <EditIcon/>
-                </IconButton>
-            ),
-        },
-        {
-            title: "Delete",
-            sorting: false,
-            render: (rowData) => (
-                <IconButton
-                    onClick={() => {
-                        demoFunction(rowData)
-                    }}
-                    variant="contained"
-                    color="error"
-                >
-                    <DeleteIcon/>
-                </IconButton>
-            ),
-        },
-    ];
+    const handleCloseAddGroupWalletModal = () => {
+        setOpenAddModal(false);
+    };
 
-    const demoFunction = (user) => {
-        alert("You clicked on User: " + user.id)
+    const handleUpdateWalletData = (updatedWallets) => {
+        setGroupWallets(updatedWallets);
     }
 
     return (
         <div>
-            <StandardTable
-                title="User List"
-                columns={columns}
-                data={users}
-                // hideCommandBar
-                options={{
-                    selection: false,
-                    pageSize: 20,
-                    search: true,
-                    sorting: true,
-                }}
-            />
+            <Typography variant="h4" gutterBottom>
+                Group Wallets
+            </Typography>
+            <div className="overview-group-wallets">
+                <div className="gr-wallet-cards">
+                    <div className="add-group-wallet-button" onClick={handleOpenAddGroupWalletModal}>
+                        <AddIcon />
+                        <Typography variant="h6">Add Group Wallet</Typography>
+                    </div>
+                    {groupWallets.map(groupWallet => (
+                        <GroupWalletCard key={groupWallet.groupWalletId} groupWallet={groupWallet} userId={userId} />
+                    ))}
+                </div>
+            </div>
+            <GroupWalletCreateModal onCreateWallet={handleUpdateWalletData} open={openAddModal} onClose={handleCloseAddGroupWalletModal} />
         </div>
 
     );

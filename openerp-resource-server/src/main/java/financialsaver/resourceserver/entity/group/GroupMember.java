@@ -27,12 +27,13 @@ public class GroupMember {
 
     @ManyToOne
     @JsonManagedReference
+    @JsonIgnore
     @JoinColumn(name = "group_wallet_id", referencedColumnName = "group_wallet_id")
     private GroupWallet wallet;
 
     @ManyToOne
     @JsonManagedReference
-    @JsonIgnore
+//    @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserInfo user;
 

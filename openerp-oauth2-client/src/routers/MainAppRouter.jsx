@@ -24,6 +24,7 @@ import Dashboard from "views/DashBoardScreen";
 import LoanDebtDetailScreen from "views/detail-screen/loan-debt/LoanDetailScreen";
 import LoanDetailScreen from "views/detail-screen/loan-debt/LoanDetailScreen";
 import DebtDetailScreen from "views/detail-screen/loan-debt/DebtDetailScreen";
+import GroupWalletOverview from "views/group/GroupWalletOverview";
 
 const styles = {
   loadingProgress: {
@@ -69,6 +70,7 @@ function MainAppRouter(props) {
             <PrivateRoute component={LoanDetailScreen} exact path="/loan/:loanId" />
             <PrivateRoute component={DebtDetailScreen} exact path="/debt/:debtId" />
             <PrivateRoute component={GroupWalletScreen} exact path="/group-wallets" />
+            <PrivateRoute component={GroupWalletOverview} exact path="/group-wallets/:groupWalletId" />
             <PrivateRoute component={TeacherRouter} path="/teacher" />
 
             {/* <Route component={error} path="*" /> */}
