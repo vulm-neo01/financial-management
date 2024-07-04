@@ -28,7 +28,7 @@ function OverviewBudget({ budgets }) {
                 <Button onClick={handlePreviousMonth}>
                     <ArrowCircleLeftIcon />
                 </Button>
-                <Typography variant="h6">
+                <Typography variant="body1">
                     {startOfMonth.toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' })}
                 </Typography>
                 <Button onClick={handleNextMonth}>

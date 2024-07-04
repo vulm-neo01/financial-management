@@ -43,7 +43,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 // Component biểu đồ Wallet
 const ExchangeChart = ({ data, getMaxAmount, limitAmount }) => (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={350}>
         <BarChart data={data} margin={{ top: 25, right: 30, left: 50, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />

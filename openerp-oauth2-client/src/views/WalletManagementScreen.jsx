@@ -100,7 +100,7 @@ function WalletManagementScreen() {
 
     return (
         <div>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h5" gutterBottom>
                 Wallet Management
                 <Tooltip title="Reload dữ liệu">
                     <IconButton onClick={handleRefreshData} aria-label="refresh">
@@ -113,7 +113,7 @@ function WalletManagementScreen() {
                 onClick={toggleHiddenWallets}
                 variant="contained"
                 color="warning"
-                style={{ fontSize: '1.4rem' }} // Thay đổi kích thước icon ở đây
+                style={{ fontSize: '1rem' }} // Thay đổi kích thước icon ở đây
             >
                 {showHiddenWallets ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
                 <span style={{ marginLeft: '5px', marginTop: '10px'}}>
@@ -125,19 +125,19 @@ function WalletManagementScreen() {
                     <HiddenWalletScreen hiddenWallets={notIncludedInWallets} onUpdateWalletData={handleUpdateWalletData}/>
                 </div>
             )}
-            <div style={{ position: 'fixed', bottom: 40, right: 40 }}>
+            <div style={{ position: 'fixed', bottom: 20, right: 20 }}>
                 <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
                     onClick={handleClick}
                     aria-label="add"
                     color="primary"
-                    size="large"
-                    style={{ backgroundColor: '#BDDAFE ', fontSize: '4rem', transition: 'transform 0.3s ease', }} // Điều chỉnh kích thước
+                    size="medium"
+                    style={{ backgroundColor: '#BDDAFE ', fontSize: '3rem', transition: 'transform 0.3s ease', }} // Điều chỉnh kích thước
                     onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
                     onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
-                    <WalletRoundedIcon fontSize="150%"/>
+                    <WalletRoundedIcon fontSize="120%"/>
                 </IconButton>
                 <Menu
                     id="simple-menu"
@@ -154,14 +154,14 @@ function WalletManagementScreen() {
                         horizontal: 'right',
                     }}
                 >
-                    <MenuItem onClick={handleOpenHistoryModal} style={{ fontSize: '1.4rem', color: 'blue' }}>
-                        <HistoryRoundedIcon style={{ marginRight: 8, fontSize: '2rem'}} /> History
+                    <MenuItem onClick={handleOpenHistoryModal} style={{ fontSize: '1.2rem', color: 'blue' }}>
+                        <HistoryRoundedIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> History
                     </MenuItem>
-                    <MenuItem onClick={handleOpenWalletExchangeDialog} style={{ fontSize: '1.4rem', color: 'green' }}>
-                        <CurrencyExchangeRoundedIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Exchange
+                    <MenuItem onClick={handleOpenWalletExchangeDialog} style={{ fontSize: '1.2rem', color: 'green' }}>
+                        <CurrencyExchangeRoundedIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Exchange
                     </MenuItem>
-                    <MenuItem onClick={handleOpenAddWalletDialog} style={{ fontSize: '1.4rem', color: 'red' }}>
-                        <AddCircleOutlineRoundedIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Add Wallet
+                    <MenuItem onClick={handleOpenAddWalletDialog} style={{ fontSize: '1.2rem', color: 'red' }}>
+                        <AddCircleOutlineRoundedIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Add Wallet
                     </MenuItem>
                 </Menu>
             </div>

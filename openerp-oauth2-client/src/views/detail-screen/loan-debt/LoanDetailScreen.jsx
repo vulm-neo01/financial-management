@@ -201,11 +201,11 @@ function LoanDetailScreen() {
                 <Box sx={{ display: 'flex', maxHeight: '100vh' }}>
                     <Box sx={{ backgroundColor: `${loan.color && loan.color.colorId}`, width: '25%', padding: 2, borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderRadius: '12px'  }}>
                         <Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                 <IconButton onClick={() => history.push("/all-loan-debt")}>
                                     <ArrowBackIcon />
                                 </IconButton>
-                                <Typography style={{marginLeft: "4px"}} variant="h5" sx={{ flexGrow: 1 }}>{loan.name}</Typography>
+                                <Typography style={{marginLeft: "4px"}} variant="h6" sx={{ flexGrow: 1 }}>{loan.name}</Typography>
                             </Box>
                             <div className='saving-detail'>
                                 <Box className="info">
@@ -218,13 +218,13 @@ function LoanDetailScreen() {
                                         <span>{loan.originAmount && loan.originAmount.toLocaleString()} {currency}</span>
                                     </div>
                                     <div className="field">
-                                        <label>Số tiền hiện tại:</label>
+                                        <label>Hiện tại:</label>
                                         <span>{loan.currentAmount.toLocaleString()} {currency}</span>
                                     </div>
                                     {loan.type !== "NO_INTEREST" && (
                                         <>
                                             <div className="field">
-                                                <label>Kỳ hạn nhận lãi:</label>
+                                                <label>Kỳ hạn:</label>
                                                 <span>{receiveTypes[loan.receiveInterestTime]}</span>
                                             </div>
                                             <div className="field">
@@ -274,8 +274,8 @@ function LoanDetailScreen() {
                         </Box>
                     </Box>
                     <Box sx={{width: '75%', paddingLeft: 2, paddingRight: 2}}>
-                        <Card sx={{ mb: 2 }}>
-                            <CardContent>
+                        <Card sx={{ mb: 1 }}>
+                            <CardContent sx={{ p: 2 }}>
                                 <Typography variant="h6">Tiến độ khoản cho vay</Typography>
                                 <LinearProgress variant="determinate" value={progress} sx={{ height: 10, borderRadius: 5 }} />
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
@@ -321,8 +321,8 @@ function LoanDetailScreen() {
                                                                 <Grid container spacing={2}>
                                                                     {/* Cột thứ nhất */}
                                                                     <Grid item xs={6}>
-                                                                        <Typography variant="h5" component="h2">
-                                                                            {exchange.exchangeType.exchangeTypeName}
+                                                                        <Typography variant="body1" component="h2">
+                                                                            <strong>{exchange.exchangeType.exchangeTypeName}</strong>
                                                                         </Typography>
                                                                         <Typography variant="body1" color="textSecondary" gutterBottom>
                                                                             From: {exchange.from}
@@ -334,8 +334,8 @@ function LoanDetailScreen() {
 
                                                                     {/* Cột thứ hai */}
                                                                     <Grid item xs={6}>
-                                                                        <Typography variant="h6" component="h2">
-                                                                            Amount: {exchange.amount.toLocaleString()} {localStorage.getItem("currency")}
+                                                                        <Typography variant="body1" component="h2">
+                                                                            <strong>{exchange.amount.toLocaleString()} {localStorage.getItem("currency")}</strong>
                                                                         </Typography>
                                                                         <Typography variant="body1" color="textSecondary" gutterBottom>
                                                                             Happen Time: {formatDate(exchange.exchangeDate)}
@@ -346,7 +346,7 @@ function LoanDetailScreen() {
                                                             </CardContent>
                                                             {/* Đường viền màu */}
                                                             <div style={{
-                                                                height: '5px',
+                                                                height: '4px',
                                                                 width: '100%',
                                                                 backgroundColor: exchange.exchangeType.exchangeTypeId === 'wallet_wallet' ? '#106BB6' :
                                                                     exchange.exchangeType.exchangeTypeId === 'income' ? '#008000' :
@@ -389,19 +389,19 @@ function LoanDetailScreen() {
                 /> : null
             }
 
-            <div style={{ position: 'fixed', bottom: 40, right: 40 }}>
+            <div style={{ position: 'fixed', bottom: 20, right: 20 }}>
                 <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
                     onClick={handleClick}
                     aria-label="add"
                     color="primary"
-                    size="large"
-                    style={{ backgroundColor: '#BDDAFE ', fontSize: '4rem', transition: 'transform 0.3s ease', }} // Điều chỉnh kích thước
+                    size="medium"
+                    style={{ backgroundColor: '#BDDAFE ', fontSize: '3rem', transition: 'transform 0.3s ease', }} // Điều chỉnh kích thước
                     onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
                     onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
-                    <SyncAltIcon fontSize="150%"/>
+                    <SyncAltIcon fontSize="120%"/>
                 </IconButton>
                 <Menu
                     id="simple-menu"
@@ -418,12 +418,12 @@ function LoanDetailScreen() {
                         horizontal: 'right',
                     }}
                 >
-                    <MenuItem onClick={handleClickOpenModalPaidAll} style={{ fontSize: '1.4rem', color: 'blue' }}>
-                        <PriceCheckIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Done Loan
+                    <MenuItem onClick={handleClickOpenModalPaidAll} style={{ fontSize: '1.2rem', color: 'blue' }}>
+                        <PriceCheckIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Done Loan
                     </MenuItem>
                     <LoanDoneModal onUpdateLoan={handleUpdateLoan} onClose={handleClickCloseModalPaidAll} open={openPaidAll} loanId={loanId}/>
-                    <MenuItem onClick={handleClickOpenModalPaidAPart} style={{ fontSize: '1.4rem', color: 'green' }}>
-                        <PaidIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Pay an Amount
+                    <MenuItem onClick={handleClickOpenModalPaidAPart} style={{ fontSize: '1.2rem', color: 'green' }}>
+                        <PaidIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Pay an Amount
                     </MenuItem>
                     <LoanPayModal onUpdateLoan={handleUpdateLoan} onClose={handleClickCloseModalPaidAPart} open={openPaidAPart} loanId={loanId}/>
                 </Menu>

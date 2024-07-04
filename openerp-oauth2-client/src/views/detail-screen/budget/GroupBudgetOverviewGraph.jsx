@@ -58,7 +58,7 @@ const BudgetOverview = ({groupWalletId}) => {
                 <Button onClick={handlePreviousMonth}>
                     <ArrowCircleLeftIcon />
                 </Button>
-                <Typography variant="h6">
+                <Typography variant="body1">
                     {startOfMonth.toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' })}
                 </Typography>
                 <Button onClick={handleNextMonth}>
@@ -67,7 +67,7 @@ const BudgetOverview = ({groupWalletId}) => {
             </div>
             <Card>
                 <CardContent>
-                    <Typography variant="h6">Toàn bộ ngân sách</Typography>
+                    <Typography variant="body1"><strong>Toàn bộ ngân sách</strong></Typography>
                     <ResponsiveContainer width="100%" height={400}>
                         <BarChart
                             data={budgetData}

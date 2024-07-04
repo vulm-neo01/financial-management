@@ -67,9 +67,9 @@ const AppLoading = (
         <FacebookCircularProgress />
       </Box>
     </Box>
-    <Box>
+    {/* <Box>
       <Typography sx={{ mb: 4 }}>OpenERP Team</Typography>
-    </Box>
+    </Box> */}
   </Box>
 );
 

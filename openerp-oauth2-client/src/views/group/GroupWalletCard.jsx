@@ -32,11 +32,11 @@ const GroupWalletCard = ({ groupWallet, userId }) => {
             <div className="overview-logo-name">
                 <img src={groupWallet.logo.url} alt={groupWallet.groupName} className="overview-logo" />
                 <Box display="flex" alignItems="center">
-                    <Typography variant="h6">{groupWallet.groupName}</Typography>
+                    <Typography variant="body1"><strong>{groupWallet.groupName}</strong></Typography>
                     {isOwner && <StarIcon className="owner-indicator" />}
                 </Box>
             </div>
-            <Typography variant="body2">Tổng số tiền hiện tại: {groupWallet.amount} VNĐ</Typography>
+            <Typography variant="body2">Tổng số tiền hiện tại: {groupWallet.amount.toLocaleString()} đ</Typography>
             <Typography variant="body2">Tổng số thành viên: {memberCount}</Typography>
             <Typography variant="body2">Bắt đầu từ: {groupWallet.createdAt ? formatDate(groupWallet.createdAt) : 'N/A'}</Typography>
         </div>

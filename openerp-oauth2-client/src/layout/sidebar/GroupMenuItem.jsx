@@ -14,7 +14,7 @@ export const menuItemBaseStyle = (theme) => ({
   },
   menuItem: {
     margin: "10px 15px 0 12px",
-    padding: "10px",
+    padding: "10px 10px",
     width: "auto",
     minWidth: 50,
     transition: "all 300ms linear",

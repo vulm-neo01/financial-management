@@ -18,12 +18,13 @@ import SideBar, { drawerWidth } from "./sidebar/SideBar";
 /**
  * https://mui.com/material-ui/react-app-bar/#fixed-placement
  */
-const Offset = styled("div")(({ theme }) => ({
+const Offset = styled("div")(({ }) => ({
   display: "flex",
   alignItems: "center",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
+  // padding: theme.spacing(0, 1),
+  // // necessary for content to be below app bar
+  // ...theme.mixins.toolbar,
+  marginTop: "50px",
   justifyContent: "flex-end",
 }));
 
@@ -39,7 +40,7 @@ const Main = styled("main")(({ theme, isOpen }) => ({
   marginLeft: -drawerWidth,
   ...(isOpen
     ? {
-        maxWidth: "calc(100% - 300px)",
+        maxWidth: "calc(100% - 260px)",
         transition: theme.transitions.create(["maxWidth", "margin"], {
           easing: theme.transitions.easing.easeOut,
           duration: theme.transitions.duration.enteringScreen,

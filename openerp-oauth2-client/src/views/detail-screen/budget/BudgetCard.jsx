@@ -5,10 +5,13 @@ import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import '../budget/css/BudgetCard.css'; // Import CSS file for custom styling
 import { request } from 'api'; // Import the request function
+import { useParams, useHistory } from 'react-router-dom';
 
 const BudgetCard = ({ budget, currentMonth }) => {
     const [exchanges, setExchanges] = useState([]);
     const [spentAmount, setSpentAmount] = useState(0);
+
+    const history = useHistory();
     
     useEffect(() => {
         request("get", `/exchanges/budget/${budget.budgetCategoryId}`, (res) => {
@@ -26,6 +29,10 @@ const BudgetCard = ({ budget, currentMonth }) => {
             setSpentAmount(totalSpent);
         }).then();
     }, [currentMonth]);
+
+    const handleClickBudgetCard = () => {
+        history.push(`/budgets/${budget.budgetCategoryId}`)
+    }
     
     // Thuật toán chọn limit Amount cho từng tháng cụ thể
     const getLimitAmount = () => {
@@ -53,10 +60,10 @@ const BudgetCard = ({ budget, currentMonth }) => {
     const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
 
     return (
-        <div key={budget.budgetCategoryId} className="overview-card">
+        <div onClick={handleClickBudgetCard} key={budget.budgetCategoryId} className="overview-card">
             <div className="overview-logo-name">
                 <img src={budget.logo.url} alt={budget.name} className="overview-logo" />
-                <Typography variant="h6">{budget.name}</Typography>
+                <Typography variant="body1"><strong>{budget.name}</strong></Typography>
             </div>
             <div className="timeline-info">
                 <span>{startOfMonth.toLocaleDateString()}</span>

@@ -247,7 +247,7 @@ const Dashboard = () => {
 
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={7}>
                 <Card>
                     <CardContent>
                         <Typography variant="h6">Wallet Overview</Typography>
@@ -264,7 +264,7 @@ const Dashboard = () => {
                     </CardContent>
                 </Card>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={5}>
                 <Box maxHeight={350} overflow="auto">
                     {includedInWallets.map(wallet => renderWalletCard(wallet))}
                     {notIncludedInWallets.map(wallet => renderWalletCard(wallet))}
@@ -280,7 +280,7 @@ const Dashboard = () => {
                 </Tabs>
             </Grid>
 
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={6} xl={3}>
                 <Card>
                     <CardContent>
                         <Typography variant="h6">Spend/Income Overview</Typography>
@@ -297,9 +297,73 @@ const Dashboard = () => {
                     </CardContent>
                 </Card>
             </Grid>
+            <Grid item xs={12} md={6} xl={3}>
+                <Card sx={{ maxHeight: 370, overflowY: 'auto' }}>
+                    <CardContent>
+                        <Typography variant="h6" gutterBottom>
+                            All Exchange
+                        </Typography>
+                        {filteredExchanges && filteredExchanges.length > 0 ? (
+                            <Grid container spacing={2} item xs={12} justifyContent="center" alignItems="center">
+                                {Object.entries(exchangesByTime).map(([label, exchangesInTime]) =>
+                                    exchangesInTime.map((exchange) => (
+                                        <Grid item xs={12} key={exchange.exchangeId}>
+                                            <Card
+                                                onClick={() => handleExchangeCardClick(exchange.exchangeId)}
+                                                style={{
+                                                    cursor: 'pointer',
+                                                    transition: 'background-color 0.3s',
+                                                    marginBottom: theme.spacing(1) // Thêm margin dưới cho mỗi thẻ
+                                                }}
+                                                sx={{ '&:hover': { backgroundColor: '#f0f0f0' }, minWidth: 200 }}
+                                            >
+                                                <CardContent>
+                                                    <Grid container spacing={2}>
+                                                        <Grid item xs={6}>
+                                                            <Typography variant="body2" color="textSecondary" gutterBottom>
+                                                                <strong>From:</strong> {exchange.from}
+                                                            </Typography>
+                                                            <Typography variant="body2" component="h2">
+                                                                {exchange.exchangeType.exchangeTypeName}
+                                                            </Typography>
+                                                        </Grid>
 
-            <Grid item container xs={12} md={9} spacing={3}>
-                <Grid item xs={12} md={4}>
+                                                        <Grid item xs={6}>
+                                                            <Typography variant="body2" color="textSecondary" gutterBottom>
+                                                            <strong>To:</strong> {exchange.to}
+                                                            </Typography>
+                                                            <Typography variant="body2" component="h2">
+                                                                <strong>{exchange.amount.toLocaleString()} {localStorage.getItem("currency")}</strong>
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                </CardContent>
+                                                <div style={{
+                                                    height: '4px',
+                                                    width: '100%',
+                                                    backgroundColor: exchange.exchangeType.exchangeTypeId === 'wallet_wallet' ? '#106BB6' :
+                                                        exchange.exchangeType.exchangeTypeId === 'income' ? '#008000' :
+                                                        exchange.exchangeType.exchangeTypeId === 'spend' ? '#FF0000' :
+                                                        exchange.exchangeType.exchangeTypeId === 'wallet_saving' || exchange.exchangeType.exchangeTypeId === 'saving_wallet' ? '#FFD700' :
+                                                        exchange.exchangeType.exchangeTypeId === 'wallet_debt' || exchange.exchangeType.exchangeTypeId === 'debt_wallet' ? '#D8BFD8' :
+                                                        exchange.exchangeType.exchangeTypeId === 'wallet_loan' || exchange.exchangeType.exchangeTypeId === 'loan_wallet' ? '#000000' : 'transparent'
+                                                }} />
+                                            </Card>
+                                        </Grid>
+                                    ))
+                                )}
+                            </Grid>
+                        ) : (
+                            <Typography variant="h6" gutterBottom style={{ marginTop: theme.spacing(3), marginLeft: theme.spacing(2), alignItems: 'center' }}>
+                                Nothing to Show here, create your first Exchange!
+                            </Typography>
+                        )}
+                    </CardContent>
+                </Card>
+            </Grid>
+
+            <Grid item container xs={12} md={12} xl={6} spacing={3}>
+                <Grid item xs={12} md={6} xl={3}>
                     <Card>
                         <CardContent>
                             <Typography variant="h6">Income Overview</Typography>
@@ -314,7 +378,7 @@ const Dashboard = () => {
                                         outerRadius={100}
                                         fill="#8884d8"
                                         label={renderCustomizedLabel}
-                                    >
+                                        >
                                         {incomePieChartData.map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                         ))}
@@ -326,7 +390,7 @@ const Dashboard = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={6} xl={3}>
                     <Card>
                         <CardContent>
                             <Typography variant="h6">Spend Overview</Typography>
@@ -341,7 +405,7 @@ const Dashboard = () => {
                                         outerRadius={100}
                                         fill="#8884d8"
                                         label={renderCustomizedLabel}
-                                    >
+                                        >
                                         {spendPieChartData.map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                         ))}
@@ -353,72 +417,8 @@ const Dashboard = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-
-                <Grid item xs={12} md={4}>
-                    <Card sx={{ maxHeight: 370, overflowY: 'auto' }}>
-                        <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                All Exchange
-                            </Typography>
-                            {filteredExchanges && filteredExchanges.length > 0 ? (
-                                <Grid container spacing={2} item xs={12} justifyContent="center" alignItems="center">
-                                    {Object.entries(exchangesByTime).map(([label, exchangesInTime]) =>
-                                        exchangesInTime.map((exchange) => (
-                                            <Grid item xs={12} key={exchange.exchangeId}>
-                                                <Card
-                                                    onClick={() => handleExchangeCardClick(exchange.exchangeId)}
-                                                    style={{
-                                                        cursor: 'pointer',
-                                                        transition: 'background-color 0.3s',
-                                                        marginBottom: theme.spacing(1) // Thêm margin dưới cho mỗi thẻ
-                                                    }}
-                                                    sx={{ '&:hover': { backgroundColor: '#f0f0f0' }, minWidth: 200 }}
-                                                >
-                                                    <CardContent>
-                                                        <Grid container spacing={2}>
-                                                            <Grid item xs={6}>
-                                                                <Typography variant="body2" color="textSecondary" gutterBottom>
-                                                                    From: {exchange.from}
-                                                                </Typography>
-                                                                <Typography variant="body2" component="h2">
-                                                                    {exchange.exchangeType.exchangeTypeName}
-                                                                </Typography>
-                                                            </Grid>
-
-                                                            <Grid item xs={6}>
-                                                                <Typography variant="body2" color="textSecondary" gutterBottom>
-                                                                    To: {exchange.to}
-                                                                </Typography>
-                                                                <Typography variant="body2" component="h2">
-                                                                    {exchange.amount.toLocaleString()} {localStorage.getItem("currency")}
-                                                                </Typography>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </CardContent>
-                                                    <div style={{
-                                                        height: '5px',
-                                                        width: '100%',
-                                                        backgroundColor: exchange.exchangeType.exchangeTypeId === 'wallet_wallet' ? '#106BB6' :
-                                                            exchange.exchangeType.exchangeTypeId === 'income' ? '#008000' :
-                                                            exchange.exchangeType.exchangeTypeId === 'spend' ? '#FF0000' :
-                                                            exchange.exchangeType.exchangeTypeId === 'wallet_saving' || exchange.exchangeType.exchangeTypeId === 'saving_wallet' ? '#FFD700' :
-                                                            exchange.exchangeType.exchangeTypeId === 'wallet_debt' || exchange.exchangeType.exchangeTypeId === 'debt_wallet' ? '#D8BFD8' :
-                                                            exchange.exchangeType.exchangeTypeId === 'wallet_loan' || exchange.exchangeType.exchangeTypeId === 'loan_wallet' ? '#000000' : 'transparent'
-                                                    }} />
-                                                </Card>
-                                            </Grid>
-                                        ))
-                                    )}
-                                </Grid>
-                            ) : (
-                                <Typography variant="h6" gutterBottom style={{ marginTop: theme.spacing(3), marginLeft: theme.spacing(2), alignItems: 'center' }}>
-                                    Nothing to Show here, create your first Exchange!
-                                </Typography>
-                            )}
-                        </CardContent>
-                    </Card>
-                </Grid>
             </Grid>
+
 
             <Grid item xs={12} md={12}>
                 <BudgetOverview />
@@ -491,7 +491,7 @@ const Dashboard = () => {
                 <IconButton
                     color="primary"
                     onClick={handleOpenSpendExchangeDialog}
-                    size="large"
+                    size="medium"
                     style={{
                         position: 'fixed',
                         bottom: '20px',
@@ -501,8 +501,8 @@ const Dashboard = () => {
                         color: 'white',
                         borderRadius: '50%',
                         fontSize: '2rem',
-                        width: '80px',
-                        height: '80px',
+                        width: '60px',
+                        height: '60px',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -522,18 +522,18 @@ const Dashboard = () => {
                 <IconButton
                     color="primary"
                     onClick={handleOpenIncomeExchangeDialog}
-                    size="large"
+                    size="medium"
                     style={{
                         position: 'fixed',
-                        bottom: '120px',
+                        bottom: '100px',
                         right: '20px',
                         zIndex: 1000,
                         backgroundColor: '#388e3c',
                         color: 'white',
                         borderRadius: '50%',
                         fontSize: '2rem',
-                        width: '80px',
-                        height: '80px',
+                        width: '60px',
+                        height: '60px',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',

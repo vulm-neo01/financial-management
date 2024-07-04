@@ -190,19 +190,19 @@ function HiddenWalletScreen({hiddenWallets, onUpdateWalletData }) {
     return (
         <div>
             <div style={{ textAlign: 'center' }}>
-                <h2>Total Hidden Amount: <span style={{color: 'red', fontWeight: 'bold', fontSize: '24px'}}>
+                <h3>Tổng tiền ẩn: <span style={{color: 'red', fontWeight: 'bold', fontSize: '20px'}}>
                         {totalAmount.toLocaleString()} {currency}
                     </span>
-                </h2>
+                </h3>
             </div>
             <StandardTable
-                title="Hidden Wallet List"
+                title="Hidden Wallet"
                 columns={columns}
                 data={hiddenWallets}
                 // hideCommandBar
                 options={{
                     selection: false,
-                    pageSize: 10,
+                    pageSize: 5,
                     search: true,
                     sorting: true,
                 }}

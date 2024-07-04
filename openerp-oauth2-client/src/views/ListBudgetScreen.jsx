@@ -104,7 +104,7 @@ function ListBudgetScreen() {
             .map(budget => (
                 <div key={budget.budgetCategoryId} className="budget-card" onClick={() => handleBudgetClick(budget.budgetCategoryId)}>
                     <img src={budget.logo.url} alt={budget.name} className="budget-logo" />
-                    <Typography variant="h6">{budget.name}</Typography>
+                    <Typography variant="body1">{budget.name}</Typography>
                 </div>
             ));
     };
@@ -115,14 +115,14 @@ function ListBudgetScreen() {
             .map(budget => (
                 <div key={budget.budgetCategoryId} className="budget-card" onClick={() => handleBudgetClick(budget.budgetCategoryId)}>
                     <img src={budget.logo.url} alt={budget.name} className="budget-logo" />
-                    <Typography variant="h6">{budget.name}</Typography>
+                    <Typography variant="body1">{budget.name}</Typography>
                 </div>
             ));
     };
 
     return (
         <div>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h5" gutterBottom>
                 Budgets Category
             </Typography>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -140,7 +140,7 @@ function ListBudgetScreen() {
                     {renderSpendBudgets("income")}
                     <div className="budget-card add-budget-card" onClick={handleOpenAddBudgetSpendDialog}>
                         <AddIcon style={{ fontSize: 50 }} />
-                        <Typography variant="h6">Add Budget</Typography>
+                        <Typography variant="body1">Add Budget</Typography>
                     </div>
                 </div>
             </CustomTabPanel>
@@ -149,7 +149,7 @@ function ListBudgetScreen() {
                     {renderIncomeBudgets("income")}
                     <div className="budget-card add-budget-card" onClick={handleOpenAddBudgetIncomeDialog}>
                         <AddIcon style={{ fontSize: 50 }} />
-                        <Typography variant="h6">Add Budget</Typography>
+                        <Typography variant="body1">Add Budget</Typography>
                     </div>
                 </div>
             </CustomTabPanel>

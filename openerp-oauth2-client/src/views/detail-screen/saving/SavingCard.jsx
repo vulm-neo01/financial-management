@@ -11,16 +11,16 @@ const SavingCard = ({ handleClick, saving }) => {
         <div onClick={() => handleClick(saving.savingId)} key={saving.savingId} className="saving-card" style={{ backgroundColor: borderColor }}>
             <div className="saving-logo-name">
                 <img src={saving.logo.url} alt={saving.name} className="saving-logo" />
-                <Typography variant="h6">{saving.name}</Typography>
+                <Typography variant="body1"><strong>{saving.name}</strong></Typography>
             </div>
             <div className="saving-progress">
                 <div className="progress-bar">
                     <div className="progress" style={{ width: `${progress}%` }}></div>
                 </div>
                 <div className="saving-info">
-                    <span>Origin: {saving.originAmount.toLocaleString()} đ</span>
-                    <span>Current: {saving.currentAmount.toLocaleString()} đ</span>
-                    <span>Target: {saving.targetAmount.toLocaleString()} đ</span>
+                    <span><strong>Origin:</strong> {Math.round(saving.originAmount).toLocaleString()} đ</span>
+                    <span><strong>Current:</strong> {Math.round(saving.currentAmount).toLocaleString()} đ</span>
+                    <span><strong>Target:</strong> {Math.round(saving.targetAmount).toLocaleString()} đ</span>
                 </div>
             </div>
         </div>

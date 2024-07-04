@@ -167,7 +167,7 @@ const StatisticsGroupWallet = ({groupWalletId}) => {
             <Grid item xs={12} md={6}>
                 <Card>
                     <CardContent>
-                        <Typography variant="h6">Spend/Income Overview</Typography>
+                        <Typography variant="body1"><strong>Spend/Income Overview</strong></Typography>
                         <ResponsiveContainer width="100%" height={300}>
                             <BarChart data={exchangeBarChartData} margin={{ top: 20, right: 30, left: 50, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -185,8 +185,8 @@ const StatisticsGroupWallet = ({groupWalletId}) => {
             <Grid item xs={12} md={6}>
                 <Card sx={{ maxHeight: 370, overflowY: 'auto' }}>
                     <CardContent>
-                        <Typography variant="h6" gutterBottom>
-                            All Exchange
+                        <Typography variant="body1" gutterBottom>
+                            <strong>All Exchange</strong>
                         </Typography>
                         {filteredExchanges && filteredExchanges.length > 0 ? (
                             <Grid container spacing={2} item xs={12} justifyContent="center" alignItems="center">
@@ -208,7 +208,7 @@ const StatisticsGroupWallet = ({groupWalletId}) => {
                                                             <Typography variant="body2" color="textSecondary" gutterBottom>
                                                                 From: {exchange.from}
                                                             </Typography>
-                                                            <Typography variant="body2" component="h2">
+                                                            <Typography variant="body1" component="h2">
                                                                 {exchange.exchangeType.exchangeTypeName}
                                                             </Typography>
                                                         </Grid>
@@ -217,14 +217,14 @@ const StatisticsGroupWallet = ({groupWalletId}) => {
                                                             <Typography variant="body2" color="textSecondary" gutterBottom>
                                                                 To: {exchange.to}
                                                             </Typography>
-                                                            <Typography variant="body2" component="h2">
+                                                            <Typography variant="body1" component="h2">
                                                                 {exchange.amount.toLocaleString()} {localStorage.getItem("currency")}
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>
                                                 </CardContent>
                                                 <div style={{
-                                                    height: '5px',
+                                                    height: '4px',
                                                     width: '100%',
                                                     backgroundColor: exchange.exchangeType.exchangeTypeId === 'wallet_wallet' ? '#106BB6' :
                                                         exchange.exchangeType.exchangeTypeId === 'income' ? '#008000' :
@@ -239,7 +239,7 @@ const StatisticsGroupWallet = ({groupWalletId}) => {
                                 )}
                             </Grid>
                         ) : (
-                            <Typography variant="h6" gutterBottom style={{ marginTop: theme.spacing(3), marginLeft: theme.spacing(2), alignItems: 'center' }}>
+                            <Typography variant="body1" gutterBottom style={{ marginTop: theme.spacing(3), marginLeft: theme.spacing(2), alignItems: 'center' }}>
                                 Nothing to Show here, create your first Exchange!
                             </Typography>
                         )}
@@ -249,7 +249,7 @@ const StatisticsGroupWallet = ({groupWalletId}) => {
                 <Grid item xs={12} md={6}>
                     <Card>
                         <CardContent>
-                            <Typography variant="h6">Income Overview</Typography>
+                            <Typography variant="body1"><strong>Income Overview</strong></Typography>
                             <ResponsiveContainer width="100%" height={300}>
                                 <PieChart>
                                     <Pie
@@ -276,7 +276,7 @@ const StatisticsGroupWallet = ({groupWalletId}) => {
                 <Grid item xs={12} md={6}>
                     <Card>
                         <CardContent>
-                            <Typography variant="h6">Spend Overview</Typography>
+                            <Typography variant="body1"><strong>Spend Overview</strong></Typography>
                             <ResponsiveContainer width="100%" height={300}>
                                 <PieChart>
                                     <Pie

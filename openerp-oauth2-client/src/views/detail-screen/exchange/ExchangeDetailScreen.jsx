@@ -244,14 +244,14 @@ function ExchangeDetailScreen() {
     };
     return (
         <Box sx={{ flex: 1 }}>
-            <Typography variant="h4" align="center" sx={{ fontWeight: "bold" }}>
+            <Typography variant="h5" align="center" sx={{ fontWeight: "bold" }}>
                 Exchange Detail Information
             </Typography>
             <Divider
                 variant="middle"
                 sx={{
                 margin: "0 auto",
-                width: "50%",
+                width: "30%",
                 backgroundColor: "#BDDAFE",
                 }}
             />

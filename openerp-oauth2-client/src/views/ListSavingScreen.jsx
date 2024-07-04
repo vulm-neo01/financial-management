@@ -140,7 +140,7 @@ function ListSavingScreen() {
 
     return (
         <div className="list-saving-screen">
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h5" gutterBottom>
                 Saving Account
             </Typography>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -187,19 +187,19 @@ function ListSavingScreen() {
                     {renderSaving("other")}
                 </div>
             </CustomTabPanel>
-            <div style={{ position: 'fixed', bottom: 40, right: 40 }}>
+            <div style={{ position: 'fixed', bottom: 20, right: 20 }}>
                 <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
                     onClick={handleClick}
                     aria-label="add"
                     color="primary"
-                    size="large"
-                    style={{ backgroundColor: '#BDDAFE ', fontSize: '4rem', transition: 'transform 0.3s ease', }} // Điều chỉnh kích thước
+                    size="medium"
+                    style={{ backgroundColor: '#BDDAFE ', fontSize: '3rem', transition: 'transform 0.3s ease', }} // Điều chỉnh kích thước
                     onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
                     onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
-                    <SavingsIcon fontSize="150%"/>
+                    <SavingsIcon fontSize="120%"/>
                 </IconButton>
                 <Menu
                     id="simple-menu"
@@ -216,12 +216,12 @@ function ListSavingScreen() {
                         horizontal: 'right',
                     }}
                 >
-                    <MenuItem onClick={handleOpenAddSavingDialog} style={{ fontSize: '1.4rem', color: 'blue' }}>
-                        <AddCircleOutlineRoundedIcon style={{ marginRight: 8, fontSize: '2rem'}} />Create new Saving
+                    <MenuItem onClick={handleOpenAddSavingDialog} style={{ fontSize: '1.2rem', color: 'blue' }}>
+                        <AddCircleOutlineRoundedIcon style={{ marginRight: 8, fontSize: '1.5rem'}} />Create new Saving
                     </MenuItem>
                     <SavingCreateModal onCreateSaving={handleUpdateSaving} onClose={handleCloseAddSavingDialog} open={addSaving}/>
-                    <MenuItem onClick={handleOpenAddSavingExchangeDialog} style={{ fontSize: '1.4rem', color: 'green' }}>
-                        <CurrencyExchangeRoundedIcon style={{ marginRight: 8, fontSize: '2rem'}} />Create Saving Exchange
+                    <MenuItem onClick={handleOpenAddSavingExchangeDialog} style={{ fontSize: '1.2rem', color: 'green' }}>
+                        <CurrencyExchangeRoundedIcon style={{ marginRight: 8, fontSize: '1.5rem'}} />Create Saving Exchange
                     </MenuItem>
                     <SavingCreateExchangeModal onUpdateExchange={updateDate} onClose={handleCloseAddSavingExchangeDialog} open={addSavingExchange}/>
                 </Menu>

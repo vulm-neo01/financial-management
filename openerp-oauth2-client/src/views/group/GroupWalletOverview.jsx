@@ -121,29 +121,29 @@ function GroupWalletOverview() {
     
     return (
         <Box sx={{ display: 'flex', height: '80vh' }}>
-            <Box sx={{ width: '20%', padding: 2, borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+            <Box sx={{ width: '25%', padding: 2, borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                 <Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                         <IconButton onClick={() => history.push("/group-wallets")}>
                             <ArrowBackIcon />
                         </IconButton>
-                        <Typography variant="h5" sx={{ flexGrow: 1 }}>{groupWallet.groupName}</Typography>
+                        <Typography variant="h6" sx={{ flexGrow: 1 }}>{groupWallet.groupName}</Typography>
                     </Box>
                     <Divider />
-                    <Box sx={{ textAlign: 'center', mt: 2 }}>
-                        <img src={groupWallet.logo.url} alt={groupWallet.groupName} style={{ width: '50%', marginBottom: 16 }} />
-                        <Typography variant="h6">Số tiền hiện tại: {groupWallet.amount.toLocaleString()} VNĐ</Typography>
-                        <Typography variant="body1">Người tạo: {groupWallet.owner.username}</Typography>
-                        <Typography variant="body1" sx={{ mt: 2 }}>{groupWallet.description}</Typography>
+                    <Box sx={{ textAlign: 'center', mt: 1 }}>
+                        <img src={groupWallet.logo.url} alt={groupWallet.groupName} style={{ width: '40%', marginBottom: 12 }} />
+                        <Typography variant="body1"><strong>Số tiền hiện tại: {groupWallet.amount.toLocaleString()} đ</strong></Typography>
+                        <Typography variant="body2">Người tạo: {groupWallet.owner.username}</Typography>
+                        <Typography variant="body2" sx={{ mt: 2 }}>{groupWallet.description}</Typography>
                     </Box>
                 </Box>
-                <Box sx={{ textAlign: 'center', mb: 2 }}>
+                <Box sx={{ textAlign: 'center', mb: 1 }}>
                     <Button
                         onClick={handleOpenUpdateGroupDialog}
                         variant="contained"
                         color="primary"
                         startIcon={<EditIcon />}
-                        sx={{ m: 1, minWidth: 120 }}
+                        sx={{ m: 1, minWidth: 100 }}
                     >
                         Edit
                     </Button>
@@ -152,13 +152,13 @@ function GroupWalletOverview() {
                         variant="contained"
                         color="error"
                         startIcon={<DeleteIcon />}
-                        sx={{ m: 1, minWidth: 120 }}
+                        sx={{ m: 1, minWidth: 100 }}
                     >
                         Delete
                     </Button>
                 </Box>
             </Box>
-            <Box sx={{ width: '80%', padding: 2 }}>
+            <Box sx={{ width: '75%', padding: 2 }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         <Tab label="Overview" {...a11yProps(0)} />

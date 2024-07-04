@@ -253,7 +253,7 @@ const GroupExchangeList  = ({groupWalletId, onUpdateAmount}) => {
         width: '10%'
     },
     {
-        title: "Chức năng khác",
+        title: "Chức năng",
         sorting: false,
         render: (rowData) => (
             <div>
@@ -325,7 +325,7 @@ const GroupExchangeList  = ({groupWalletId, onUpdateAmount}) => {
                 }}
                 />
             </TabPanel>
-            <div style={{ position: 'fixed', bottom: 40, right: 40 }}>
+            <div style={{ position: 'fixed', bottom: 20, right: 20 }}>
                 <IconButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
@@ -333,7 +333,7 @@ const GroupExchangeList  = ({groupWalletId, onUpdateAmount}) => {
                     aria-label="add"
                     color="primary"
                     size="medium"
-                    style={{ backgroundColor: '#BDDAFE ', fontSize: '4rem', transition: 'transform 0.3s ease', }} // Điều chỉnh kích thước
+                    style={{ backgroundColor: '#BDDAFE ', fontSize: '3rem', transition: 'transform 0.3s ease', }} // Điều chỉnh kích thước
                     onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
                     onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
@@ -354,13 +354,13 @@ const GroupExchangeList  = ({groupWalletId, onUpdateAmount}) => {
                         horizontal: 'right',
                     }}
                 >
-                    <MenuItem onClick={handleOpenSpendExchangeDialog} style={{ fontSize: '1.4rem', color: 'red' }}>
-                        <AddShoppingCartIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Spend
+                    <MenuItem onClick={handleOpenSpendExchangeDialog} style={{ fontSize: '1.2rem', color: 'red' }}>
+                        <AddShoppingCartIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Spend
                     </MenuItem>
                     <GroupCreateSpendModal  onCreateExchange={handleUpdateExchange} open={addSpend} onClose={handleCloseSpendExchangeDialog} groupWalletId={groupWalletId}/>
                     {/* <CreateSpendModal onCreateExchange={handleUpdateExchange} open={addSpend} onClose={handleCloseSpendExchangeDialog} /> */}
-                    <MenuItem onClick={handleOpenIncomeExchangeDialog} style={{ fontSize: '1.4rem', color: 'green' }}>
-                        <AddCardIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Income
+                    <MenuItem onClick={handleOpenIncomeExchangeDialog} style={{ fontSize: '1.2rem', color: 'green' }}>
+                        <AddCardIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Income
                     </MenuItem>
                     <GroupCreateIncomeModal  onCreateExchange={handleUpdateExchange} open={addIncome} onClose={handleCloseIncomeExchangeDialog} groupWalletId={groupWalletId}/>
                     {/* <CreateIncomeModal onCreateExchange={handleUpdateExchange} open={addIncome} onClose={handleCloseIncomeExchangeDialog}/> */}

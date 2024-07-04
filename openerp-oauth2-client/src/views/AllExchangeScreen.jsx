@@ -265,17 +265,17 @@ function AllExchangeScreen() {
       width: '10%'
   },
   {
-      title: "Chức năng khác",
+      title: "Chức năng",
       sorting: false,
       render: (rowData) => (
           <div>
-              <IconButton
+              {/* <IconButton
                   variant="contained"
                   color="primary"
                   // onClick={() => handleClickOpenModalChangeStatus(rowData)}
               >
                   <ContentCopyIcon/>
-              </IconButton>
+              </IconButton> */}
               <IconButton
                   onClick={() => handleOpenUpdateExchangeDialog(rowData)}
                   variant="contained"
@@ -312,7 +312,7 @@ function AllExchangeScreen() {
 
   return (
     <div>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Exchange Management
       </Typography>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -407,19 +407,19 @@ function AllExchangeScreen() {
           }}
         />
       </TabPanel>
-      <div style={{ position: 'fixed', bottom: 40, right: 40 }}>
+      <div style={{ position: 'fixed', bottom: 20, right: 20 }}>
           <IconButton
               aria-controls="simple-menu"
               aria-haspopup="true"
               onClick={handleClick}
               aria-label="add"
               color="primary"
-              size="large"
-              style={{ backgroundColor: '#BDDAFE ', fontSize: '4rem', transition: 'transform 0.3s ease', }} // Điều chỉnh kích thước
+              size="medium"
+              style={{ backgroundColor: '#BDDAFE ', fontSize: '3rem', transition: 'transform 0.3s ease', }} // Điều chỉnh kích thước
               onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
-              <CurrencyExchangeRoundedIcon fontSize="150%"/>
+              <CurrencyExchangeRoundedIcon fontSize="120%"/>
           </IconButton>
           <Menu
               id="simple-menu"
@@ -436,28 +436,28 @@ function AllExchangeScreen() {
                   horizontal: 'right',
               }}
           >
-            <MenuItem onClick={handleOpenSpendExchangeDialog} style={{ fontSize: '1.4rem', color: 'red' }}>
-                <AddShoppingCartIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Spend
+            <MenuItem onClick={handleOpenSpendExchangeDialog} style={{ fontSize: '1.2rem', color: 'red' }}>
+                <AddShoppingCartIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Spend
             </MenuItem>
             <CreateSpendModal onCreateExchange={handleUpdateExchange} open={addSpend} onClose={handleCloseSpendExchangeDialog} />
-            <MenuItem onClick={handleOpenIncomeExchangeDialog} style={{ fontSize: '1.4rem', color: 'green' }}>
-                <AddCardIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Income
+            <MenuItem onClick={handleOpenIncomeExchangeDialog} style={{ fontSize: '1.2rem', color: 'green' }}>
+                <AddCardIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Income
             </MenuItem>
             <CreateIncomeModal onCreateExchange={handleUpdateExchange} open={addIncome} onClose={handleCloseIncomeExchangeDialog}/>
-            <MenuItem onClick={handleOpenWalletExchangeDialog} style={{ fontSize: '1.4rem', color: 'blue' }}>
-                <WalletIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Wallet To Wallet
+            <MenuItem onClick={handleOpenWalletExchangeDialog} style={{ fontSize: '1.2rem', color: 'blue' }}>
+                <WalletIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Wallet To Wallet
             </MenuItem>
             <CreateExchangeWallet onCreateExchange={handleUpdateExchange} open={addWalletExchange} onClose={handleCloseWalletExchangeDialog}/>
 
-            <MenuItem onClick={handleOpenSavingExchangeDialog} style={{ fontSize: '1.4rem', color: 'orange' }}>
-                <SavingsIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Wallet - Saving
+            <MenuItem onClick={handleOpenSavingExchangeDialog} style={{ fontSize: '1.2rem', color: 'orange' }}>
+                <SavingsIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Wallet - Saving
             </MenuItem>
             <SavingCreateExchangeModal onUpdateExchange={handleUpdateExchange} onClose={handleCloseSavingExchangeDialog} open={addSavingExchange}/>
-            <MenuItem onClick={handleClose} style={{ fontSize: '1.4rem', color: 'purple' }}>
-                <MoneyOffIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Wallet - Debt
+            <MenuItem onClick={handleClose} style={{ fontSize: '1.2rem', color: 'purple' }}>
+                <MoneyOffIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Wallet - Debt
             </MenuItem>
-            <MenuItem onClick={handleClose} style={{ fontSize: '1.4rem', color: 'black' }}>
-                <PaymentsIcon style={{ marginRight: 8, fontSize: '2rem'}} /> Wallet - Loan
+            <MenuItem onClick={handleClose} style={{ fontSize: '1.2rem', color: 'black' }}>
+                <PaymentsIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Wallet - Loan
             </MenuItem>
           </Menu>
           {

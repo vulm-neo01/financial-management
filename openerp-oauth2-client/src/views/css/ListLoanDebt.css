@@ -7,7 +7,7 @@
 
 .item-card {
     width: 100%;
-    padding: 16px;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -26,8 +26,7 @@
 }
 
 .item-card .current-amount {
-    font-size: 1.2em;
-    font-weight: bold;
+    font-size: 1em;
     margin: 4px 0;
 }
 

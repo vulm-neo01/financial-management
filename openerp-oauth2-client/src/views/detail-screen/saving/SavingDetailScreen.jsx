@@ -13,6 +13,7 @@ import { currency } from 'utils/currency';
 import SavingUpdateModal from 'components/modal/SavingUpdateModal';
 import { groupExchangesByTime } from 'utils/groupExchangesByTime';
 import SavingGraph from 'components/chart/SavingGraph';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const receiveTypes = {
     DAILY: "Hằng ngày",
@@ -190,18 +191,18 @@ function SavingDetailScreen() {
             {
                 saving 
                 && 
-                <Box sx={{ display: 'flex', maxHeight: '100vh' }}>
+                <Box sx={{ display: 'flex', maxHeight: '110vh' }}>
                     <Box sx={{ backgroundColor: `${saving.color && saving.color.colorId}`, width: '25%', padding: 2, borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderRadius: '12px'  }}>
                         <Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                 <IconButton onClick={() => history.push("/savings")}>
                                     <ArrowBackIcon />
                                 </IconButton>
-                                <Typography style={{marginLeft: "4px"}} variant="h5" sx={{ flexGrow: 1 }}>{saving.name}</Typography>
+                                <Typography style={{marginLeft: "4px"}} variant="h6" sx={{ flexGrow: 1 }}>{saving.name}</Typography>
                             </Box>
                             <div className='saving-detail'>
                                 <Box className="info">
-                                    <img src={saving.logo.url} alt={saving.name} />
+                                    <img src={saving.logo.url} alt={saving.name} sizes='40px' />
                                     <div className="field" style={{justifyContent: "center"}}>
                                         <span>{saving.savingCategory.name}</span>
                                     </div>
@@ -211,15 +212,15 @@ function SavingDetailScreen() {
                                     </div>
                                     <div className="field">
                                         <label>Tiền gốc:</label>
-                                        <span>{saving.originAmount.toLocaleString()} {currency}</span>
+                                        <span>{saving.originAmount.toLocaleString()} đ</span>
                                     </div>
                                     <div className="field">
-                                        <label>Số tiền hiện tại:</label>
-                                        <span>{saving.currentAmount.toLocaleString()} {currency}</span>
+                                        <label>Hiện tại:</label>
+                                        <span>{saving.currentAmount.toLocaleString()} đ</span>
                                     </div>
                                     <div className="field">
                                         <label>Mục tiêu:</label>
-                                        <span>{saving.targetAmount.toLocaleString()} {currency}</span>
+                                        <span>{saving.targetAmount.toLocaleString()} đ</span>
                                     </div>
                                     {saving.savingType !== "NO_INTEREST" && (
                                         <>
@@ -257,13 +258,22 @@ function SavingDetailScreen() {
                                 </Box>
                             </div>
                         </Box>
-                        <Box sx={{ textAlign: 'center', mb: 2 }} className="action-buttons">
+                        <Box sx={{ textAlign: 'center'}} className="action-buttons">
+                            <Button
+                                onClick={() => alert("Done")}
+                                variant="contained"
+                                color="success"
+                                startIcon={<CheckCircleIcon />}
+                                sx={{ m: 1, minWidth: 190 }}
+                            >
+                                Done Saving
+                            </Button>
                             <Button
                                 onClick={handleOpenUpdateSavingDialog}
                                 variant="contained"
                                 color="primary"
                                 startIcon={<EditIcon />}
-                                sx={{ m: 1, minWidth: 120 }}
+                                sx={{ ml: 1, mr:1, mt: 1, minWidth: 100 }}
                             >
                                 Edit
                             </Button>
@@ -272,7 +282,7 @@ function SavingDetailScreen() {
                                 variant="contained"
                                 color="error"
                                 startIcon={<DeleteIcon />}
-                                sx={{ m: 1, minWidth: 120 }}
+                                sx={{ ml: 1, mr:1, mt: 1, minWidth: 100 }}
                             >
                                 Delete
                             </Button>
@@ -338,24 +348,24 @@ function SavingDetailScreen() {
                                                                 <Grid container spacing={2}>
                                                                     {/* Cột thứ nhất */}
                                                                     <Grid item xs={6}>
-                                                                        <Typography variant="h5" component="h2">
-                                                                            {exchange.exchangeType.exchangeTypeName}
+                                                                        <Typography variant="body1" component="h2">
+                                                                            <strong>{exchange.exchangeType.exchangeTypeName}</strong>
                                                                         </Typography>
-                                                                        <Typography variant="body1" color="textSecondary" gutterBottom>
-                                                                            From: {exchange.from}
+                                                                        <Typography variant="body2" color="textSecondary" gutterBottom>
+                                                                            <strong>From:</strong> {exchange.from}
                                                                         </Typography>
-                                                                        <Typography variant="body1" color="textSecondary" gutterBottom>
-                                                                            To: {exchange.to}
+                                                                        <Typography variant="body2" color="textSecondary" gutterBottom>
+                                                                            <strong>To:</strong> {exchange.to}
                                                                         </Typography>
                                                                     </Grid>
 
                                                                     {/* Cột thứ hai */}
                                                                     <Grid item xs={6}>
-                                                                        <Typography variant="h6" component="h2">
-                                                                            Amount: {exchange.amount.toLocaleString()} {localStorage.getItem("currency")}
+                                                                        <Typography variant="body1" component="h2">
+                                                                            <strong>{exchange.amount.toLocaleString()} đ</strong>
                                                                         </Typography>
-                                                                        <Typography variant="body1" color="textSecondary" gutterBottom>
-                                                                            Happen Time: {formatDate(exchange.exchangeDate)}
+                                                                        <Typography variant="body2" color="textSecondary" gutterBottom>
+                                                                            <strong>Happen Time:</strong> {formatDate(exchange.exchangeDate)}
                                                                         </Typography>
                                                                         {/* Thêm các thông tin khác của giao dịch nếu cần */}
                                                                     </Grid>

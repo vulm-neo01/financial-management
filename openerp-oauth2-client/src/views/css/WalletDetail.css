@@ -1,7 +1,7 @@
 .wallet-detail {
     max-width: 600px;
     margin: auto;
-    padding: 20px;
+    padding: 12px 16px;
     border: 1px solid #ddd;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -9,14 +9,14 @@
 }
 
 .wallet-detail img {
-    width: 50%;
+    width: 40%;
     margin-bottom: 16px;
     border-radius: 12px;
 }
 
 .wallet-detail .info {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .wallet-detail .info .field {

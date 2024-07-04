@@ -119,7 +119,7 @@ const GroupMember = ({groupWalletId}) => {
     return (
         <div>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Typography variant="h4">Group Members</Typography>
+                <Typography variant="h6">Group Members</Typography>
                 {isAdmin(createdUserId) && (
                     <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={() => setOpenModal(true)}>
                         Add Member
@@ -130,7 +130,7 @@ const GroupMember = ({groupWalletId}) => {
                 <Box key={member.groupMemberId} display="flex" alignItems="center" p={2} borderBottom="1px solid #ddd">
                     <Avatar alt={member.user.firstName} src={member.user.profilePicture || "/static/images/avatar/1.jpg"} />
                     <Box ml={2} flex="1">
-                        <Typography variant="h6">{member.user.firstName} {member.user.lastName}</Typography>
+                        <Typography variant="body1"><strong>{member.user.firstName} {member.user.lastName}</strong></Typography>
                         <Typography variant="body2"><PersonIcon fontSize="small" /> {member.user.username}</Typography>
                         <Typography variant="body2"><EmailIcon fontSize="small" /> {member.user.email}</Typography>
                     </Box>

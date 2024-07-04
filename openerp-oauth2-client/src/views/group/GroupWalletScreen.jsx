@@ -38,14 +38,14 @@ function GroupWalletScreen() {
 
     return (
         <div>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h5" gutterBottom>
                 Group Wallets
             </Typography>
             <div className="overview-group-wallets">
                 <div className="gr-wallet-cards">
                     <div className="add-group-wallet-button" onClick={handleOpenAddGroupWalletModal}>
                         <AddIcon />
-                        <Typography variant="h6">Add Group Wallet</Typography>
+                        <Typography variant="body1">Add Group Wallet</Typography>
                     </div>
                     {groupWallets.map(groupWallet => (
                         <GroupWalletCard key={groupWallet.groupWalletId} groupWallet={groupWallet} userId={userId} />

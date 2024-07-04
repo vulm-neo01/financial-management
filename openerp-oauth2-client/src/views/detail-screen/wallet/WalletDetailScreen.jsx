@@ -143,62 +143,56 @@ function WalletDetailScreen() {
                 {wallet && 
                     <Box sx={{ backgroundColor: `${wallet.color && wallet.color.colorId}`, width: '25%', padding: 2, borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderRadius: '12px' }}>
                         <Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                 <IconButton onClick={() => history.push("/wallets")}>
                                     <ArrowBackIcon />
                                 </IconButton>
-                                <Typography variant="h5" sx={{ flexGrow: 1 }}>{wallet.name}</Typography>
+                                <Typography variant="h6" sx={{ flexGrow: 1 }}>{wallet.name}</Typography>
                             </Box>
                             <div className="wallet-detail">
                                 <Box className="info" sx={{ textAlign: 'center', mt: 2 }}>
                                     <img src={wallet.logo.url} alt={wallet.name} style={{ width: '50%', marginBottom: 16 }} />
-                                    <Typography className="field" variant="h6">
+                                    <Typography className="field" variant="body1">
                                         <label>
                                             Số dư: 
                                         </label>
-                                        {wallet.amount.toLocaleString()} {localStorage.getItem("currency")}
+                                        {wallet.amount.toLocaleString()} đ
                                     </Typography>
-                                    <Typography className="field" variant="body1">
+                                    <Typography className="field" variant="body2">
                                         <label>
                                             Loại ví: 
                                         </label>
                                         {typeLabels[wallet.type]}
                                     </Typography>
-                                    <Typography className="field" variant="body1">
-                                        <label>
-                                            Email: 
-                                        </label>
-                                        {wallet.user && wallet.user.email}
-                                    </Typography>
-                                    <Typography className="field" variant="body1">
-                                        <label>
-                                            Mô tả: 
-                                        </label>
-                                        {wallet.description}
-                                    </Typography>
-                                    <Typography className="field" variant="body1">
+                                    <Typography className="field" variant="body2">
                                         <label>
                                             Ngày tạo: 
                                         </label>
                                         {formatDate(wallet.createdAt)}
                                     </Typography>
-                                    <Typography className="field" variant="body1">
+                                    <Typography className="field" variant="body2">
                                         <label>
                                             Ngày cập nhật: 
                                         </label>
                                         {formatDate(wallet.updatedAt)}
                                     </Typography>
+                                    <Typography className="field" variant="caption">
+                                        <label>
+                                            Mô tả: 
+                                        </label>
+                                        {wallet.description}
+                                    </Typography>
                                     
                                 </Box>
                             </div>
                         </Box>
-                        <Box sx={{ textAlign: 'center', mb: 2 }}>
+                        <Box sx={{ textAlign: 'center', mb: 1 }}>
                             <Button
                                 onClick={handleOpenUpdateWalletDialog}
                                 variant="contained"
                                 color="primary"
                                 startIcon={<EditIcon />}
-                                sx={{ m: 1, minWidth: 120 }}
+                                sx={{ ml: 1, mr: 1, mt: 1, minWidth: 100 }}
                             >
                                 Edit
                             </Button>
@@ -207,7 +201,7 @@ function WalletDetailScreen() {
                                 variant="contained"
                                 color="error"
                                 startIcon={<DeleteIcon />}
-                                sx={{ m: 1, minWidth: 120 }}
+                                sx={{ ml: 1, mr: 1, mt: 1, minWidth: 100 }}
                             >
                                 Delete
                             </Button>
@@ -252,7 +246,7 @@ function WalletDetailScreen() {
                                                                 <Grid container spacing={2}>
                                                                     {/* Cột thứ nhất */}
                                                                     <Grid item xs={6}>
-                                                                        <Typography variant="h5" component="h2">
+                                                                        <Typography variant="h6" component="h2">
                                                                             {exchange.exchangeType.exchangeTypeName}
                                                                         </Typography>
                                                                         <Typography variant="body1" color="textSecondary" gutterBottom>

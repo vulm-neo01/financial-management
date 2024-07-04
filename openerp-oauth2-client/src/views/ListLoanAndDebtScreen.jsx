@@ -109,8 +109,8 @@ function ListLoanAndDebtScreen() {
                     onClick={() => openStatus && handleCardClick(item[`${type}Id`], type)}
                 >
                     <Box>
-                        <Typography variant="h6">{name || "Unnamed"}</Typography>
-                        <Typography variant="body2" className="current-amount">{currentAmount ? `${currentAmount.toLocaleString()} VNĐ` : '0 VNĐ'}</Typography>
+                        <Typography variant="body1"><strong>{name || "Unnamed"}</strong></Typography>
+                        <Typography variant="body2" className="current-amount">{currentAmount ? `${currentAmount.toLocaleString()} đ` : '0 đ'}</Typography>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography variant="body2">From: {formattedStartDate}</Typography>
                             <Typography variant="body2">To: {formattedReturnDate}</Typography>
@@ -126,12 +126,12 @@ function ListLoanAndDebtScreen() {
         <div>
             <Grid container spacing={3}>
                 <Grid item md={6}>
-                    <Typography variant="h4" gutterBottom>
+                    <Typography variant="h5" gutterBottom>
                         Loan Management
                     </Typography>
                     <div className="add-card-button" onClick={handleOpenAddLoanModal}>
                         <AddIcon />
-                        <Typography variant="h6">Add Loan</Typography>
+                        <Typography variant="body1">Add Loan</Typography>
                     </div>
 
                     <Grid container spacing={3} className="card-container">
@@ -139,12 +139,12 @@ function ListLoanAndDebtScreen() {
                     </Grid>
                 </Grid>
                 <Grid item md={6}>
-                    <Typography variant="h4" gutterBottom>
+                    <Typography variant="h5" gutterBottom>
                         Debt Management
                     </Typography>
                     <div className="add-card-button" onClick={handleOpenAddDebtModal}>
                         <AddIcon />
-                        <Typography variant="h6">Add Debt</Typography>
+                        <Typography variant="body1">Add Debt</Typography>
                     </div>
                     <Grid container spacing={3} className="card-container">
                         {debts.map(debt => renderCard(debt, 'debt'))}

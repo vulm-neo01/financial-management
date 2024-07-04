@@ -16,7 +16,7 @@
 .saving-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 10px;
     justify-content: center;
     background-color: #f9f9f9;
 }
@@ -27,13 +27,13 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 35vw;
+    width: 33vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     transition: transform 0.2s;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin: 10px;
+    margin: 8px;
 }
 
 .saving-card:hover {
@@ -46,7 +46,7 @@
 .saving-logo-name {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border-radius: 50%;
 }
 

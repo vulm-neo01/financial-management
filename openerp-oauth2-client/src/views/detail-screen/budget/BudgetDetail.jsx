@@ -169,22 +169,22 @@ function BudgetDetail() {
                         <IconButton onClick={() => history.push("/budgets")}>
                             <ArrowBackIcon />
                         </IconButton>
-                        <Typography variant="h5" sx={{ flexGrow: 1 }}>{budget.name}</Typography>
+                        <Typography variant="h6" sx={{ flexGrow: 1 }}>{budget.name}</Typography>
                     </Box>
                     <Divider />
                     <Box sx={{ textAlign: 'center', mt: 2 }}>
-                        <img src={budget.logo.url} alt={budget.name} style={{ width: '50%', marginBottom: 16 }} />
-                        <Typography variant="h6">Loại: {typeLabels[budget.type]}</Typography>
-                        <Typography variant="body1" sx={{ mt: 2 }}>{budget.description}</Typography>
+                        <img src={budget.logo.url} alt={budget.name} style={{ width: '40%', marginBottom: 12 }} />
+                        <Typography variant="body1"><strong>Type: {typeLabels[budget.type]}</strong></Typography>
+                        <Typography variant="body2" sx={{ mt: 2 }}>{budget.description}</Typography>
                     </Box>
                 </Box>
-                <Box sx={{ textAlign: 'center', mb: 2 }}>
+                <Box sx={{ textAlign: 'center', mb: 1 }}>
                     <Button
                         onClick={budget.type === "income" ? handleOpenUpdateBudgetIncomeDialog : handleOpenUpdateBudgetSpendDialog}
                         variant="contained"
                         color="primary"
                         startIcon={<EditIcon />}
-                        sx={{ m: 1, minWidth: 120 }}
+                        sx={{ m: 1, minWidth: 100 }}
                     >
                         Edit
                     </Button>
@@ -193,7 +193,7 @@ function BudgetDetail() {
                         variant="contained"
                         color="error"
                         startIcon={<DeleteIcon />}
-                        sx={{ m: 1, minWidth: 120 }}
+                        sx={{ m: 1, minWidth: 100 }}
                     >
                         Delete
                     </Button>
@@ -226,24 +226,24 @@ function BudgetDetail() {
                                                 <Grid container spacing={2}>
                                                     {/* Cột thứ nhất */}
                                                     <Grid item xs={6}>
-                                                        <Typography variant="h5" component="h2">
-                                                            {exchange.exchangeType.exchangeTypeName}
+                                                        <Typography variant="body1" component="h2">
+                                                            <strong>{exchange.exchangeType.exchangeTypeName}</strong>
                                                         </Typography>
-                                                        <Typography variant="body1" color="textSecondary" gutterBottom>
-                                                            From: {exchange.from}
+                                                        <Typography variant="body2" color="textSecondary" gutterBottom>
+                                                            <strong>From:</strong> {exchange.from}
                                                         </Typography>
-                                                        <Typography variant="body1" color="textSecondary" gutterBottom>
-                                                            To: {exchange.to}
+                                                        <Typography variant="body2" color="textSecondary" gutterBottom>
+                                                            <strong>To:</strong> {exchange.to}
                                                         </Typography>
                                                     </Grid>
 
                                                     {/* Cột thứ hai */}
                                                     <Grid item xs={6}>
-                                                        <Typography variant="h6" component="h2">
-                                                            Amount: {exchange.amount.toLocaleString()} {localStorage.getItem("currency")}
+                                                        <Typography variant="body1" component="h2">
+                                                            <strong>{exchange.amount.toLocaleString()} đ</strong>
                                                         </Typography>
-                                                        <Typography variant="body1" color="textSecondary" gutterBottom>
-                                                            Happen Time: {formatDate(exchange.exchangeDate)}
+                                                        <Typography variant="body2" color="textSecondary" gutterBottom>
+                                                            <strong>Happen Time:</strong> {formatDate(exchange.exchangeDate)}
                                                         </Typography>
                                                         {/* Thêm các thông tin khác của giao dịch nếu cần */}
                                                     </Grid>
@@ -251,7 +251,7 @@ function BudgetDetail() {
                                             </CardContent>
                                             {/* Đường viền màu */}
                                             <div style={{
-                                                height: '5px',
+                                                height: '4px',
                                                 width: '100%',
                                                 backgroundColor: exchange.exchangeType.exchangeTypeId === 'wallet_wallet' ? '#106BB6' :
                                                     exchange.exchangeType.exchangeTypeId === 'income' ? '#008000' :
