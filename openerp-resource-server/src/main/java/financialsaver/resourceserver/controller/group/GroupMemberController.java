@@ -61,4 +61,10 @@ public class GroupMemberController {
         List<GroupMember> groupMembers = groupMemberService.deleteFromGroup(groupMemberDTO, groupMemberId);
         return ResponseEntity.ok().body(groupMembers);
     }
+
+    @PatchMapping("/out-group")
+    public ResponseEntity<?> OutGroup(@RequestBody GroupMemberDTO groupMemberDTO) {
+        List<GroupMember> groupMembers = groupMemberService.outGroups(groupMemberDTO);
+        return ResponseEntity.ok().body(groupMembers);
+    }
 }

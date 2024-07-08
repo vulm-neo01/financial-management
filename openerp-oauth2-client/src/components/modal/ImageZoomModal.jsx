@@ -13,6 +13,7 @@ const style = {
     justifyContent: 'center',
     // alignItems: 'center',
     width: '60%', // Adjust width as needed
+    maxHeight: '90vh',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,

@@ -24,7 +24,7 @@ const Offset = styled("div")(({ }) => ({
   // padding: theme.spacing(0, 1),
   // // necessary for content to be below app bar
   // ...theme.mixins.toolbar,
-  marginTop: "50px",
+  marginTop: "40px",
   justifyContent: "flex-end",
 }));
 
@@ -62,6 +62,7 @@ const styles = {
     boxShadow: `inset 0px -1px 1px ${theme.palette.grey[100]}`,
     backgroundColor: "rgba(255,255,255,0.72)",
     zIndex: theme.zIndex.drawer + 1,
+    minHeight: "48px"
   }),
   menuButton: {
     marginRight: 3,
@@ -92,9 +93,16 @@ function Layout({ children }) {
   const { keycloak } = useKeycloak();
 
   //
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [image] = useState(bgImage);
   const [color] = useState("blue");
+
+  const CustomToolbar = styled(Toolbar)(({ theme }) => ({
+    height: '54px',
+    [theme.breakpoints.up('sm')]: {
+      minHeight: '54px !important',
+    },
+  }));
 
   useEffect(() => {
     if (isMeeting) setOpen(false);
@@ -103,7 +111,7 @@ function Layout({ children }) {
   return (
     <Box sx={styles.root}>
       <AppBar position="fixed" color="inherit" sx={styles.appBar}>
-        <Toolbar>
+        <CustomToolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -131,7 +139,7 @@ function Layout({ children }) {
               </>
             )}
           </Box>
-        </Toolbar>
+        </CustomToolbar>
       </AppBar>
       <SideBar open={open} image={image} color={color} />
       <Main isOpen={open}>

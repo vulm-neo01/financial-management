@@ -8,7 +8,7 @@ const SavingCard = ({ handleClick, saving }) => {
     const borderColor = saving.color ? saving.color.colorId : '#fff';
 
     return (
-        <div onClick={() => handleClick(saving.savingId)} key={saving.savingId} className="saving-card" style={{ backgroundColor: borderColor }}>
+        <div onClick={() => handleClick(saving.savingId)} key={saving.savingId} className={`saving-card ${!saving.isActive ? "disabled" : ""}`} style={{ backgroundColor: borderColor }}>
             <div className="saving-logo-name">
                 <img src={saving.logo.url} alt={saving.name} className="saving-logo" />
                 <Typography variant="body1"><strong>{saving.name}</strong></Typography>

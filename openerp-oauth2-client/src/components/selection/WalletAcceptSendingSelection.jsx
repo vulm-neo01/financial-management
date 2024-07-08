@@ -8,14 +8,14 @@ import MenuItem from '@mui/material/MenuItem';
 const useStyles = makeStyles((theme) => ({
     walletSelectContainer: {
         width: '220px',
-        marginBottom: '10px',
+        marginBottom: '2px',
     },
     walletSelect: {
         width: '100%',
         // padding: '10px',
         border: '1px solid #ccc',
         borderRadius: '5px',
-        fontSize: '16px',
+        fontSize: '14px',
         color: '#333',
         backgroundColor: '#fff',
         '&:focus': {
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     walletOption: {
-        fontSize: '16px',
+        fontSize: '14px',
         color: '#333',
         backgroundColor: '#fff',
     },

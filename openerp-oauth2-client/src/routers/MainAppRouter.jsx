@@ -7,7 +7,6 @@ import { useNotificationState } from "state/NotificationState";
 import NotFound from "views/errors/NotFound";
 import PrivateRoute from "./PrivateRoute";
 import TeacherRouter from "./TeacherRouter";
-import DemoScreen from "views/DashBoardScreen";
 import ListWalletScreen from "views/detail-screen/wallet/VisibleWalletScreen";
 import AllExchangeScreen from "views/AllExchangeScreen";
 import ListBudgetScreen from "views/ListBudgetScreen";
@@ -25,6 +24,7 @@ import LoanDebtDetailScreen from "views/detail-screen/loan-debt/LoanDetailScreen
 import LoanDetailScreen from "views/detail-screen/loan-debt/LoanDetailScreen";
 import DebtDetailScreen from "views/detail-screen/loan-debt/DebtDetailScreen";
 import GroupWalletOverview from "views/group/GroupWalletOverview";
+import LandingPage from "views/LandingPage";
 
 const styles = {
   loadingProgress: {
@@ -56,7 +56,8 @@ function MainAppRouter(props) {
     <Layout>
       <Suspense fallback={<LinearProgress sx={styles.loadingProgress} />}>
           <Switch>
-            <Route component={Dashboard} exact path="/" />
+            <Route component={LandingPage} exact path="/" />
+            <PrivateRoute component={Dashboard} exact path="/general" />
             {/* <PrivateRoute component={DemoScreen} exact path="/demo" /> */}
             <PrivateRoute component={WalletManagementScreen} exact path="/wallets" />
             <PrivateRoute component={WalletDetailScreen} exact path="/wallets/:walletId" />

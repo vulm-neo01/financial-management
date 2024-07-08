@@ -45,7 +45,7 @@ function AccountButton() {
         aria-label="account of current user"
         aria-controls={open.get() ? menuId : undefined}
         onClick={handleToggle}
-        sx={{ p: 1.5 }}
+        sx={{ p: 1 }}
       >
         <Avatar
           alt="account button"

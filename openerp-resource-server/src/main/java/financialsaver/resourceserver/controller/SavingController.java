@@ -1,5 +1,6 @@
 package financialsaver.resourceserver.controller;
 
+import financialsaver.resourceserver.dto.request.DoneSavingRequest;
 import financialsaver.resourceserver.entity.Saving;
 import financialsaver.resourceserver.service.TransactionService;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,6 +46,12 @@ public class SavingController{
         return ResponseEntity.ok(savings);
     }
 
+    @GetMapping("/total-amount/{userId}")
+    public ResponseEntity<?> getTotalByUserId(@PathVariable String userId) {
+        BigDecimal amount = savingService.getSavingTotalAmount(userId);
+        return ResponseEntity.ok(amount);
+    }
+
     @DeleteMapping("/{savingId}")
     public ResponseEntity<?> removeSaving(@PathVariable UUID savingId) {
         List<Saving> savings = transactionService.removeSavingWithExchanges(savingId);
@@ -56,9 +64,17 @@ public class SavingController{
         return ResponseEntity.ok(savings);
     }
 
+    @PostMapping("/done/{savingId}")
+    public ResponseEntity<?> doneSaving(@RequestBody DoneSavingRequest doneSavingRequest, @PathVariable UUID savingId) {
+        Saving saving = transactionService.doneSaving(savingId, doneSavingRequest);
+        return ResponseEntity.ok().body(saving);
+    }
+
     @PatchMapping("/{savingId}")
-    public ResponseEntity<?> updateSaving(@RequestBody SavingDTO savingDTO, @PathVariable UUID savingId){
+    public ResponseEntity<?> updateSaving(@RequestBody SavingDTO savingDTO, @PathVariable UUID savingId) throws IllegalAccessException {
         Saving saving = savingService.updateSaving(savingDTO, savingId);
         return ResponseEntity.ok(saving);
     }
+
+
 }

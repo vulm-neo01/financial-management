@@ -149,20 +149,23 @@ function SavingCreateModal({ onCreateSaving, open, onClose }) {
                     transform: 'translate(-50%, -50%)',
                     width: 600,
                     bgcolor: 'background.paper',
-                    p: 4,
+                    pt: 2,
+                    pb: 2,
+                    pl: 4,
+                    pr: 4,
                     borderRadius: 2,
                     maxHeight: "90vh",
                     overflowY: 'auto',
                 }}
             >
-                <Typography variant="h4" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
+                <Typography variant="h5" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
                     Tạo Saving mới
                 </Typography>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="name">Name *</InputLabel>
-                    <Input id="name" name="name" value={formData.name} onChange={handleFormChange} />
+                    <Input tabIndex={1} id="name" name="name" value={formData.name} onChange={handleFormChange} />
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                         <Button
                             variant="contained"
                             component="label"
@@ -177,6 +180,7 @@ function SavingCreateModal({ onCreateSaving, open, onClose }) {
                                 },
                             }}
                             onClick={() => setCategoryModalOpen(true)}
+                            tabIndex={2}
                         >
                             Select Category *
                         </Button>
@@ -190,23 +194,25 @@ function SavingCreateModal({ onCreateSaving, open, onClose }) {
                             savingCategories={budgetCategories}
                         />
                     </FormControl>
-                <Box sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="logoId" sx={{ marginBottom: '8px' }}>Logo *</InputLabel>
-                    <LogoSelection onSelect={handleLogoSelect} type="saving" logoId={formData.logoId} />
+                <Box sx={{ mb: 1 }}>
+                    <InputLabel htmlFor="logoId" sx={{ marginBottom: '4px' }}>Logo *</InputLabel>
+                    <Button sx={{p:0, m:0}} tabIndex={3}>
+                        <LogoSelection onSelect={handleLogoSelect} type="saving" logoId={formData.logoId} />
+                    </Button>
                 </Box>
-                <Box sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="colorId" sx={{ marginBottom: '8px' }}>Color *</InputLabel>
+                <Box sx={{ mb: 1 }}>
+                    <InputLabel htmlFor="colorId" sx={{ marginBottom: '4px' }}>Color *</InputLabel>
                     <ColorSelection onSelect={handleColorSelect} type="all" colorId={formData.colorId} />
                 </Box>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="originAmount">Origin Amount</InputLabel>
-                    <Input id="originAmount" name="originAmount" value={formData.originAmount} onChange={handleFormChange} endAdornment={currency}/>
+                    <Input tabIndex={4} id="originAmount" name="originAmount" value={formData.originAmount} onChange={handleFormChange} endAdornment={currency}/>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="targetAmount">Target Amount *</InputLabel>
-                    <Input id="targetAmount" name="targetAmount" value={formData.targetAmount} onChange={handleFormChange} endAdornment={currency}/>
+                    <Input tabIndex={5} id="targetAmount" name="targetAmount" value={formData.targetAmount} onChange={handleFormChange} endAdornment={currency}/>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Start Date *"
@@ -217,7 +223,7 @@ function SavingCreateModal({ onCreateSaving, open, onClose }) {
                         />
                     </LocalizationProvider>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Target Date *"
@@ -227,13 +233,14 @@ function SavingCreateModal({ onCreateSaving, open, onClose }) {
                         />
                     </LocalizationProvider>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="savingType">Saving Type *</InputLabel>
                     <Select
                         id="savingType"
                         name="savingType"
                         value={formData.savingType}
                         onChange={handleFormChange}
+                        tabIndex={6}
                     >
                         <MenuItem value="NO_INTEREST">Không có lãi</MenuItem>
                         <MenuItem value="SIMPLE_INTEREST">Lãi đơn</MenuItem>
@@ -244,17 +251,18 @@ function SavingCreateModal({ onCreateSaving, open, onClose }) {
                 </FormControl>
                 {(formData.savingType !== "NO_INTEREST") && (
                     <>
-                        <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormControl fullWidth sx={{ mb: 1 }}>
                             <InputLabel htmlFor="interestRate">Interest Rate</InputLabel>
-                            <Input id="interestRate" name="interestRate" value={formData.interestRate} onChange={handleFormChange} endAdornment="%"/>
+                            <Input tabIndex={7} id="interestRate" name="interestRate" value={formData.interestRate} onChange={handleFormChange} endAdornment="%"/>
                         </FormControl>
-                        <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormControl fullWidth sx={{ mb: 1 }}>
                             <InputLabel htmlFor="receiveInterestTime">Receive Interest Time</InputLabel>
                             <Select
                                 id="receiveInterestTime"
                                 name="receiveInterestTime"
                                 value={formData.receiveInterestTime}
                                 onChange={handleFormChange}
+                                tabIndex={8}
                             >
                                 <MenuItem value="EMPTY">Trống</MenuItem>
                                 <MenuItem value="DAILY">Hàng ngày</MenuItem>
@@ -270,17 +278,17 @@ function SavingCreateModal({ onCreateSaving, open, onClose }) {
                 )}
 
                 {/* {(formData.savingType === "INTEREST_RETURN_WALLET") && (
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <InputLabel htmlFor="walletId">Wallet Receive Money</InputLabel>
                         <WalletAcceptSendingSelection onSelect={handleWalletSendingSelect} initialWalletId={formData.walletId} />
                     </FormControl>
                 )} */}
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="name">Description</InputLabel>
-                    <Input id="description" name="description" value={formData.description} onChange={handleFormChange} />
+                    <Input tabIndex={9} id="description" name="description" value={formData.description} onChange={handleFormChange} />
                 </FormControl>
                 {warningSubmit && (
-                    <Typography color="error" sx={{ mb: 2 }}>
+                    <Typography color="error" sx={{ mb: 1 }}>
                         Please fill in all required fields.
                     </Typography>
                 )}
@@ -290,7 +298,8 @@ function SavingCreateModal({ onCreateSaving, open, onClose }) {
                         variant="contained"
                         color="primary"
                         onClick={handleCreateSaving}
-                        style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                        style={{ fontSize: '1.2rem', marginTop: '0.5rem' }}
+                        tabIndex={10}
                     >
                         Create Saving
                     </Button>

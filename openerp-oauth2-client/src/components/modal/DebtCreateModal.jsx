@@ -143,28 +143,31 @@ function DebtCreateModal({ onCreateDebt, open, onClose }) {
                     transform: 'translate(-50%, -50%)',
                     width: 600,
                     bgcolor: 'background.paper',
-                    p: 4,
+                    pt: 2,
+                    pb: 2,
+                    pl: 4,
+                    pr: 4,
                     borderRadius: 2,
                     maxHeight: "90vh",
                     overflowY: 'auto',
                 }}
             >
-                <Typography variant="h4" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
+                <Typography variant="h5" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
                     Tạo Khoản vay mới - Debt
                 </Typography>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="name">Name *</InputLabel>
-                    <Input id="name" name="name" value={formData.name} onChange={handleFormChange} />
+                    <Input tabIndex={1} id="name" name="name" value={formData.name} onChange={handleFormChange} />
                 </FormControl>
-                <Box sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="colorId" sx={{ marginBottom: '8px' }}>Color *</InputLabel>
+                <Box sx={{ mb: 1 }}>
+                    <InputLabel htmlFor="colorId" sx={{ marginBottom: '4px' }}>Color *</InputLabel>
                     <ColorSelection onSelect={handleColorSelect} type="all" colorId={formData.colorId} />
                 </Box>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="originAmount">Origin Amount</InputLabel>
-                    <Input id="originAmount" name="originAmount" value={formData.originAmount} onChange={handleFormChange} endAdornment={currency}/>
+                    <Input tabIndex={2} id="originAmount" name="originAmount" value={formData.originAmount} onChange={handleFormChange} endAdornment={currency}/>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <FormControlLabel
                         control={
                             <Checkbox 
@@ -172,6 +175,7 @@ function DebtCreateModal({ onCreateDebt, open, onClose }) {
                                 name="isCreateExchange"
                                 checked={formData.isCreateExchange}
                                 onChange={handleCheckBoxChange}
+                                tabIndex={3}
                             />
                         }
                         label="Tạo giao dịch liên kết đến Ví?"
@@ -183,7 +187,7 @@ function DebtCreateModal({ onCreateDebt, open, onClose }) {
                         <WalletAcceptSendingSelection onSelect={handleWalletSendingSelect} initialWalletId={formData.walletId} />
                     </FormControl>
                 }
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Start Date *"
@@ -194,7 +198,7 @@ function DebtCreateModal({ onCreateDebt, open, onClose }) {
                         />
                     </LocalizationProvider>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Return Date *"
@@ -204,13 +208,14 @@ function DebtCreateModal({ onCreateDebt, open, onClose }) {
                         />
                     </LocalizationProvider>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="type">Loại vay *</InputLabel>
                     <Select
                         id="type"
                         name="type"
                         value={formData.type}
                         onChange={handleFormChange}
+                        tabIndex={4}
                     >
                         <MenuItem value="NO_INTEREST">Không có lãi</MenuItem>
                         <MenuItem value="SIMPLE_INTEREST">Lãi đơn</MenuItem>
@@ -221,11 +226,11 @@ function DebtCreateModal({ onCreateDebt, open, onClose }) {
                 </FormControl>
                 {(formData.type !== "NO_INTEREST") && (
                     <>
-                        <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormControl fullWidth sx={{ mb: 1 }}>
                             <InputLabel htmlFor="interestRate">Lãi suất/năm</InputLabel>
                             <Input id="interestRate" name="interestRate" value={formData.interestRate} onChange={handleFormChange} endAdornment="%"/>
                         </FormControl>
-                        <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormControl fullWidth sx={{ mb: 1 }}>
                             <InputLabel htmlFor="receiveInterestTime">Khoảng thời gian nhận lãi</InputLabel>
                             <Select
                                 id="receiveInterestTime"
@@ -245,12 +250,12 @@ function DebtCreateModal({ onCreateDebt, open, onClose }) {
                         </FormControl>
                     </>
                 )}
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="name">Description</InputLabel>
-                    <Input id="description" name="description" value={formData.description} onChange={handleFormChange} />
+                    <Input tabIndex={5} id="description" name="description" value={formData.description} onChange={handleFormChange} />
                 </FormControl>
                 {warningSubmit && (
-                    <Typography color="error" sx={{ mb: 2 }}>
+                    <Typography color="error" sx={{ mb: 1 }}>
                         Please fill in all required fields.
                     </Typography>
                 )}
@@ -260,7 +265,8 @@ function DebtCreateModal({ onCreateDebt, open, onClose }) {
                         variant="contained"
                         color="primary"
                         onClick={handleCreateLoan}
-                        style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                        style={{ fontSize: '1.2rem', marginTop: '0.5rem' }}
+                        tabIndex={6}
                     >
                         Create Debt
                     </Button>

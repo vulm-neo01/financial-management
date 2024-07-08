@@ -262,7 +262,7 @@ function NotificationButton() {
         aria-label="notification button"
         aria-controls={open.get() ? "menu-list-grow" : undefined}
         onClick={handleToggle}
-        sx={{ p: 1.5 }}
+        sx={{ p: 1 }}
       >
         <StyledAvatar alt="notification button" isOpen={open.get()}>
           {open.get() ? (

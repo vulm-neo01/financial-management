@@ -26,4 +26,6 @@ public interface GroupMemberService {
     List<GroupMember> findAllByUserId(String userId);
 
     Boolean checkIsAdmin(String userId, UUID groupWalletId);
+
+    List<GroupMember> outGroups(GroupMemberDTO groupMemberDTO);
 }

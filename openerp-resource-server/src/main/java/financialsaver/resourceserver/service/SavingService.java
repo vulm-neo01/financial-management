@@ -19,7 +19,7 @@ public interface SavingService {
 
     List<Saving> createSaving(SavingDTO savingDTO);
 
-    Saving updateSaving(SavingDTO savingDTO, UUID savingId);
+    Saving updateSaving(SavingDTO savingDTO, UUID savingId) throws IllegalAccessException;
 
     void updateSavingFromExchange(ExchangeDTO exchangeDTO);
 
@@ -28,4 +28,8 @@ public interface SavingService {
     List<Saving> removeSaving(UUID savingId);
 
     void updateSavingAfterUpdateExchange(UUID saving, BigDecimal amount, OffsetDateTime exchangeDate);
+
+    void doneSaving(Saving saving);
+
+    BigDecimal getSavingTotalAmount(String userId);
 }

@@ -31,6 +31,7 @@ import GroupCreateIncomeModal from "components/modal/GroupCreateIncomeModal";
 import ImageZoomModal from "components/modal/ImageZoomModal";
 import GroupUpdateIncomeModal from "components/modal/GroupUpdateIncomeModal";
 import GroupUpdateSpendModal from "components/modal/GroupUpdateSpendModal";
+import { render } from "@testing-library/react";
 
 
 function CustomTabPanel(props) {
@@ -68,6 +69,8 @@ const GroupExchangeList  = ({groupWalletId, onUpdateAmount}) => {
     const [imageUrl, setImageUrl] = useState('https://qph.cf2.quoracdn.net/main-qimg-1a4bafe2085452fdc55f646e3e31279c-lq');
     const userId = localStorage.getItem("userId");
     const history = useHistory ();
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [userName, setUserName] = useState(null);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -153,6 +156,10 @@ const GroupExchangeList  = ({groupWalletId, onUpdateAmount}) => {
             // console.log(res.data);
             setExchanges(res.data);
         }).then();
+        request('get', `/group/members/check/${userId}/${groupWalletId}`, (res) => {
+            setIsAdmin(res.data);
+            // console.log(res.data);
+        });
     }, []);
     
     
@@ -174,6 +181,18 @@ const GroupExchangeList  = ({groupWalletId, onUpdateAmount}) => {
         setIsModalDeleteOpen(false);
     };
 
+    const getUserNameFromId = (userId) => {
+        if (userId === null){
+            return;
+        } else {
+            request("get", `/user-info/${userId}`, (res) => {
+                // console.log(res.data);
+                setUserName(res.data.username);
+            }).then();
+        }
+        return userName;
+    }
+
     const filteredExchanges =
         selectedExchangeType === "spend"
         ? exchanges
@@ -189,7 +208,7 @@ const GroupExchangeList  = ({groupWalletId, onUpdateAmount}) => {
         return (
             <div>
             {logoUrl ? (
-                <IconButton onClick={() => history.push(`/group/budgets/${groupBudgetId}`)}>
+                <IconButton>
                 <img
                     src={logoUrl}
                     alt="Category Logo"
@@ -237,6 +256,16 @@ const GroupExchangeList  = ({groupWalletId, onUpdateAmount}) => {
         field: "createdUser.username",
     },
     {
+        title: "Updated By",
+        field: "updatedUserId",
+        render: (rowData) => {
+            
+            const userName = rowData.updatedUserId && getUserNameFromId(rowData.updatedUserId);
+            // console.log(userName);
+            return userName ? userName : null;
+        }
+    },
+    {
         title: "Image",
         sorting: false,
         render: (rowData) => (
@@ -256,23 +285,28 @@ const GroupExchangeList  = ({groupWalletId, onUpdateAmount}) => {
         title: "Chức năng",
         sorting: false,
         render: (rowData) => (
-            <div>
-                <IconButton
-                    onClick={() => handleOpenUpdateExchangeDialog(rowData)}
-                    variant="contained"
-                    color="success"
-                >
-                    <EditIcon/>
-                </IconButton>
-                {/* <UpdateWalletModal open={updateWallet} onClose={handleCloseUpdateWalletDialog} exchangeId={rowData.exchangeId}/> */}
-                <IconButton
-                    onClick={() => handleClickOpenModalDelete(rowData)}
-                    variant="contained"
-                    color="error"
-                >
-                    <DeleteIcon/>
-                </IconButton>
-            </div>
+            <>
+                {(isAdmin || rowData.createdUser.userId === userId) &&
+
+                        <div>
+                            <IconButton
+                                onClick={() => handleOpenUpdateExchangeDialog(rowData)}
+                                variant="contained"
+                                color="success"
+                            >
+                                <EditIcon/>
+                            </IconButton>
+                            {/* <UpdateWalletModal open={updateWallet} onClose={handleCloseUpdateWalletDialog} exchangeId={rowData.exchangeId}/> */}
+                            <IconButton
+                                onClick={() => handleClickOpenModalDelete(rowData)}
+                                variant="contained"
+                                color="error"
+                            >
+                                <DeleteIcon/>
+                            </IconButton>
+                        </div>
+                }
+            </>
         ),
         width: '10%'
     },

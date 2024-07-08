@@ -13,6 +13,7 @@ import StatisticsGroupWallet from './StatisticsGroupWallet';
 import GroupMember from './GroupMember';
 import GroupExchangeList from './GroupExchangeList';
 import GroupBudget from './GroupBudget';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -54,10 +55,13 @@ function GroupWalletOverview() {
     const [groupWallet, setGroupWallet] = useState(null);
     const [updateGroup, setUpdateGroup] = useState(false);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+    const [isModalOutGroupOpen, setIsModalOutGroupOpen] = useState(false);
+    const [members, setMembers] = useState([]);
     const [exchanges, setExchanges] = useState([]);
     const theme = useTheme();
+    const userId = localStorage.getItem('userId');
     const [formData, setFormData] = useState({
-        ownerId: localStorage.getItem('userId'),
+        ownerId: userId,
         groupName: '',
         amount: 0.0,
         logoId: '',
@@ -72,6 +76,10 @@ function GroupWalletOverview() {
         //     console.log(res.data);
         //     setExchanges(res.data);
         // });
+        request("get", `group/members/all/${groupWalletId}`, (res) => {
+            setMembers(res.data);
+            console.log(res.data);
+        }).then();
     }, [groupWalletId]);
 
     const handleChange = (event, newValue) => {
@@ -84,6 +92,14 @@ function GroupWalletOverview() {
 
     const handleClickCloseModalDelete = () => {
         setIsModalDeleteOpen(false);
+    };
+
+    const handleClickOpenModalOutGroup = () => {
+        setIsModalOutGroupOpen(true);
+    };
+
+    const handleClickCloseModalOutGroup = () => {
+        setIsModalOutGroupOpen(false);
     };
 
     const handleDeleteGroupWallet = (groupWalletId) => {
@@ -118,6 +134,25 @@ function GroupWalletOverview() {
     const handleUpdateAmount = (updatedWallet) => {
         setGroupWallet(updatedWallet);
     }
+
+    const handleOutGroup = () => {
+        request("patch", `group/members/out-group`, (res) => {
+        }, (error) => {
+            console.error("Error when delete group wallet:", error);
+            // Xử lý lỗi nếu cần t
+        }, {
+            createdUserId: userId,
+            userId: null,
+            groupWalletId: groupWalletId,
+            role: null
+        });
+        history.push(`/group-wallets`);
+    }
+
+    const isAdmin = (userId) => {
+        const member = members.find(m => m.user.userId === userId);
+        return member && member.role === "ADMIN";
+    };
     
     return (
         <Box sx={{ display: 'flex', height: '80vh' }}>
@@ -136,36 +171,59 @@ function GroupWalletOverview() {
                         <Typography variant="body2">Người tạo: {groupWallet.owner.username}</Typography>
                         <Typography variant="body2" sx={{ mt: 2 }}>{groupWallet.description}</Typography>
                     </Box>
+
                 </Box>
-                <Box sx={{ textAlign: 'center', mb: 1 }}>
-                    <Button
-                        onClick={handleOpenUpdateGroupDialog}
-                        variant="contained"
-                        color="primary"
-                        startIcon={<EditIcon />}
-                        sx={{ m: 1, minWidth: 100 }}
-                    >
-                        Edit
-                    </Button>
-                    <Button
-                        onClick={handleClickOpenModalDelete}
-                        variant="contained"
-                        color="error"
-                        startIcon={<DeleteIcon />}
-                        sx={{ m: 1, minWidth: 100 }}
-                    >
-                        Delete
-                    </Button>
-                </Box>
+                {isAdmin(userId) &&
+                    <Box sx={{ textAlign: 'center', mb: 1 }}>
+                        <Button
+                            onClick={handleOpenUpdateGroupDialog}
+                            variant="contained"
+                            color="primary"
+                            startIcon={<EditIcon />}
+                            sx={{ m: 1, minWidth: 100 }}
+                        >
+                            Edit
+                        </Button>
+                        <Button
+                            onClick={handleClickOpenModalDelete}
+                            variant="contained"
+                            color="error"
+                            startIcon={<DeleteIcon />}
+                            sx={{ m: 1, minWidth: 100 }}
+                        >
+                            Delete
+                        </Button>
+                    </Box>
+                }
             </Box>
             <Box sx={{ width: '75%', padding: 2 }}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         <Tab label="Overview" {...a11yProps(0)} />
                         <Tab label="Exchanges" {...a11yProps(1)} />
                         <Tab label="Budgets" {...a11yProps(2)} />
                         <Tab label="Members" {...a11yProps(3)} />
                     </Tabs>
+                    <Button
+                        variant='contained'
+                        color="primary" 
+                        onClick={handleClickOpenModalOutGroup}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: 'primary.main',
+                            color: 'white',
+                            '&:hover': {
+                                backgroundColor: 'primary.dark',
+                            }
+                        }}
+                    >
+                        <LogoutIcon sx={{ marginRight: 1 }} />
+                        <Typography variant="button" sx={{ fontSize: '0.8rem' }}>
+                            Out Group
+                        </Typography>
+                    </Button>
                 </Box>
                 <CustomTabPanel value={value} index={0}>
                     <StatisticsGroupWallet groupWalletId={groupWalletId}  />
@@ -188,6 +246,17 @@ function GroupWalletOverview() {
                     onClose={handleClickCloseModalDelete}
                     onConfirm={() => handleDeleteGroupWallet(groupWalletId)}
                     question="Xóa Group Wallet"
+                /> 
+                : null
+            }
+
+            {
+                isModalOutGroupOpen ? 
+                <ConfirmationModal
+                    open={isModalOutGroupOpen}
+                    onClose={handleClickCloseModalOutGroup}
+                    onConfirm={handleOutGroup}
+                    question="Thoát khỏi nhóm"
                 /> 
                 : null
             }

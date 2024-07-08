@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -144,5 +145,15 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     @Override
     public Boolean checkIsAdmin(String userId, UUID groupWalletId) {
         return IsAdminOfGroupWallet(userId, groupWalletId);
+    }
+
+    @Override
+    public List<GroupMember> outGroups(GroupMemberDTO groupMemberDTO) {
+        GroupMember groupMember = groupMemberRepo.findAllByWallet_GroupWalletId(groupMemberDTO.getGroupWalletId())
+                .stream().filter(groupMember1 -> groupMember1.getUser().getUserId().equals(groupMemberDTO.getCreatedUserId()))
+                .findFirst().orElseThrow(() -> new NoSuchElementException("Can't find group member"));
+        groupMember.setActionStatus(false);
+        groupMemberRepo.save(groupMember);
+        return findAllByGroupWalletId(groupMemberDTO.getGroupWalletId());
     }
 }

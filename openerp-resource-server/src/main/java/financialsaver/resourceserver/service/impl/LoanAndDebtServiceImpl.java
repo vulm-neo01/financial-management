@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor(onConstructor_ = @Autowired)
 @Service
@@ -275,6 +276,58 @@ public class LoanAndDebtServiceImpl implements LoanAndDebtService {
         debt.setCurrentAmount(debt.getExpectedInterestAmount().add(debt.getOriginAmount()));
         debt.setUpdatedAt(new Date());
         return debtRepo.save(debt);
+    }
+
+    @Override
+    public BigDecimal getLoanTotal(String userId) {
+        List<Loan> loans = getAllLoanByUserId(userId).stream()
+                .filter(loan -> loan.getOpenStatus().equals(true))
+                .collect(Collectors.toList());
+        BigDecimal res = BigDecimal.ZERO;
+
+        for(Loan loan : loans){
+            res = res.add(loan.getCurrentAmount());
+        }
+        return res;
+    }
+
+    @Override
+    public BigDecimal getDebtTotal(String userId) {
+        List<Debt> debts = getAllDebtByUserId(userId).stream()
+                .filter(debt -> debt.getOpenStatus().equals(true))
+                .collect(Collectors.toList());
+        BigDecimal res = BigDecimal.ZERO;
+
+        for(Debt loan : debts){
+            res = res.add(loan.getCurrentAmount());
+        }
+        return res;
+    }
+
+    @Override
+    public Integer getTotalLoanNumber(String userId) {
+        List<Loan> loans = getAllLoanByUserId(userId).stream()
+                .filter(loan -> loan.getOpenStatus().equals(true))
+                .collect(Collectors.toList());
+        Integer res = 0;
+
+        for(Loan loan : loans){
+            res++;
+        }
+        return res;
+    }
+
+    @Override
+    public Integer getTotalDebtNumber(String userId) {
+        List<Debt> debts = getAllDebtByUserId(userId).stream()
+                .filter(debt -> debt.getOpenStatus().equals(true))
+                .collect(Collectors.toList());
+        Integer res = 0;
+
+        for(Debt debt : debts){
+            res++;
+        }
+        return res;
     }
 
     private BigDecimal calculateExpectedInterest(Loan loan) {

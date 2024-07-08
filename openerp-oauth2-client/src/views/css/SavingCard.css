@@ -8,6 +8,11 @@
     align-items: center;
 }
 
+.saving-card.disabled {
+    opacity: 0.3;
+    cursor:default;
+}
+
 .saving-logo-name {
     display: flex;
     align-items: center;

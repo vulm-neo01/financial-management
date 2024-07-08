@@ -196,7 +196,7 @@ const GroupMember = ({groupWalletId}) => {
             }
 
             {
-                isModalChangeRole ? 
+                isModalChangeRole && isAdmin(createdUserId) ? 
                 <ConfirmationModal
                     open={isModalChangeRole}
                     onClose={handleClickCloseModalChangeRole}

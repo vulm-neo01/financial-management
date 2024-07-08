@@ -79,44 +79,51 @@ const BudgetCreateModal = ({ onCreateBudget, open, onClose, typeOptions, title }
                     transform: 'translate(-50%, -50%)',
                     width: 600,
                     bgcolor: 'background.paper',
-                    p: 4,
+                    pt: 2,
+                    pb: 2,
+                    pl: 4,
+                    pr: 4,
                     borderRadius: 2
                 }}
             >
-                <Typography variant="h4" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
+                <Typography variant="h5" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
                     {title}
                 </Typography>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="name">Name*</InputLabel>
-                    <Input id="name" name="name" value={formData.name} onChange={handleFormChange} />
+                    <Input id="name" name="name" value={formData.name} onChange={handleFormChange} tabIndex={1}/>
                 </FormControl>
-                <Box sx={{ mb: 2 }}>
+                <Box sx={{ mb: 1 }}>
                     <InputLabel htmlFor="logoId" sx={{ marginBottom: '8px' }}>Select Logo*</InputLabel>
-                    <LogoSelection onSelect={handleLogoSelect} type="budget" logoId={formData.logoId} />
+                    <Button sx={{m:0, p:0}} tabIndex={2}>
+                        <LogoSelection onSelect={handleLogoSelect} type="budget" logoId={formData.logoId} />
+
+                    </Button>
                 </Box>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="type">Budget Type*</InputLabel>
                     <Select
                         id="type"
                         name="type"
                         value={formData.type}
                         onChange={handleFormChange}
+                        tabIndex={3}
                     >
                         {typeOptions.map(option => (
                             <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="limitAmount">Limit Amount*</InputLabel>
-                    <Input id="limitAmount" name="limitAmount" value={formData.limitAmount} onChange={handleFormChange} endAdornment={currency}/>
+                    <Input tabIndex={4} id="limitAmount" name="limitAmount" value={formData.limitAmount} onChange={handleFormChange} endAdornment={currency}/>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="name">Description</InputLabel>
-                    <Input id="description" name="description" value={formData.description} onChange={handleFormChange} />
+                    <Input tabIndex={5} id="description" name="description" value={formData.description} onChange={handleFormChange} />
                 </FormControl>
                 {warningSubmit && (
-                    <Typography color="error" sx={{ mb: 2 }}>
+                    <Typography color="error" sx={{ mb: 1 }}>
                         Please fill in all required fields.
                     </Typography>
                 )}
@@ -125,7 +132,8 @@ const BudgetCreateModal = ({ onCreateBudget, open, onClose, typeOptions, title }
                         variant="contained"
                         color="primary"
                         onClick={handleCreateBudget}
-                        style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                        style={{ fontSize: '1.2rem', marginTop: '0.5rem' }}
+                        tabIndex={6}
                     >
                         Create Budget
                     </Button>

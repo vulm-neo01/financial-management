@@ -17,12 +17,19 @@ const Dashboard = () => {
     const [incomeSpendData, setIncomeSpendData] = useState([]);
     const [savingsData, setSavingsData] = useState([]);
     const [savingData, setSavingData] = useState();
+    const [loanDebtData, setLoanDebtData] = useState();
+    const [loanDebtDatas, setLoanDebtDatas] = useState();
     const [debtLoanData, setDebtLoanData] = useState([]);
     const [transactions, setTransactions] = useState([]);
     const [includedInWallets, setIncludedInWallets] = useState([]);
     const [notIncludedInWallets, setNotIncludedInWallets] = useState([]);
     const [addIncome, setAddIncome] = React.useState(false);
     const [addSpend, setAddSpend] = React.useState(false);
+
+    const [walletTotal, setWalletTotal] = useState(0);
+    const [savingTotal, setSavingTotal] = useState(0);
+    const [loanTotal, setLoanTotal] = useState(0);
+    const [debtTotal, setDebtTotal] = useState(0);
 
     const history = useHistory ();
     const theme = useTheme ();
@@ -93,6 +100,67 @@ const Dashboard = () => {
                 },
             ])
         }).then();
+
+        request("get", `/exchanges/loan-debt-graph/${userId}`, (res) => {
+            console.log(res.data);
+            setLoanDebtData(res.data);
+            setLoanDebtDatas([
+                {
+                    name: 'Tổng cho vay',
+                    label: 'totalLoanCurrentAmount',
+                    totalLoanCurrentAmount: res.data.totalLoanCurrentAmount,
+                    fill: '#82ca9d',
+                },
+                {
+                    name: 'Tổng cho vay đã lấy lại trong 30 ngày',
+                    label: 'totalLoanGetAmount',
+                    totalLoanGetAmount: res.data.totalLoanGetAmount,
+                    fill: '#8884d8',
+                },
+                {
+                    name: 'Tổng cho vay mới trong 30 ngày',
+                    label: 'totalLoanPayAmount',
+                    totalLoanPayAmount: res.data.totalLoanPayAmount,
+                    fill: '#f44336',
+                },
+                {
+                    name: 'Tổng vay',
+                    label: 'totalDebtCurrentAmount',
+                    totalDebtCurrentAmount: res.data.totalDebtCurrentAmount,
+                    fill: '#82ca9d',
+                },
+                {
+                    name: 'Tổng vay đã trả trong 30 ngày',
+                    label: 'totalDebtPayAmount',
+                    totalDebtPayAmount: res.data.totalDebtPayAmount,
+                    fill: '#8884d8',
+                },
+                {
+                    name: 'Tổng vay mới trong 30 ngày',
+                    label: 'totalDebtGetAmount',
+                    totalDebtGetAmount: res.data.totalDebtGetAmount,
+                    fill: '#f44336',
+                },
+            ])
+        }).then();
+
+        request("get", `/wallet/total-amount/${userId}`, (res) => {
+            setWalletTotal(res.data);
+            // console.log(res.data);
+        }).then();
+        request("get", `/savings/total-amount/${userId}`, (res) => {
+            setSavingTotal(res.data);
+            // console.log(res.data);
+        }).then();
+        request("get", `/loan-debt/loan/total-amount/${userId}`, (res) => {
+            setLoanTotal(res.data);
+            // console.log(res.data);
+        }).then();
+        request("get", `/loan-debt/debt/total-amount/${userId}`, (res) => {
+            setDebtTotal(res.data);
+            // console.log(res.data);
+        }).then();
+        
     }, []);
 
     const handleWalletClick = (walletId) => {
@@ -245,8 +313,56 @@ const Dashboard = () => {
     const incomePieChartData = prepareBudgetPieChartData(filteredIncomeSpends, 'income');
     const spendPieChartData = prepareBudgetPieChartData(filteredIncomeSpends, 'spend');
 
+    const formatForCurrency = (value) => `${value.toLocaleString()} đ`;
+
     return (
         <Grid container spacing={3}>
+                  {/* Hàng đầu: Tổng tài sản */}
+            <Grid item xs={12}>
+                <Card>
+                <CardContent>
+                    <Typography align='center' variant="h6">Tổng tài sản: <strong>{formatForCurrency(walletTotal + savingTotal + loanTotal + debtTotal)}</strong></Typography>
+                </CardContent>
+                </Card>
+            </Grid>
+
+            {/* Hàng thứ hai: Chia thành 4 cột */}
+            <Grid item xs={12}>
+                <Grid container spacing={3}>
+                <Grid item xs={12} md={3}>
+                    <Card>
+                    <CardContent>
+                        <Typography align='center' variant="body1">Tổng tài khoản</Typography>
+                        <Typography align='center' variant="body1"><strong>{formatForCurrency(walletTotal)}</strong></Typography>
+                    </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={12} md={3}>
+                    <Card>
+                    <CardContent>
+                        <Typography align='center' variant="body1">Tổng tiết kiệm</Typography>
+                        <Typography align='center' variant="body1"><strong>{formatForCurrency(savingTotal)}</strong></Typography>
+                    </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={12} md={3}>
+                    <Card>
+                    <CardContent>
+                        <Typography align='center' variant="body1">Tổng cho vay</Typography>
+                        <Typography align='center' variant="body1"><strong>{formatForCurrency(loanTotal)}</strong></Typography>
+                    </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={12} md={3}>
+                    <Card>
+                    <CardContent>
+                        <Typography align='center' variant="body1">Tổng nợ</Typography>
+                        <Typography align='center' variant="body1"><strong>{formatForCurrency(debtTotal)}</strong></Typography>
+                    </CardContent>
+                    </Card>
+                </Grid>
+                </Grid>
+            </Grid>
             <Grid item xs={12} md={7}>
                 <Card>
                     <CardContent>
@@ -427,7 +543,7 @@ const Dashboard = () => {
             <Grid item xs={12} md={6}>
                 <Card>
                     <CardContent>
-                        <Typography variant="h6">Saving In 30days</Typography>
+                        <Typography variant="h6">Saving trong 30 ngày gần nhất</Typography>
                         <Typography variant="body1">Total Saving Account: {savingData && savingData.totalSavingAccount}</Typography>
                         <ResponsiveContainer width="100%" height={400}>
                             <BarChart
@@ -440,7 +556,7 @@ const Dashboard = () => {
                                 <Tooltip content={<CustomTooltip />} />
                                 <Legend />
                                 {savingsData && savingsData.map((dataItem) => {
-                                    console.log(dataItem);
+                                    // console.log(dataItem);
                                     return (<Bar
                                         key={dataItem.name}
                                         dataKey={dataItem.label} 
@@ -457,36 +573,35 @@ const Dashboard = () => {
             <Grid item xs={12} md={6}>
                 <Card>
                     <CardContent>
-                        <Typography variant="h6">Debt & Loan Overview</Typography>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <BarChart data={debtLoanData}>
+                        <Typography variant="h6">Debt & Loan trong 30 ngày gần nhất</Typography>
+                        <Typography variant="body1">Total Loan Account: {loanDebtData && loanDebtData.totalLoanAccount}</Typography>
+                        <Typography variant="body1">Total Debt Account: {loanDebtData && loanDebtData.totalDebtAccount}</Typography>
+
+                        <ResponsiveContainer width="100%" height={400}>
+                        <BarChart
+                                data={loanDebtDatas}
+                                margin={{ top: 20, right: 30, left: 50, bottom: 5 }}
+                            >
                                 <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="date" />
-                                <YAxis />
-                                <Tooltip />
+                                <XAxis dataKey="name" />
+                                <YAxis tickFormatter={formatCurrency} />
+                                <Tooltip content={<CustomTooltip />} />
                                 <Legend />
-                                <Bar dataKey="debt" fill="#FF8042" />
-                                <Bar dataKey="loan" fill="#FFBB28" />
+                                {loanDebtDatas && loanDebtDatas.map((dataItem) => {
+                                    // console.log(dataItem);
+                                    return (<Bar
+                                        key={dataItem.name}
+                                        dataKey={dataItem.label} 
+                                        stackId="a"
+                                        fill={dataItem.fill}
+                                    />)
+                                })}
                             </BarChart>
                         </ResponsiveContainer>
                     </CardContent>
                 </Card>
             </Grid>
 
-            <Grid item xs={12}>
-                <Card>
-                    <CardContent>
-                        <Typography variant="h6">Recent Transactions</Typography>
-                        <ul>
-                            {transactions.map(transaction => (
-                                <li key={transaction.id}>
-                                    {transaction.date} - {transaction.description} - {transaction.amount}
-                                </li>
-                            ))}
-                        </ul>
-                    </CardContent>
-                </Card>
-            </Grid>
             <div style={{ position: 'fixed', bottom: 40, right: 40 }}>
                 <IconButton
                     color="primary"

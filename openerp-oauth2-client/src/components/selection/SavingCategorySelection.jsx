@@ -22,13 +22,16 @@ function SavingCategorySelection({ open, onClose, onSelectCategory, savingCatego
                     transform: 'translate(-50%, -50%)',
                     width: 600,
                     bgcolor: 'background.paper',
-                    p: 4,
+                    pt: 2,
+                    pb: 2,
+                    pl: 4,
+                    pr: 4,
                     borderRadius: 2,
                     maxHeight: '80vh',
                     overflowY: 'auto',
                 }}
             >
-                <Typography variant="h4" id="modal-title" gutterBottom style={{ textAlign: 'center' }}>
+                <Typography variant="h5" id="modal-title" gutterBottom style={{ textAlign: 'center' }}>
                     Select Saving Category
                 </Typography>
                 <List>

@@ -95,28 +95,34 @@ const GroupBudgetUpdateModal = ({ onCreateBudget, open, onClose, groupWalletId, 
                     transform: 'translate(-50%, -50%)',
                     width: 600,
                     bgcolor: 'background.paper',
-                    p: 4,
+                    pt: 2,
+                    pb: 2,
+                    pl: 4,
+                    pr: 4,
                     borderRadius: 2
                 }}
             >
-                <Typography variant="h4" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
+                <Typography variant="h5" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
                     Update {formData.type === "income" ? "Income" : "Spend"} Budget
                 </Typography>
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <InputLabel htmlFor="name">Name*</InputLabel>
-                    <Input id="name" name="name" value={formData.name} onChange={handleFormChange} />
+                    <Input tabIndex={1} id="name" name="name" value={formData.name} onChange={handleFormChange} />
                 </FormControl>
                 <Box sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="logoId" sx={{ marginBottom: '8px' }}>Select Logo*</InputLabel>
+                    <InputLabel htmlFor="logoId" sx={{ marginBottom: '4px' }}>Select Logo*</InputLabel>
+                    <Button sx={{p:0, m:0}} tabIndex={2}>
+
+                    </Button>
                     <LogoSelection onSelect={handleLogoSelect} type="budget" logoId={formData.logoId} />
                 </Box>
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <InputLabel htmlFor="limitAmount">Limit Amount*</InputLabel>
-                    <Input id="limitAmount" name="limitAmount" value={formData.limitAmount} onChange={handleFormChange} endAdornment={currency}/>
+                    <Input tabIndex={3} id="limitAmount" name="limitAmount" value={formData.limitAmount} onChange={handleFormChange} endAdornment={currency}/>
                 </FormControl>
                 <FormControl fullWidth sx={{ mb: 2 }}>
                     <InputLabel htmlFor="description">Description</InputLabel>
-                    <Input id="description" name="description" value={formData.description} onChange={handleFormChange} />
+                    <Input tabIndex={4} id="description" name="description" value={formData.description} onChange={handleFormChange} />
                 </FormControl>
                 {warningSubmit && (
                     <Typography color="error" sx={{ mb: 2 }}>
@@ -128,7 +134,8 @@ const GroupBudgetUpdateModal = ({ onCreateBudget, open, onClose, groupWalletId, 
                         variant="contained"
                         color="primary"
                         onClick={handleUpdateBudget}
-                        style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                        style={{ fontSize: '1.2rem', marginTop: '0.5rem' }}
+                        tabIndex={5}
                     >
                         Create Budget
                     </Button>

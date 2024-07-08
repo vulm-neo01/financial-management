@@ -155,22 +155,24 @@ const GroupBudget = ({groupWalletId}) => {
             <Card key={budget.groupBudgetId} sx={{ mb: 2 }}>
                 <CardContent>
                     <Grid container spacing={2}>
-                        <Grid item xs={1}>
+                        <Grid item xs={1.5}>
                             <Avatar sx={{ width: 56, height: 56 }} src={budget.logo.url} alt={budget.logo.name} />
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={7.5}>
                             <Typography variant="h6">{budget.name}</Typography>
                             <Typography variant="body2">Created by: {budget.createdUser && budget.createdUser.username || ""}</Typography>
                             <Typography variant="body2">Description: {budget.description}</Typography>
                         </Grid>
-                        <Grid item xs={3} sx={{ textAlign: 'right' }}>
-                            <IconButton onClick={() => handleOpenUpdateBudgetModal(budget)} size='large' aria-label="edit" sx={{ color: 'primary.main' }}>
-                                <EditIcon fontSize='40px'/>
-                            </IconButton>
-                            <IconButton onClick={() => handleClickOpenModalDelete(budget)} size='large' aria-label="delete" sx={{ color: 'error.main' }}>
-                                <DeleteIcon fontSize='40px' />
-                            </IconButton>
-                        </Grid>
+                            {isAdmin &&
+                            <Grid item xs={3} sx={{ textAlign: 'right' }}>
+                                <IconButton onClick={() => handleOpenUpdateBudgetModal(budget)} size='large' aria-label="edit" sx={{ color: 'primary.main' }}>
+                                    <EditIcon fontSize='40px'/>
+                                </IconButton>
+                                <IconButton onClick={() => handleClickOpenModalDelete(budget)} size='large' aria-label="delete" sx={{ color: 'error.main' }}>
+                                    <DeleteIcon fontSize='40px' />
+                                </IconButton>
+                            </Grid>
+                            }
                     </Grid>
                     <Box sx={{ mt: 2 }}>
                         <Grid container alignItems="center" spacing={1}>

@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 150px;
+    height: auto;
     border: 1px dashed #ccc;
     border-radius: 8px;
     cursor: pointer;
@@ -12,9 +12,9 @@
 
     background-color: #fff;
     padding: 12px;
-    width: 400px;   
+    width: 30vw;   
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 8px;
+    margin-top: 0px;
 }
 
 .overview-card {

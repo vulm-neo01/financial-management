@@ -5,7 +5,7 @@ export const general = {
   child: [
     {
       id: "MENU_GENERAL.DASHBOARD",
-      path: "/",
+      path: "/general",
       isPublic: true,
       text: "Dashboard",
       child: [],

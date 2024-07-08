@@ -40,8 +40,8 @@ const Background = styled("div")(({ theme }) => ({
 
 const styles = {
   drawerPaper: {
-    height: "calc(100% - 64px)",
-    marginTop: 8,
+    height: "calc(105% - 64px)",
+    marginTop: 6,
     overflowX: "hidden",
     width: drawerWidth,
     flexShrink: 0,
@@ -62,6 +62,7 @@ const styles = {
     color: whiteColor,
     textAlign: "center",
     paddingBottom: 2,
+    paddingTop: 2
   }),
   signInContainer: (theme) => ({
     width: drawerWidth - 20,
@@ -126,15 +127,25 @@ export default function SideBar(props) {
           justifyContent="center"
           ml="auto"
           mr="auto"
+          minHeight="91vh"
         >
           <Typography sx={styles.signInText}>
-            Đăng nhập ngay để sử dụng những tính năng dành riêng cho bạn
+            Take control of your finances today. Log in now to use many features just for you!
           </Typography>
           <PrimaryButton
             onClick={() => keycloak.login()}
             style={{ width: 160, borderRadius: 25 }}
           >
-            Đăng nhập
+            Sign In
+          </PrimaryButton>
+          <Typography sx={styles.signInText}>
+            OR
+          </Typography>
+          <PrimaryButton
+            onClick={() => keycloak.register()}
+            style={{ width: 160, borderRadius: 25 }}
+          >
+            Register Now
           </PrimaryButton>
         </Box>
       )}

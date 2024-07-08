@@ -172,31 +172,34 @@ function GroupCreateSpendModal({ onCreateExchange, open, onClose, groupWalletId 
                         transform: 'translate(-50%, -50%)',
                         width: 600,
                         bgcolor: 'background.paper',
-                        p: 4,
+                        pt: 2,
+                        pb: 2,
+                        pl: 4,
+                        pr: 4,
                         borderRadius: 2
                     }}
                 >
-                    <Typography variant="h4" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
+                    <Typography variant="h5" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
                         Spend Exchange
                     </Typography>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <InputLabel htmlFor="from">From</InputLabel>
-                        <Input id="from" name="from" value={formData.from} onChange={handleFormChange} />
+                        <Input tabIndex={1} id="from" name="from" value={formData.from} onChange={handleFormChange} />
                     </FormControl>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <InputLabel htmlFor="to">To</InputLabel>
-                        <Input id="to" name="to" value={formData.to} onChange={handleFormChange} />
+                        <Input tabIndex={2} id="to" name="to" value={formData.to} onChange={handleFormChange} />
                     </FormControl>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <InputLabel htmlFor="amount">Amount</InputLabel>
-                        <Input id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
+                        <Input tabIndex={3} id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
                     </FormControl>
                     {warningOverAmount && (
-                    <Typography color="error" sx={{ mb: 2 }}>
+                    <Typography color="error" sx={{ mb: 1 }}>
                         {warningOverAmount}
                     </Typography>
                     )}
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                                 label="Exchange Date"
@@ -207,11 +210,11 @@ function GroupCreateSpendModal({ onCreateExchange, open, onClose, groupWalletId 
                             />
                         </LocalizationProvider>
                     </FormControl>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <InputLabel htmlFor="description">Description</InputLabel>
-                        <Input id="description" name="description" value={formData.description} onChange={handleFormChange} />
+                        <Input tabIndex={4} id="description" name="description" value={formData.description} onChange={handleFormChange} />
                     </FormControl>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <Button
                             variant="contained"
                             component="label"
@@ -226,6 +229,7 @@ function GroupCreateSpendModal({ onCreateExchange, open, onClose, groupWalletId 
                                 },
                             }}
                             onClick={() => setCategoryModalOpen(true)}
+                            tabIndex={5}
                         >
                             Select Budget
                         </Button>
@@ -233,7 +237,7 @@ function GroupCreateSpendModal({ onCreateExchange, open, onClose, groupWalletId 
                             Selected Budget: {formData.groupBudgetId && budgetCategories ? budgetCategories.find(budget => budget.groupBudgetId === formData.groupBudgetId)?.name || 'Category not found' : 'No category selected'}
                         </Typography>
                     </FormControl>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <Button
                             variant="contained"
                             component="label"
@@ -247,6 +251,7 @@ function GroupCreateSpendModal({ onCreateExchange, open, onClose, groupWalletId 
                                     background: "#d74b4b",
                                 },
                             }}
+                            tabIndex={6}
                         >
                             <Input
                                 id="imageUrl"
@@ -261,7 +266,7 @@ function GroupCreateSpendModal({ onCreateExchange, open, onClose, groupWalletId 
                         </Button>
                     </FormControl>
                     {warningSubmit && (
-                        <Typography color="error" sx={{ mb: 2 }}>
+                        <Typography color="error" sx={{ mb: 1 }}>
                             Please fill in all required fields.
                         </Typography>
                     )}
@@ -275,8 +280,9 @@ function GroupCreateSpendModal({ onCreateExchange, open, onClose, groupWalletId 
                             variant="contained"
                             color="error"
                             onClick={handleCreateExchange}
-                            style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                            style={{ fontSize: '1.2rem', marginTop: '0.5rem' }}
                             // disabled={warningOverAmount !== ''}
+                            tabIndex={7}
                         >
                             Submit
                         </Button>

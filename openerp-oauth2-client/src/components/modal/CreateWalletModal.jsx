@@ -90,32 +90,38 @@ function CreateWalletModal({ onCreateWallet, open, onClose }) {
                     transform: 'translate(-50%, -50%)',
                     width: 600,
                     bgcolor: 'background.paper',
-                    p: 4,
+                    pt: 2,
+                    pb: 2,
+                    pl: 4,
+                    pr: 4,
                     borderRadius: 2
                 }}
             >
-                <Typography variant="h4" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
+                <Typography variant="h5" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
                     Tạo ví mới
                 </Typography>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="name">Name</InputLabel>
-                    <Input id="name" name="name" value={formData.name} onChange={handleFormChange} />
+                    <Input tabIndex={1} id="name" name="name" value={formData.name} onChange={handleFormChange} />
                 </FormControl>
-                <Box sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="logoId" sx={{ marginBottom: '8px' }}>Select Logo</InputLabel>
-                    <LogoSelection onSelect={handleLogoSelect} type="wallet" logoId={formData.logoId} />
+                <Box sx={{ mb: 1 }}>
+                    <InputLabel htmlFor="logoId" sx={{ marginBottom: '4px' }}>Select Logo</InputLabel>
+                    <Button tabIndex={2} sx={{p:0, m:0}}>
+                        <LogoSelection onSelect={handleLogoSelect} type="wallet" logoId={formData.logoId} />
+                    </Button>
                 </Box>
-                <Box sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="colorId" sx={{ marginBottom: '8px' }}>Color</InputLabel>
+                <Box sx={{ mb: 1 }}>
+                    <InputLabel htmlFor="colorId" sx={{ marginBottom: '4px' }}>Color</InputLabel>
                     <ColorSelection onSelect={handleColorSelect} type="all" colorId={formData.colorId} />
                 </Box>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="type">Wallet Type</InputLabel>
                     <Select
                         id="type"
                         name="type"
                         value={formData.type}
                         onChange={handleFormChange}
+                        tabIndex={3}
                     >
                         <MenuItem value="cash">Cash Wallet</MenuItem>
                         <MenuItem value="e-wallet">E-Wallet</MenuItem>
@@ -124,13 +130,13 @@ function CreateWalletModal({ onCreateWallet, open, onClose }) {
                         <MenuItem value="other">Other</MenuItem>
                     </Select>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="amount">Amount</InputLabel>
-                    <Input id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
+                    <Input tabIndex={4} id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="name">Description</InputLabel>
-                    <Input id="description" name="description" value={formData.description} onChange={handleFormChange} />
+                    <Input tabIndex={5} id="description" name="description" value={formData.description} onChange={handleFormChange} />
                 </FormControl>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <FormControlLabel
@@ -140,6 +146,7 @@ function CreateWalletModal({ onCreateWallet, open, onClose }) {
                                 checked={formData.includeInTotalAmount}
                                 onChange={handleIncludeInTotalChange}
                                 name="includeInTotalAmount"
+                                tabIndex={6}
                             />
                         }
                     />
@@ -148,7 +155,8 @@ function CreateWalletModal({ onCreateWallet, open, onClose }) {
                         variant="contained"
                         color="primary"
                         onClick={handleCreateWallet}
-                        style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                        style={{ fontSize: '1.2rem', marginTop: '0.5rem' }}
+                        tabIndex={7}
                     >
                         Create Wallet
                     </Button>

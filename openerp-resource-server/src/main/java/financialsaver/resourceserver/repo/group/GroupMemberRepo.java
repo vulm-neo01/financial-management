@@ -12,4 +12,6 @@ public interface GroupMemberRepo extends JpaRepository<GroupMember, UUID> {
     List<GroupMember> findAllByWallet_GroupWalletId(UUID groupWalletId);
 
     List<GroupMember> findAllByUser_UserId(String userId);
+
+    GroupMember findByUser_UserId(String userId);
 }

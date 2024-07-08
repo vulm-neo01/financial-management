@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,5 +32,11 @@ public class UserInfoController {
         Jwt principal = (Jwt) token.getPrincipal();
         String username = principal.getClaim("preferred_username");
         return userInfoService.getUserInfo(username);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserInfo> getUserNameById(@PathVariable String userId){
+        UserInfo userInfo = userInfoService.getUserById(userId);
+        return ResponseEntity.ok().body(userInfo);
     }
 }

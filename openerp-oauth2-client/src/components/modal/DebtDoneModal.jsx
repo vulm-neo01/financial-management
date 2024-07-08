@@ -93,25 +93,28 @@ function DebtDoneModal({ onUpdateDebt, open, onClose, debtId }) {
                     transform: 'translate(-50%, -50%)',
                     width: 600,
                     bgcolor: 'background.paper',
-                    p: 4,
+                    pt: 2,
+                    pb: 2,
+                    pl: 4,
+                    pr: 4,
                     borderRadius: 2,
                     maxHeight: "90vh",
                     overflowY: 'auto',
                 }}
             >
-                <Typography variant="h4" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
+                <Typography variant="h5" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
                     Thanh toán hoàn toàn khoản vay
                 </Typography>
-                <FormControl fullWidth sx={{ mb: 2, maxWidth: 250 }}>
+                <FormControl fullWidth sx={{ mb: 1, maxWidth: 250 }}>
                     <InputLabel htmlFor="walletId">Wallet Selection</InputLabel>
                     <WalletAcceptSendingSelection onSelect={handleWalletSendingSelect}/>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="description">Description</InputLabel>
                     <Input id="description" name="description" value={formData.description} onChange={handleFormChange} />
                 </FormControl>
                 {warningSubmit && (
-                    <Typography color="error" sx={{ mb: 2 }}>
+                    <Typography color="error" sx={{ mb: 1 }}>
                         Please fill in all required fields.
                     </Typography>
                 )}
@@ -121,7 +124,7 @@ function DebtDoneModal({ onUpdateDebt, open, onClose, debtId }) {
                         variant="contained"
                         color="primary"
                         onClick={handleCreatePayDebt}
-                        style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                        style={{ fontSize: '1.2rem', marginTop: '0.5rem' }}
                     >
                         Done Debt
                     </Button>

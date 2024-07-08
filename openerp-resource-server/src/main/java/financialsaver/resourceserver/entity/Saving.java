@@ -92,4 +92,7 @@ public class Saving {
     @LastModifiedDate
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @Column(name = "is_active")
+    private Boolean isActive;
 }

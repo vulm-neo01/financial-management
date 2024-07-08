@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,6 +59,17 @@ public class LoanAndDebtController {
         return ResponseEntity.ok(debts);
     }
 
+    @GetMapping("/loan/total-amount/{userId}")
+    public ResponseEntity<?> getLoanTotalAmountByUserId(@PathVariable String userId){
+        BigDecimal totalAmount = loanAndDebtService.getLoanTotal(userId);
+        return ResponseEntity.ok().body(totalAmount);
+    }
+
+    @GetMapping("/debt/total-amount/{userId}")
+    public ResponseEntity<?> getDebtTotalAmountByUserId(@PathVariable String userId){
+        BigDecimal totalAmount = loanAndDebtService.getDebtTotal(userId);
+        return ResponseEntity.ok().body(totalAmount);
+    }
     @PostMapping("/loan")
     public ResponseEntity<?> createLoan(@RequestBody LoanDTO loanDTO){
         List<Loan> loans = transactionService.createNewLoan(loanDTO);

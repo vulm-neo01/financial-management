@@ -62,17 +62,38 @@ function ListSavingScreen() {
     const [addSavingExchange, setAddSavingExchange] = useState(false);
     const history = useHistory();
 
+    const handleDeleteSaving = (savingId) => {
+        request("delete", `/savings/${savingId}`, (res) => {
+            fetchSavings(); // Refresh the list after deletion
+        }, (error) => {
+            console.error("Error when delete saving:", error);
+        });
+    };
+
+    const fetchSavings = () => {
+        request("get", `/savings/user/${userId}`, (res) => {
+            const sortedSavings = res.data.sort((a, b) => {
+                if (a.isActive === b.isActive) {
+                    return a.name.localeCompare(b.name);
+                }
+                return b.isActive - a.isActive;
+            });
+            setSavings(sortedSavings);
+        });
+    };
+
     useEffect(() => {
         request("get", `/savings/user/${userId}`, (res) => {
-            // console.log(res.data);
+            console.log(res.data);
             const sortedSavings = res.data.sort((a, b) => {
-                if (a.name < b.name) return -1;
-                if (a.name > b.name) return 1;
-                return 0;
+                if (a.isActive === b.isActive) {
+                    return a.name.localeCompare(b.name);
+                }
+                return b.isActive - a.isActive;
             });
             setSavings(sortedSavings);
         }).then();
-    }, [userId]);
+    }, [savings.length]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);

@@ -189,36 +189,39 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
                         transform: 'translate(-50%, -50%)',
                         width: 600,
                         bgcolor: 'background.paper',
-                        p: 4,
+                        pt: 2,
+                        pb: 2,
+                        pl: 4,
+                        pr: 4,
                         borderRadius: 2
                     }}
                 >
-                    <Typography variant="h4" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
+                    <Typography variant="h5" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
                         Spend Exchange
                     </Typography>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel htmlFor="walletId" sx={{ marginBottom: '8px' }}>Choose Wallet</InputLabel>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
+                        <InputLabel htmlFor="walletId">Choose Wallet</InputLabel>
                         <WalletSelection onSelect={handleWalletSendingSelect}/>
                     </FormControl>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <InputLabel htmlFor="to">To</InputLabel>
-                        <Input id="to" name="to" value={formData.to} onChange={handleFormChange} />
+                        <Input tabIndex={1} id="to" name="to" value={formData.to} onChange={handleFormChange} />
                     </FormControl>
                     {/* {warning && (
-                        <Typography color="error" sx={{ mb: 2 }}>
+                        <Typography color="error" sx={{ mb: 1 }}>
                             
                         </Typography>
                     )} */}
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <InputLabel htmlFor="amount">Amount</InputLabel>
-                        <Input id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
+                        <Input tabIndex={2} id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
                     </FormControl>
                     {warningOverAmount && (
-                    <Typography color="error" sx={{ mb: 2 }}>
+                    <Typography color="error" sx={{ mb: 1 }}>
                         {warningOverAmount}
                     </Typography>
                     )}
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                                 label="Exchange Date"
@@ -229,11 +232,11 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
                             />
                         </LocalizationProvider>
                     </FormControl>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <InputLabel htmlFor="description">Description</InputLabel>
-                        <Input id="description" name="description" value={formData.description} onChange={handleFormChange} />
+                        <Input tabIndex={3} id="description" name="description" value={formData.description} onChange={handleFormChange} />
                     </FormControl>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <Button
                             variant="contained"
                             component="label"
@@ -248,6 +251,7 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
                                 },
                             }}
                             onClick={() => setCategoryModalOpen(true)}
+                            tabIndex={4}
                         >
                             Select Category
                         </Button>
@@ -255,7 +259,7 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
                             Selected Category: {formData.category && budgetCategories ? budgetCategories.find(category => category.budgetCategoryId === formData.category)?.name || 'Category not found' : 'No category selected'}
                         </Typography>
                     </FormControl>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 1 }}>
                         <Button
                             variant="contained"
                             component="label"
@@ -269,6 +273,7 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
                                     background: "#d74b4b",
                                 },
                             }}
+                            tabIndex={5}
                         >
                             <Input
                                 id="imageUrl"
@@ -283,7 +288,7 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
                         </Button>
                     </FormControl>
                     {warningSubmit && (
-                        <Typography color="error" sx={{ mb: 2 }}>
+                        <Typography color="error" sx={{ mb: 1 }}>
                             Please fill in all required fields.
                         </Typography>
                     )}
@@ -297,8 +302,9 @@ function CreateSpendModal({ onCreateExchange, open, onClose }) {
                             variant="contained"
                             color="error"
                             onClick={handleCreateExchange}
-                            style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                            style={{ fontSize: '1.2rem', marginTop: '0.5rem' }}
                             disabled={warningOverAmount !== ''}
+                            tabIndex={6}
                         >
                             Submit
                         </Button>

@@ -4,13 +4,8 @@ import com.cloudinary.Cloudinary;
 import financialsaver.resourceserver.dto.ExchangeDTO;
 import financialsaver.resourceserver.dto.SavingHistoryDTO;
 import financialsaver.resourceserver.dto.request.BudgetGraphRequest;
-import financialsaver.resourceserver.dto.response.BudgetGraphResponse;
-import financialsaver.resourceserver.dto.response.OverviewExchangeBudgetDTO;
-import financialsaver.resourceserver.dto.response.OverviewWalletDTO;
-import financialsaver.resourceserver.dto.response.SavingOverviewGraphResponse;
-import financialsaver.resourceserver.entity.Exchange;
-import financialsaver.resourceserver.entity.Saving;
-import financialsaver.resourceserver.entity.Wallet;
+import financialsaver.resourceserver.dto.response.*;
+import financialsaver.resourceserver.entity.*;
 import financialsaver.resourceserver.entity.support.BudgetCategory;
 import financialsaver.resourceserver.entity.support.ExchangeType;
 import financialsaver.resourceserver.entity.support.SavingType;
@@ -401,18 +396,18 @@ public class ExchangeServiceImpl implements ExchangeService {
                     log.info("Run here!");
                     exchange.setTo(walletService.getWalletById(newWalletId).getName());
                     exchange.setFrom(savingService.getBySavingId(newDestinationId).getName());
+                    savingService.updateSavingFromExchange(exchangeDTO);
                     walletService.updateWalletAfterUpdateExchange(oldWalletId, oldAmount.negate());
                     walletService.updateWalletAfterUpdateExchange(newWalletId, newAmount);
                     savingService.updateSavingAfterUpdateExchange(oldDestinationId, oldAmount, exchange.getExchangeDate());
-                    savingService.updateSavingFromExchange(exchangeDTO);
                     break;
                 case "wallet_saving":
                     exchange.setFrom(walletService.getWalletById(newWalletId).getName());
                     exchange.setTo(savingService.getBySavingId(newDestinationId).getName());
+                    savingService.updateSavingFromExchange(exchangeDTO);
                     walletService.updateWalletAfterUpdateExchange(oldWalletId, oldAmount);
                     walletService.updateWalletAfterUpdateExchange(newWalletId, newAmount.negate());
                     savingService.updateSavingAfterUpdateExchange(oldDestinationId, oldAmount.negate(), exchange.getExchangeDate());
-                    savingService.updateSavingFromExchange(exchangeDTO);
                     break;
                 default:
                     // Handle invalid exchangeType (throw exception, return error response, etc.)
@@ -620,14 +615,14 @@ public class ExchangeServiceImpl implements ExchangeService {
         return exchanges;
     }
 
-    private BigDecimal calculatePeriodAmount(List<Exchange> exchanges, BigDecimal currentAmount){
+    private BigDecimal calculatePeriodAmount(List<Exchange> exchanges, BigDecimal currentAmount, BigDecimal rate){
         exchanges.sort(Comparator.comparing(Exchange::getExchangeDate).reversed());
         for (Exchange exchange : exchanges){
             String exchangeType = exchange.getExchangeType().getExchangeTypeId();
             if(exchangeType.equals("wallet_saving")){
                 currentAmount = currentAmount.subtract(exchange.getAmount());
             } else {
-                currentAmount = currentAmount.add(exchange.getAmount());
+                currentAmount = currentAmount.add(exchange.getAmount().multiply(rate));
             }
         }
 
@@ -663,7 +658,7 @@ public class ExchangeServiceImpl implements ExchangeService {
                     List<Exchange> filteredExchanges = exchanges.stream()
                             .filter(e -> e.getExchangeDate().toLocalDate().isAfter(latestStackTime))
                             .collect(Collectors.toList());
-                    BigDecimal amount = calculatePeriodAmount(filteredExchanges, currentAmount);
+                    BigDecimal amount = calculatePeriodAmount(filteredExchanges, currentAmount, BigDecimal.ONE.add(rate));
                     if(!saving.getSavingType().equals(SavingType.SIMPLE_INTEREST)){
                         log.info("COMPOUND INTEREST");
                         amount = amount.divide(BigDecimal.ONE.add(rate), 10, RoundingMode.HALF_UP);
@@ -841,7 +836,9 @@ public class ExchangeServiceImpl implements ExchangeService {
                         || exchange.getExchangeType().getExchangeTypeId().equals("saving_wallet"))
                 .collect(Collectors.toList());
 
-        List<Saving> savings = savingService.getAllByUserId(userId);
+        List<Saving> savings = savingService.getAllByUserId(userId).stream()
+                .filter(saving -> saving.getIsActive().equals(true))
+                .collect(Collectors.toList());
 
         Integer totalSavingAccount = 0;
         BigDecimal totalSavingAmount = BigDecimal.ZERO;
@@ -867,6 +864,49 @@ public class ExchangeServiceImpl implements ExchangeService {
                 .totalOutcomeSavingAmount(totalOutcomeAmount)
                 .build();
 
+        return response;
+    }
+
+    @Override
+    public LoanDebtOverviewGraphResponse getLoanDebtOverviewInOneMonth(String userId) {
+        List<Exchange> exchanges = getAllLast30daysUserExchanges(userId).stream()
+                .filter(exchange -> exchange.getExchangeType().getExchangeTypeId().equals("wallet_loan")
+                        || exchange.getExchangeType().getExchangeTypeId().equals("loan_wallet")
+                        || exchange.getExchangeType().getExchangeTypeId().equals("debt_wallet")
+                        || exchange.getExchangeType().getExchangeTypeId().equals("wallet_debt"))
+                .collect(Collectors.toList());
+
+        BigDecimal totalLoanCurrentAmount = loanAndDebtService.getLoanTotal(userId);
+        BigDecimal totalDebtCurrentAmount = loanAndDebtService.getDebtTotal(userId);
+        BigDecimal totalLoanGetAmount = BigDecimal.ZERO;
+        BigDecimal totalLoanPayAmount = BigDecimal.ZERO;
+        BigDecimal totalDebtPayAmount = BigDecimal.ZERO;
+        BigDecimal totalDebtGetAmount = BigDecimal.ZERO;
+        Integer totalDebtAccount = loanAndDebtService.getTotalDebtNumber(userId);
+        Integer totalLoanAccount = loanAndDebtService.getTotalLoanNumber(userId);
+
+        for (Exchange exchange : exchanges){
+            if(exchange.getExchangeType().getExchangeTypeId().equals("wallet_loan")){
+                totalLoanPayAmount= totalLoanPayAmount.add(exchange.getAmount());
+            } else if(exchange.getExchangeType().getExchangeTypeId().equals("wallet_debt")) {
+                totalDebtPayAmount = totalDebtPayAmount.add(exchange.getAmount());
+            } else if(exchange.getExchangeType().getExchangeTypeId().equals("loan_wallet")) {
+                totalLoanGetAmount = totalLoanGetAmount.add(exchange.getAmount());
+            } else if(exchange.getExchangeType().getExchangeTypeId().equals("debt_wallet")) {
+                totalDebtGetAmount = totalDebtGetAmount.add(exchange.getAmount());
+            }
+        }
+
+        LoanDebtOverviewGraphResponse response = LoanDebtOverviewGraphResponse.builder()
+                .totalLoanCurrentAmount(totalLoanCurrentAmount)
+                .totalDebtCurrentAmount(totalDebtCurrentAmount)
+                .totalLoanGetAmount(totalLoanGetAmount)
+                .totalLoanPayAmount(totalLoanPayAmount)
+                .totalDebtPayAmount(totalDebtPayAmount)
+                .totalDebtGetAmount(totalDebtGetAmount)
+                .totalDebtAccount(totalDebtAccount)
+                .totalLoanAccount(totalLoanAccount)
+                .build();
         return response;
     }
 

@@ -1,5 +1,6 @@
 package financialsaver.resourceserver.service;
 
+import financialsaver.resourceserver.dto.request.DoneSavingRequest;
 import financialsaver.resourceserver.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -168,5 +170,30 @@ public class TransactionService {
         exchangeDTO.setExchangeDate(exchangeDate);
         exchangeService.createWalletDebtExchange(exchangeDTO);
         return debt;
+    }
+
+    public Saving doneSaving(UUID savingId, DoneSavingRequest request) {
+        Saving saving = savingService.getBySavingId(savingId);
+        BigDecimal amount = saving.getCurrentAmount();
+
+        ExchangeDTO exchangeDTO = new ExchangeDTO();
+        exchangeDTO.setUserId(request.getUserId());
+        exchangeDTO.setWalletId(request.getWalletId());
+        exchangeDTO.setAmount(amount);
+        exchangeDTO.setDestinationId(savingId);
+        exchangeDTO.setFrom(saving.getName());
+        exchangeDTO.setDescription(request.getDescription());
+        exchangeDTO.setExchangeTypeId("saving_wallet");
+        OffsetDateTime exchangeDate = new Date().toInstant()
+                .atOffset(ZoneOffset.UTC);
+        exchangeDTO.setExchangeDate(exchangeDate);
+        exchangeService.createWalletSavingExchange(exchangeDTO);
+
+        saving.setOriginAmount(BigDecimal.ZERO);
+        saving.setCurrentAmount(BigDecimal.ZERO);
+        saving.setIsActive(false);
+        saving.setUpdatedAt(new Date());
+        savingService.doneSaving(saving);
+        return saving;
     }
 }

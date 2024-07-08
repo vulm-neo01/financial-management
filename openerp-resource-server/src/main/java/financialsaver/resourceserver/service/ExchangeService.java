@@ -3,11 +3,8 @@ package financialsaver.resourceserver.service;
 import financialsaver.resourceserver.dto.ExchangeDTO;
 import financialsaver.resourceserver.dto.SavingHistoryDTO;
 import financialsaver.resourceserver.dto.request.BudgetGraphRequest;
-import financialsaver.resourceserver.dto.response.BudgetGraphResponse;
-import financialsaver.resourceserver.dto.response.OverviewExchangeBudgetDTO;
-import financialsaver.resourceserver.dto.response.OverviewWalletDTO;
+import financialsaver.resourceserver.dto.response.*;
 import financialsaver.resourceserver.entity.Exchange;
-import financialsaver.resourceserver.dto.response.SavingOverviewGraphResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -56,6 +53,8 @@ public interface ExchangeService {
     List<BudgetGraphResponse> getBudgetExchangesDataGraph(BudgetGraphRequest request);
 
     SavingOverviewGraphResponse getSavingOverviewInOneMonth(String userId);
+
+    LoanDebtOverviewGraphResponse getLoanDebtOverviewInOneMonth(String userId);
 
     List<Exchange> createWalletLoanExchange(ExchangeDTO exchangeDTO);
 

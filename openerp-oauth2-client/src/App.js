@@ -14,6 +14,11 @@ import { menuState } from "state/MenuState";
 import { notificationState } from "state/NotificationState";
 import { ReactComponent as Logo } from "./assets/icons/new_logo.svg";
 import history from "./history.js";
+import PrivateRoute from "routers/PrivateRoute";
+import MainAppRouter from "routers/MainAppRouter";
+import LandingPage from "views/LandingPage";
+import { Route, Switch } from "react-router-dom";
+
 
 export const theme = createTheme({
   typography: {

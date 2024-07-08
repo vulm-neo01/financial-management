@@ -93,29 +93,32 @@ function LoanPayModal({ onUpdateLoan, open, onClose, loanId }) {
                     transform: 'translate(-50%, -50%)',
                     width: 600,
                     bgcolor: 'background.paper',
-                    p: 4,
+                    pt: 2,
+                    pb: 2,
+                    pl: 4,
+                    pr: 4,
                     borderRadius: 2,
                     maxHeight: "90vh",
                     overflowY: 'auto',
                 }}
             >
-                <Typography variant="h4" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
+                <Typography variant="h5" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
                     Nhận một phần tiền từ khoản cho vay
                 </Typography>
-                <FormControl fullWidth sx={{ mb: 2, maxWidth: 250 }}>
+                <FormControl fullWidth sx={{ mb: 1, maxWidth: 250 }}>
                     <InputLabel htmlFor="walletId">Wallet Selection</InputLabel>
                     <WalletSelection onSelect={handleWalletSendingSelect}/>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="amount">Amount</InputLabel>
-                    <Input id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
+                    <Input tabIndex={1} id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="description">Description</InputLabel>
-                    <Input id="description" name="description" value={formData.description} onChange={handleFormChange} />
+                    <Input tabIndex={2} id="description" name="description" value={formData.description} onChange={handleFormChange} />
                 </FormControl>
                 {warningSubmit && (
-                    <Typography color="error" sx={{ mb: 2 }}>
+                    <Typography color="error" sx={{ mb: 1 }}>
                         Please fill in all required fields.
                     </Typography>
                 )}
@@ -125,7 +128,8 @@ function LoanPayModal({ onUpdateLoan, open, onClose, loanId }) {
                         variant="contained"
                         color="primary"
                         onClick={handleCreatePayLoan}
-                        style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                        style={{ fontSize: '1.2rem', marginTop: '0.5rem' }}
+                        tabIndex={3}
                     >
                         Pay Loan
                     </Button>

@@ -150,7 +150,10 @@ function LoanCreateModal({ onCreateLoan, open, onClose }) {
                     transform: 'translate(-50%, -50%)',
                     width: 600,
                     bgcolor: 'background.paper',
-                    p: 4,
+                    pt: 2,
+                    pb: 2,
+                    pl: 4,
+                    pr: 4,
                     borderRadius: 2,
                     maxHeight: "90vh",
                     overflowY: 'auto',
@@ -159,24 +162,24 @@ function LoanCreateModal({ onCreateLoan, open, onClose }) {
                 <Typography variant="h4" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
                     Tạo Khoản cho vay mới - Loan
                 </Typography>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="name">Name *</InputLabel>
-                    <Input id="name" name="name" value={formData.name} onChange={handleFormChange} />
+                    <Input tabIndex={1} id="name" name="name" value={formData.name} onChange={handleFormChange} />
                 </FormControl>
-                <Box sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="colorId" sx={{ marginBottom: '8px' }}>Color *</InputLabel>
+                <Box sx={{ mb: 1 }}>
+                    <InputLabel htmlFor="colorId" sx={{ marginBottom: '4px' }}>Color *</InputLabel>
                     <ColorSelection onSelect={handleColorSelect} type="all" colorId={formData.colorId} />
                 </Box>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="originAmount">Origin Amount</InputLabel>
-                    <Input id="originAmount" name="originAmount" value={formData.originAmount} onChange={handleFormChange} endAdornment={currency}/>
+                    <Input tabIndex={2} id="originAmount" name="originAmount" value={formData.originAmount} onChange={handleFormChange} endAdornment={currency}/>
                 </FormControl>
                 {warningOverAmount && (
-                    <Typography color="error" sx={{ mb: 2 }}>
+                    <Typography color="error" sx={{ mb: 1 }}>
                         {warningOverAmount}
                     </Typography>
                 )}
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <FormControlLabel
                         control={
                             <Checkbox 
@@ -190,12 +193,12 @@ function LoanCreateModal({ onCreateLoan, open, onClose }) {
                     />
                 </FormControl>
                 {formData.isCreateExchange &&
-                    <FormControl fullWidth sx={{ mb: 2, maxWidth: 250 }}>
+                    <FormControl fullWidth sx={{ mb: 1, maxWidth: 250 }}>
                         <InputLabel htmlFor="walletId">Wallet Selection</InputLabel>
                         <WalletAcceptSendingSelection onSelect={handleWalletSendingSelect} />
                     </FormControl>
                 }
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Start Date *"
@@ -206,7 +209,7 @@ function LoanCreateModal({ onCreateLoan, open, onClose }) {
                         />
                     </LocalizationProvider>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Return Date *"
@@ -216,13 +219,14 @@ function LoanCreateModal({ onCreateLoan, open, onClose }) {
                         />
                     </LocalizationProvider>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="type">Loại vay *</InputLabel>
                     <Select
                         id="type"
                         name="type"
                         value={formData.type}
                         onChange={handleFormChange}
+                        tabIndex={3}
                     >
                         <MenuItem value="NO_INTEREST">Không có lãi</MenuItem>
                         <MenuItem value="SIMPLE_INTEREST">Lãi đơn</MenuItem>
@@ -233,17 +237,18 @@ function LoanCreateModal({ onCreateLoan, open, onClose }) {
                 </FormControl>
                 {(formData.type !== "NO_INTEREST") && (
                     <>
-                        <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormControl fullWidth sx={{ mb: 1 }}>
                             <InputLabel htmlFor="interestRate">Lãi suất/năm</InputLabel>
-                            <Input id="interestRate" name="interestRate" value={formData.interestRate} onChange={handleFormChange} endAdornment="%"/>
+                            <Input tabIndex={4} id="interestRate" name="interestRate" value={formData.interestRate} onChange={handleFormChange} endAdornment="%"/>
                         </FormControl>
-                        <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormControl fullWidth sx={{ mb: 1 }}>
                             <InputLabel htmlFor="receiveInterestTime">Khoảng thời gian nhận lãi</InputLabel>
                             <Select
                                 id="receiveInterestTime"
                                 name="receiveInterestTime"
                                 value={formData.receiveInterestTime}
                                 onChange={handleFormChange}
+                                tabIndex={5}
                             >
                                 <MenuItem value="EMPTY">Trống</MenuItem>
                                 <MenuItem value="DAILY">Hàng ngày</MenuItem>
@@ -257,12 +262,12 @@ function LoanCreateModal({ onCreateLoan, open, onClose }) {
                         </FormControl>
                     </>
                 )}
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="name">Description</InputLabel>
-                    <Input id="description" name="description" value={formData.description} onChange={handleFormChange} />
+                    <Input tabIndex={6} id="description" name="description" value={formData.description} onChange={handleFormChange} />
                 </FormControl>
                 {warningSubmit && (
-                    <Typography color="error" sx={{ mb: 2 }}>
+                    <Typography color="error" sx={{ mb: 1 }}>
                         Please fill in all required fields.
                     </Typography>
                 )}
@@ -272,8 +277,9 @@ function LoanCreateModal({ onCreateLoan, open, onClose }) {
                         variant="contained"
                         color="primary"
                         onClick={handleCreateLoan}
-                        style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                        style={{ fontSize: '1.2rem', marginTop: '0.5rem' }}
                         disabled={warningOverAmount !== ''}
+                        tabIndex={7}
                     >
                         Create Loan
                     </Button>

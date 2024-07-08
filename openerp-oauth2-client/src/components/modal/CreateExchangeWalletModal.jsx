@@ -32,7 +32,7 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
     const [image, setImage] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
     const [warningOverAmount, setWarningOverAmount] = useState('');
-    const [currentWalletSendingAmount, setCurrentWalletSendingAmount] = useState(0);
+    const [currentWalletSendingAmount, setCurrentWalletSendingAmount] = useState(null);
 
     const handleFormChange = (event) => {
         const { name, value } = event.target;
@@ -183,36 +183,39 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
                     transform: 'translate(-50%, -50%)',
                     width: 600,
                     bgcolor: 'background.paper',
-                    p: 4,
+                    pt: 2,
+                    pb: 2,
+                    pl: 4,
+                    pr: 4,
                     borderRadius: 2
                 }}
             >
-                <Typography variant="h4" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
+                <Typography variant="h5" id="modal-modal-title" gutterBottom style={{ textAlign: 'center' }}>
                     Wallet To Wallet
                 </Typography>
-                <FormControl fullWidth sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="walletId" sx={{ marginBottom: '8px' }}>Wallet Sending</InputLabel>
+                <FormControl fullWidth sx={{ mb: 1 }}>
+                    <InputLabel htmlFor="walletId" sx={{ marginBottom: '4px' }}>Wallet Sending</InputLabel>
                     <WalletAcceptSendingSelection onSelect={handleWalletSendingSelect}/>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
-                    <InputLabel htmlFor="destinationId" sx={{ marginBottom: '8px' }}>Wallet Receiving</InputLabel>
+                <FormControl fullWidth sx={{ mb: 1 }}>
+                    <InputLabel htmlFor="destinationId" sx={{ marginBottom: '4px' }}>Wallet Receiving</InputLabel>
                     <WalletSelection onSelect={handleWalletReceivingSelect}/>
                 </FormControl>
                 {warning && (
-                    <Typography color="error" sx={{ mb: 2 }}>
+                    <Typography color="error" sx={{ mb: 1 }}>
                         Wallet Sending and Receiving must be different.
                     </Typography>
                 )}
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="amount">Amount</InputLabel>
-                    <Input id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency}/>
+                    <Input id="amount" name="amount" value={formData.amount} onChange={handleFormChange} endAdornment={currency} tabIndex={1}/>
                 </FormControl>
                 {warningOverAmount && (
-                    <Typography color="error" sx={{ mb: 2 }}>
+                    <Typography color="error" sx={{ mb: 1 }}>
                         {warningOverAmount}
                     </Typography>
                 )}
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Exchange Date"
@@ -223,11 +226,11 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
                         />
                     </LocalizationProvider>
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="description">Description</InputLabel>
-                    <Input id="description" name="description" value={formData.description} onChange={handleFormChange} />
+                    <Input tabIndex={2} id="description" name="description" value={formData.description} onChange={handleFormChange} />
                 </FormControl>
-                <FormControl fullWidth sx={{ mb: 2 }}>
+                <FormControl fullWidth sx={{ mb: 1 }}>
                     <Button
                         variant="contained"
                         component="label"
@@ -250,12 +253,13 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
                             hidden
                             onChange={handleFileChange}
                             encType="multipart/form-data"
+                            tabIndex={3}
                         />
                         Select Image
                     </Button>
                 </FormControl>
                 {warningSubmit && (
-                    <Typography color="error" sx={{ mb: 2 }}>
+                    <Typography color="error" sx={{ mb: 1 }}>
                         Please fill in all required fields.
                     </Typography>
                 )}
@@ -269,8 +273,9 @@ function CreateExchangeWallet({ onCreateExchange, open, onClose }) {
                         variant="contained"
                         color="primary"
                         onClick={handleCreateExchange}
-                        style={{ fontSize: '1.3rem', marginTop: '1rem' }}
+                        style={{ fontSize: '1.2rem', marginTop: '0.5rem' }}
                         disabled={warningOverAmount !== ''}
+                        tabIndex={4}
                     >
                         Submit
                     </Button>

@@ -8,14 +8,14 @@ import MenuItem from '@mui/material/MenuItem';
 const useStyles = makeStyles((theme) => ({
     savingSelectContainer: {
         width: '220px',
-        marginBottom: '10px',
+        marginBottom: '2px',
     },
     savingSelect: {
         width: '100%',
         // padding: '10px',
         border: '1px solid #ccc',
         borderRadius: '5px',
-        fontSize: '16px',
+        fontSize: '14px',
         color: '#333',
         backgroundColor: '#fff',
         '&:focus': {
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     savingOption: {
-        fontSize: '16px',
+        fontSize: '14px',
         color: '#333',
         backgroundColor: '#fff',
     },
@@ -38,7 +38,7 @@ function SavingSelection({ onSelect, initialSavingId }) {
 
     useEffect(() => {
         request('get', `/savings/user/${userId}`, (res) => {
-            setSavings(res.data);
+            setSavings(res.data.filter(s => s.isActive === true));
             if (initialSavingId) {
                 setSelectedSaving(initialSavingId);
                 const selectedSaving = res.data.find(s => s.savingId === initialSavingId);

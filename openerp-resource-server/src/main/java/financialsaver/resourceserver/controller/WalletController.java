@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,6 +49,12 @@ public class WalletController {
     public ResponseEntity<?> getAllWalletsByUserIdAndNotIncludeInTotal(@PathVariable String id) {
         List<Wallet> wallets = walletService.findWalletsByUserIdAndIncludeInTotalAmount(id, false);
         return ResponseEntity.ok().body(wallets);
+    }
+
+    @GetMapping("/total-amount/{userId}")
+    public ResponseEntity<?> getTotalAmountByUserId(@PathVariable String userId){
+        BigDecimal totalAmount = walletService.getCurrentTotalAmount(userId);
+        return ResponseEntity.ok().body(totalAmount);
     }
 
     @PostMapping("/create")

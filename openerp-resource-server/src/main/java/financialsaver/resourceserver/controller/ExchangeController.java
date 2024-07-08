@@ -3,10 +3,7 @@ package financialsaver.resourceserver.controller;
 import financialsaver.resourceserver.dto.ExchangeDTO;
 import financialsaver.resourceserver.dto.SavingHistoryDTO;
 import financialsaver.resourceserver.dto.request.BudgetGraphRequest;
-import financialsaver.resourceserver.dto.response.BudgetGraphResponse;
-import financialsaver.resourceserver.dto.response.OverviewExchangeBudgetDTO;
-import financialsaver.resourceserver.dto.response.OverviewWalletDTO;
-import financialsaver.resourceserver.dto.response.SavingOverviewGraphResponse;
+import financialsaver.resourceserver.dto.response.*;
 import financialsaver.resourceserver.entity.Exchange;
 import financialsaver.resourceserver.service.ExchangeService;
 import lombok.AllArgsConstructor;
@@ -174,6 +171,12 @@ public class ExchangeController {
     @GetMapping("/saving-graph/{userId}")
     public ResponseEntity<?> getAllDataForSavingGraphOverview(@PathVariable String userId){
         SavingOverviewGraphResponse response = exchangeService.getSavingOverviewInOneMonth(userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/loan-debt-graph/{userId}")
+    public ResponseEntity<?> getAllDataForLoanDebtGraphOverview(@PathVariable String userId){
+        LoanDebtOverviewGraphResponse response = exchangeService.getLoanDebtOverviewInOneMonth(userId);
         return ResponseEntity.ok(response);
     }
 }

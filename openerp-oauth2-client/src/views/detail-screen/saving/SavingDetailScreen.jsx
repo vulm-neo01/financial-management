@@ -14,6 +14,7 @@ import SavingUpdateModal from 'components/modal/SavingUpdateModal';
 import { groupExchangesByTime } from 'utils/groupExchangesByTime';
 import SavingGraph from 'components/chart/SavingGraph';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import SavingDoneModal from 'components/modal/SavingDoneModal';
 
 const receiveTypes = {
     DAILY: "Hằng ngày",
@@ -41,6 +42,7 @@ function SavingDetailScreen() {
     const [exchangesHistory, setExchangesHistory] = useState([]);
     const [isMessageOpen, setIsMessageOpen] = useState(true);
     const [period, setPeriod] = useState('all');
+    const [doneSaving, setDoneSaving] = useState(false);
     const handleClickOpenModalDelete = () => {
         setIsModalDeleteOpen(true);
     };
@@ -55,6 +57,14 @@ function SavingDetailScreen() {
 
     const handleCloseUpdateSavingDialog = () => {
         setUpdateSaving(false);
+    };
+
+    const handleOpenDoneSaving = () => {
+        setDoneSaving(true);
+    };
+
+    const handleCloseDoneSaving = () => {
+        setDoneSaving(false);
     };
 
     const handleUpdateSaving = (updatedSaving) => {
@@ -260,11 +270,12 @@ function SavingDetailScreen() {
                         </Box>
                         <Box sx={{ textAlign: 'center'}} className="action-buttons">
                             <Button
-                                onClick={() => alert("Done")}
+                                onClick={handleOpenDoneSaving}
                                 variant="contained"
                                 color="success"
                                 startIcon={<CheckCircleIcon />}
                                 sx={{ m: 1, minWidth: 190 }}
+                                disabled={!saving.isActive}
                             >
                                 Done Saving
                             </Button>
@@ -274,6 +285,7 @@ function SavingDetailScreen() {
                                 color="primary"
                                 startIcon={<EditIcon />}
                                 sx={{ ml: 1, mr:1, mt: 1, minWidth: 100 }}
+                                disabled={!saving.isActive}
                             >
                                 Edit
                             </Button>
@@ -414,6 +426,11 @@ function SavingDetailScreen() {
                     onCreateSaving={handleUpdateSaving}
                     savingId={saving.savingId}
                 /> : null
+            }
+            {
+                doneSaving ?
+                <SavingDoneModal onClose={handleCloseDoneSaving} open={doneSaving} onUpdateSaving={handleUpdateSaving} savingId={savingId}/>
+                : null
             }
         </>
     );

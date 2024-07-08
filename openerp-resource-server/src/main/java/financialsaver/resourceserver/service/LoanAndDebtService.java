@@ -45,4 +45,10 @@ public interface LoanAndDebtService {
     Loan payForALoan(UUID loanId, BigDecimal amount) throws IllegalAccessException;
 
     Debt payForADebt(UUID debtId, BigDecimal amount) throws IllegalAccessException;
+
+    BigDecimal getLoanTotal(String userId);
+    BigDecimal getDebtTotal(String userId);
+
+    Integer getTotalLoanNumber(String userId);
+    Integer getTotalDebtNumber(String userId);
 }

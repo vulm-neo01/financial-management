@@ -51,7 +51,10 @@ function WalletHistoryModal({open, onClose }) {
                             transform: 'translate(-50%, -50%)',
                             width: 600,
                             bgcolor: 'background.paper',
-                            p: 4,
+                            pt: 2,
+                            pb: 2,
+                            pl: 4,
+                            pr: 4,
                             borderRadius: 2,
                             maxHeight: '80vh',
                             overflowY: 'auto',
@@ -59,7 +62,7 @@ function WalletHistoryModal({open, onClose }) {
                     >
                         {exchanges && exchanges.length > 0 ? 
                         <Grid container spacing={2} item xs={12} justifyContent="center" alignItems="center">
-                            <Typography variant="h5" gutterBottom>
+                            <Typography variant="h5" gutterBottom style={{marginTop: "8px"}}>
                                 Wallet History
                             </Typography>
                             {
@@ -77,7 +80,7 @@ function WalletHistoryModal({open, onClose }) {
                                                     style={{ 
                                                         cursor: 'pointer', 
                                                         transition: 'background-color 0.3s',
-                                                        marginBottom: theme.spacing(2) // Thêm margin dưới cho mỗi thẻ
+                                                        marginBottom: theme.spacing(1) // Thêm margin dưới cho mỗi thẻ
                                                     }}
                                                     sx={{ '&:hover': { backgroundColor: '#f0f0f0' }, minWidth: 400}}
                                                 >
@@ -85,24 +88,24 @@ function WalletHistoryModal({open, onClose }) {
                                                         <Grid container spacing={2}>
                                                             {/* Cột thứ nhất */}
                                                             <Grid item xs={6}>
-                                                                <Typography variant="h5" component="h2">
-                                                                    {exchange.exchangeType.exchangeTypeName}
+                                                                <Typography variant="body1" component="h2">
+                                                                    <strong>{exchange.exchangeType.exchangeTypeName}</strong>
                                                                 </Typography>
-                                                                <Typography variant="body1" color="textSecondary" gutterBottom>
-                                                                    From: {exchange.from}
+                                                                <Typography variant="body2" color="textSecondary" gutterBottom>
+                                                                    <strong>From:</strong> {exchange.from}
                                                                 </Typography>
-                                                                <Typography variant="body1" color="textSecondary" gutterBottom>
-                                                                    To: {exchange.to}
+                                                                <Typography variant="body2" color="textSecondary" gutterBottom>
+                                                                    <strong>To:</strong> {exchange.to}
                                                                 </Typography>
                                                             </Grid>
 
                                                             {/* Cột thứ hai */}
                                                             <Grid item xs={6}>
-                                                                <Typography variant="h6" component="h2">
-                                                                    Amount: {exchange.amount.toLocaleString()} {localStorage.getItem("currency")}
+                                                                <Typography variant="body1" component="h2">
+                                                                    <strong>Amount:</strong> {exchange.amount.toLocaleString()} đ
                                                                 </Typography>
-                                                                <Typography variant="body1" color="textSecondary" gutterBottom>
-                                                                    Happen Time: {formatDate(exchange.exchangeDate)}
+                                                                <Typography variant="body2" color="textSecondary" gutterBottom>
+                                                                    <strong>Happen Time:</strong> {formatDate(exchange.exchangeDate)}
                                                                 </Typography>
                                                                 {/* Thêm các thông tin khác của giao dịch nếu cần */}
                                                             </Grid>
@@ -110,7 +113,7 @@ function WalletHistoryModal({open, onClose }) {
                                                     </CardContent>
                                                     {/* Đường viền màu */}
                                                     <div style={{
-                                                        height: '5px',
+                                                        height: '4px',
                                                         width: '100%',
                                                         backgroundColor: exchange.exchangeType.exchangeTypeId === 'wallet_wallet' ? '#106BB6' :
                                                                         exchange.exchangeType.exchangeTypeId === 'income' ? '#008000' :
