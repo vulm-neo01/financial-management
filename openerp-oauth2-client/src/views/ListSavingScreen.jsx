@@ -19,6 +19,8 @@ import CurrencyExchangeRoundedIcon from '@mui/icons-material/CurrencyExchangeRou
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import SavingCreateModal from "components/modal/SavingCreateModal";
 import SavingCreateExchangeModal from "components/modal/SavingCreateExchangeModal";
+import { Modal, Tooltip, Grid, Button, Container } from "@mui/material";
+import InfoIcon from '@mui/icons-material/Info';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -159,10 +161,59 @@ function ListSavingScreen() {
         history.push(`/savings/${savingId}`);
     }
 
+    const [openModalInfo, setOpenModalInfo] = useState(false);
+    const [viewMethod, setViewMethod] = useState(null);
+
+    const handleOpenModalInfo = () => setOpenModalInfo(true);
+    const handleCloseModalInfo = () => {
+        setOpenModalInfo(false);
+        setViewMethod(null);
+    };
+
+    const displayMainScreen = () => (
+        <Box sx={{ textAlign: 'center' }}>
+            <Typography variant="h6" gutterBottom>
+                Một số lưu ý khi tạo các khoản tiết kiệm
+            </Typography>
+            <Typography variant="body1" gutterBottom align="left">
+                Trong <strong>Financial Saver</strong>, các khoản tiết kiệm được chia làm các loại như: Không lãi suất, Lãi đơn, Lãi kép, Lãi kép có tích lũy.
+            </Typography>
+            <Typography variant="body1" gutterBottom align="left">
+                Việc phân chia hoàn toàn dựa trên thực tế các khoản tiết kiệm hiện tại. Tuy nhiên việc đảm bảo chuẩn xác hoàn toàn là không chắc chắn do mỗi đơn vị, doanh nghiệp thường có phương pháp tính lãi, kỳ hạn riêng. Ở đây, chúng tôi sử dụng cách tính toán phổ biến nhất với các khoản tiết kiệm, cụ thể như sau:
+            </Typography>
+            <Typography variant="body1" gutterBottom align="left">
+                <strong>1. Không có lãi:</strong> Các khoản tiết kiệm dạng tiền mặt, lợn đất,... Dạng này hỗ trợ tích lũy thêm, rút tiền, tất toán.
+            </Typography>
+            <Typography variant="body1" gutterBottom align="left">
+                <strong>2. Lãi đơn:</strong> Đại diện cho các khoản tiết kiệm với tiền gốc không thay đổi. Dạng này hỗ trợ rút tiền, tất toán, <strong>tuy nhiên không hỗ trợ tích lũy thêm</strong>
+            </Typography>
+            <Typography variant="body1" gutterBottom align="left">
+                <strong>3. Lãi kép:</strong> Đại diện cho các khoản tiết kiệm với tiền gốc được cộng thêm lãi mỗi kỳ hạn. Dạng này hỗ trợ rút tiền, tất toán, <strong>tuy nhiên không hỗ trợ tích lũy thêm</strong>
+            </Typography>
+            <Typography variant="body1" gutterBottom align="left">
+                <strong>4. Lãi kép có tích lũy:</strong> Đại diện các khoản tiết kiệm ngoài thực tế dạng lãi kép, tuy nhiên có thể tích lũy thêm tiền. <strong>Chú ý</strong>: Tiền gửi vào giữa kỳ hạn sẽ được bắt đầu tính lãi từ đầu kỳ hạn sau, Tiền rút ra sẽ ảnh hưởng trực tiếp đến tiền lãi của kỳ hạn đó.
+            </Typography>
+            <Typography variant="body1" gutterBottom align="left">
+                Ngoài ra hệ thống cũng hỗ trợ các thời gian kỳ hạn từ Ngày, Tuần, Tháng đến Năm. Đảm bảo đa dạng nhu cầu người dùng.
+            </Typography>
+            <Typography variant="body1" gutterBottom align="left">
+                Để dễ dàng cho quản lý khi có nhiều khoản tiết kiệm, hệ thống cũng sắp xếp sẵn các loại phổ biến như: Tiền mặt, Tiết kiệm ngân hàng, E-wallet, Tiết kiệm để mua tài sản nhất định,...
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+                <strong>Chúc các bạn có những khoản tiết kiệm luôn đầy ắp!!!</strong>
+            </Typography>
+        </Box>
+    );
+
     return (
         <div className="list-saving-screen">
             <Typography variant="h5" gutterBottom>
-                Saving Account
+                Tài khoản Tiết kiệm
+                <Tooltip title="Lưu ý khi tiết kiệm">
+                    <IconButton onClick={handleOpenModalInfo} aria-label="refresh">
+                        <InfoIcon />
+                    </IconButton>
+                </Tooltip>
             </Typography>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -247,6 +298,18 @@ function ListSavingScreen() {
                     <SavingCreateExchangeModal onUpdateExchange={updateDate} onClose={handleCloseAddSavingExchangeDialog} open={addSavingExchange}/>
                 </Menu>
             </div>
+            <Modal
+                open={openModalInfo}
+                onClose={handleCloseModalInfo}
+                aria-labelledby="financial-methods-modal"
+                aria-describedby="financial-methods-description"
+            >
+                <Container maxWidth="md" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+                    <Box sx={{ backgroundColor: '#fff', padding: 2, borderRadius: 2, boxShadow: 24 }}>
+                        {displayMainScreen()}
+                    </Box>
+                </Container>
+            </Modal>
         </div>
     );
 }

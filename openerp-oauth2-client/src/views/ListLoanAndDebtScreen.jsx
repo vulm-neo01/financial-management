@@ -127,7 +127,7 @@ function ListLoanAndDebtScreen() {
             <Grid container spacing={3}>
                 <Grid item md={6}>
                     <Typography variant="h5" gutterBottom>
-                        Loan Management
+                        Quản lý khoản cho vay
                     </Typography>
                     <div className="add-card-button" onClick={handleOpenAddLoanModal}>
                         <AddIcon />
@@ -140,7 +140,7 @@ function ListLoanAndDebtScreen() {
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h5" gutterBottom>
-                        Debt Management
+                        Quản lý khoản nợ
                     </Typography>
                     <div className="add-card-button" onClick={handleOpenAddDebtModal}>
                         <AddIcon />

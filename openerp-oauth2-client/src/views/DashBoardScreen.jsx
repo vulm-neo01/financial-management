@@ -62,6 +62,8 @@ const Dashboard = () => {
         }).then();
 
         request("get", `/exchanges/wallet/last-30-days/${userId}`, (res) => {
+            // console.log(res.data);
+            // console.log(userId)
             const transformedData = res.data.map(item => ({
                 ...item,
                 date: new Date(item.changeDate).toLocaleDateString('vi-VN')
@@ -77,7 +79,7 @@ const Dashboard = () => {
             setExchangeData(res.data.sort((a, b) => new Date(a.changeDate) - new Date(b.changeDate)));
         }).then();
         request("get", `/exchanges/saving-graph/${userId}`, (res) => {
-            console.log(res.data);
+            // console.log(res.data);
             setSavingData(res.data);
             setSavingsData([
                 {
@@ -102,7 +104,7 @@ const Dashboard = () => {
         }).then();
 
         request("get", `/exchanges/loan-debt-graph/${userId}`, (res) => {
-            console.log(res.data);
+            // console.log(res.data);
             setLoanDebtData(res.data);
             setLoanDebtDatas([
                 {

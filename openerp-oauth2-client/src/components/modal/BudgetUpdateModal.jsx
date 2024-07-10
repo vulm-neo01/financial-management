@@ -69,7 +69,7 @@ const BudgetUpdateModal = ({ onUpdateBudget, open, onClose, budgetId, typeOption
                 ...prevData,
                 name: res.data.name,
                 type: res.data.type,
-                limitAmount: res.data.budgetLimitHistories[0].limitAmount,
+                limitAmount: res.data.budgetLimitHistories[0]?.limitAmount || 0,
                 logoId: res.data.logo.logoId,
                 description: res.data.description
             }));
@@ -129,7 +129,7 @@ const BudgetUpdateModal = ({ onUpdateBudget, open, onClose, budgetId, typeOption
                 </FormControl>
                 <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="limitAmount">Limit Amount*</InputLabel>
-                    <Input tabIndex={4} id="limitAmount" name="limitAmount" value={formData.limitAmount} onChange={handleFormChange} endAdornment={currency}/>
+                    <Input tabIndex={4} id="limitAmount" name="limitAmount" value={formData.limitAmount || 0} onChange={handleFormChange} endAdornment={currency}/>
                 </FormControl>
                 <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel htmlFor="name">Description</InputLabel>

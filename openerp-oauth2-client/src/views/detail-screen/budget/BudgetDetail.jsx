@@ -111,7 +111,8 @@ function BudgetDetail() {
         let endDate = now;
         switch (period) {
             case 'week':
-                startDate = new Date(now.setDate(now.getDate() - now.getDay()));
+                // startDate = new Date(now.setDate(now.getDate() - now()));
+                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 1); // Adjust to get the first day of the current week
                 break;
             case 'month':
                 startDate = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -141,12 +142,16 @@ function BudgetDetail() {
     const exchangesByTime = groupExchangesByTime(filteredExchanges);
     // Thuật toán chọn limit Amount cho từng tháng cụ thể
     const getLimitAmount = () => {
+
+        if (!budget || !budget.budgetLimitHistories || budget.budgetLimitHistories.length === 0) {
+            return 0; // Giá trị mặc định nếu budget hoặc budgetLimitHistories không tồn tại hoặc rỗng
+        }
         const limitHistories = budget.budgetLimitHistories || [];
         const now = new Date();
         const sortedHistories = limitHistories.sort((a, b) => new Date(a.effectiveDate) - new Date(b.effectiveDate));
         const firstDayOfCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
     
-        let applicableLimit = sortedHistories[0].limitAmount;
+        let applicableLimit = sortedHistories.length > 0 ? sortedHistories[0].limitAmount : 0;
     
         for (const history of sortedHistories) {
             const effectiveDate = new Date(history.effectiveDate);

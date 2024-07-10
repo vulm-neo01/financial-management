@@ -63,7 +63,7 @@ const BudgetGraph = ({ exchanges, limitAmount }) => {
     const data = prepareChartData(exchanges);
     
     const getMaxAmount = () => {
-        const maxAmount = Math.max(...exchanges.map(item => item.amount), limitAmount);
+        const maxAmount = Math.max(...exchanges.map(item => item.amount), limitAmount || 0);
         return maxAmount;
     };
     return (
@@ -72,7 +72,7 @@ const BudgetGraph = ({ exchanges, limitAmount }) => {
                 <Grid container alignItems="center">
                     <Grid item xs={12} style={{ width: '100%' }}>
                         {/* Hiển thị biểu đồ */}
-                        <ExchangeChart data={data} getMaxAmount={getMaxAmount} limitAmount={limitAmount}/>
+                        <ExchangeChart data={data} getMaxAmount={getMaxAmount} limitAmount={limitAmount || 0}/>
                     </Grid>
                 </Grid>
             ) : (

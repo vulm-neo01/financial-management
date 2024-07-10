@@ -313,11 +313,11 @@ function AllExchangeScreen() {
   return (
     <div>
       <Typography variant="h5" gutterBottom>
-        Exchange Management
+        Quản lý giao dịch
       </Typography>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="All Exchanges" {...a11yProps(0)} />
+          <Tab label="All" {...a11yProps(0)} />
           <Tab label="Spend" {...a11yProps(1)} />
           <Tab label="Income" {...a11yProps(2)} />
           <Tab label="Wallet To Wallet" {...a11yProps(3)} />
@@ -327,7 +327,7 @@ function AllExchangeScreen() {
       </Box>
       <TabPanel value={value} index={0}>
         <StandardTable
-          title="All Exchanges"
+          title="Toàn bộ giao dịch"
           columns={columns}
           data={filteredExchanges}
           options={{
@@ -340,7 +340,7 @@ function AllExchangeScreen() {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <StandardTable
-          title="Spend Exchanges"
+          title="Giao dịch chi tiêu"
           columns={columns}
           data={filteredExchanges.filter(exchange => exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "spend")}
           options={{
@@ -353,7 +353,7 @@ function AllExchangeScreen() {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <StandardTable
-          title="Income Exchanges"
+          title="Giao dịch thu nhập"
           columns={columns}
           data={filteredExchanges.filter(exchange => exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "income")}
           options={{
@@ -366,7 +366,7 @@ function AllExchangeScreen() {
       </TabPanel>
       <TabPanel value={value} index={3}>
         <StandardTable
-          title="Wallet To Wallet Exchanges"
+          title="Chuyển từ Ví đến Ví"
           columns={columns}
           data={filteredExchanges.filter(exchange => exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "wallet_wallet")}
           options={{
@@ -380,7 +380,7 @@ function AllExchangeScreen() {
 
       <TabPanel value={value} index={4}>
         <StandardTable
-          title="Saving Exchanges"
+          title="Giao dịch tiết kiệm"
           columns={columns}
           data={filteredExchanges.filter(exchange => exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "wallet_saving" 
           || exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "saving_wallet")}
@@ -394,7 +394,7 @@ function AllExchangeScreen() {
       </TabPanel>
       <TabPanel value={value} index={5}>
         <StandardTable
-          title="Saving Exchanges"
+          title="Giao dịch cho vay/nợ"
           columns={columns}
           data={filteredExchanges.filter(exchange => exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "wallet_loan" 
           || exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "loan_wallet" || exchange.exchangeType && exchange.exchangeType.exchangeTypeId === "debt_wallet"
@@ -453,12 +453,12 @@ function AllExchangeScreen() {
                 <SavingsIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Wallet - Saving
             </MenuItem>
             <SavingCreateExchangeModal onUpdateExchange={handleUpdateExchange} onClose={handleCloseSavingExchangeDialog} open={addSavingExchange}/>
-            <MenuItem onClick={handleClose} style={{ fontSize: '1.2rem', color: 'purple' }}>
+            {/* <MenuItem onClick={handleClose} style={{ fontSize: '1.2rem', color: 'purple' }}>
                 <MoneyOffIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Wallet - Debt
             </MenuItem>
             <MenuItem onClick={handleClose} style={{ fontSize: '1.2rem', color: 'black' }}>
                 <PaymentsIcon style={{ marginRight: 8, fontSize: '1.5rem'}} /> Wallet - Loan
-            </MenuItem>
+            </MenuItem> */}
           </Menu>
           {
                 isModalDeleteOpen ? 

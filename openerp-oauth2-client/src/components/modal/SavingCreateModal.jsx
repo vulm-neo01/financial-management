@@ -252,7 +252,7 @@ function SavingCreateModal({ onCreateSaving, open, onClose }) {
                 {(formData.savingType !== "NO_INTEREST") && (
                     <>
                         <FormControl fullWidth sx={{ mb: 1 }}>
-                            <InputLabel htmlFor="interestRate">Interest Rate</InputLabel>
+                            <InputLabel htmlFor="interestRate">Interest Rate Per Year</InputLabel>
                             <Input tabIndex={7} id="interestRate" name="interestRate" value={formData.interestRate} onChange={handleFormChange} endAdornment="%"/>
                         </FormControl>
                         <FormControl fullWidth sx={{ mb: 1 }}>

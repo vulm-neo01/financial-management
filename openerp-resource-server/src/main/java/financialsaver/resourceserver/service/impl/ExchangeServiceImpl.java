@@ -517,20 +517,24 @@ public class ExchangeServiceImpl implements ExchangeService {
             }
             budgetGraphResponse.setSpentAmount(total);
             List<BudgetLimitHistory> budgetLimitHistories = budgetCategory.getBudgetLimitHistories();
-            budgetLimitHistories.sort(Comparator.comparing(BudgetLimitHistory::getEffectiveDate));
-            BudgetLimitHistory applicableLimit = budgetLimitHistories.get(0);
-            for(BudgetLimitHistory budgetLimitHistory : budgetLimitHistories){
-                LocalDate effectiveDate = budgetLimitHistory.getEffectiveDate();
-                if(effectiveDate.isBefore(date.plusMonths(1))){
-                    applicableLimit = budgetLimitHistory;
-                } else {
-                    break;
+            if (!budgetLimitHistories.isEmpty()) {
+                budgetLimitHistories.sort(Comparator.comparing(BudgetLimitHistory::getEffectiveDate));
+                BudgetLimitHistory applicableLimit = budgetLimitHistories.get(0);
+                for(BudgetLimitHistory budgetLimitHistory : budgetLimitHistories){
+                    LocalDate effectiveDate = budgetLimitHistory.getEffectiveDate();
+                    if(effectiveDate.isBefore(date.plusMonths(1))){
+                        applicableLimit = budgetLimitHistory;
+                    } else {
+                        break;
+                    }
                 }
-            }
 
-            budgetGraphResponse.setLimitAmount(applicableLimit.getLimitAmount());
-            if(applicableLimit.getLimitAmount().compareTo(budgetGraphResponse.getSpentAmount()) > 0){
-                budgetGraphResponse.setRemainAmount(applicableLimit.getLimitAmount().subtract(budgetGraphResponse.getSpentAmount()));
+                budgetGraphResponse.setLimitAmount(applicableLimit.getLimitAmount());
+            } else {
+                budgetGraphResponse.setLimitAmount(BigDecimal.ZERO); // or set to a default value
+            }
+            if(budgetGraphResponse.getLimitAmount().compareTo(budgetGraphResponse.getSpentAmount()) > 0){
+                budgetGraphResponse.setRemainAmount(budgetGraphResponse.getLimitAmount().subtract(budgetGraphResponse.getSpentAmount()));
             } else {
                 budgetGraphResponse.setRemainAmount(BigDecimal.ZERO);
             }
@@ -761,7 +765,8 @@ public class ExchangeServiceImpl implements ExchangeService {
             OffsetDateTime startOfDay = date.atStartOfDay().atOffset(ZoneOffset.UTC);
             OffsetDateTime endOfDay = date.plusDays(1).atStartOfDay().atOffset(ZoneOffset.UTC);
 
-            List<Exchange> exchanges = exchangeRepo.findAllByExchangeDateBetween(startOfDay, endOfDay);
+            List<Exchange> exchanges = exchangeRepo.findAllByExchangeDateBetween(startOfDay, endOfDay).stream()
+                    .filter(exchange -> exchange.getUser().getUserId().equals(userId)).collect(Collectors.toList());
             for (Exchange exchange : exchanges) {
                 switch (exchange.getExchangeType().getExchangeTypeId()) {
                     case "income":

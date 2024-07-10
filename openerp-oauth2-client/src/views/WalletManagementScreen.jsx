@@ -101,7 +101,7 @@ function WalletManagementScreen() {
     return (
         <div>
             <Typography variant="h5" gutterBottom>
-                Wallet Management
+                Quản lý Ví
                 <Tooltip title="Reload dữ liệu">
                     <IconButton onClick={handleRefreshData} aria-label="refresh">
                         <RefreshIcon />

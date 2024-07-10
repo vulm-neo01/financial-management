@@ -36,11 +36,15 @@ const BudgetCard = ({ budget, currentMonth }) => {
     
     // Thuật toán chọn limit Amount cho từng tháng cụ thể
     const getLimitAmount = () => {
+        if (!budget.budgetLimitHistories) {
+            return 0; // hoặc giá trị mặc định khác nếu cần
+        }
+
         const limitHistories = budget.budgetLimitHistories || [];
         const sortedHistories = limitHistories.sort((a, b) => new Date(a.effectiveDate) - new Date(b.effectiveDate));
         const firstDayOfCurrentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
     
-        let applicableLimit = sortedHistories[0].limitAmount;
+        let applicableLimit = sortedHistories.length > 0 ? sortedHistories[0].limitAmount : 0;
     
         for (const history of sortedHistories) {
             const effectiveDate = new Date(history.effectiveDate);
@@ -69,8 +73,10 @@ const BudgetCard = ({ budget, currentMonth }) => {
                 <span>{startOfMonth.toLocaleDateString()}</span>
                 <span>{endOfMonth.toLocaleDateString()}</span>
             </div>
-            <div className="overview-timeline">
-                {budget.type === 'income' ? 
+            {
+                budget &&
+                <div className="overview-timeline">
+                    {budget.type === 'income' ? 
                     <div className="timeline-income-bar">
                         <div className="spent-income-bar" style={{ width: `${(spentAmount / limitMoney) * 100}%` }}></div>
                     </div>
@@ -78,13 +84,15 @@ const BudgetCard = ({ budget, currentMonth }) => {
                     <div className="timeline-bar">
                         <div className="spent-bar" style={{ width: `${(spentAmount / limitMoney) * 100}%` }}></div>
                     </div>
-                }
-                <div className="timeline-info">
-                    <span>{budget.type === 'income' ? "Receive" : "Spent"}: {spentAmount} đ</span>
-                    <span>Remain: {remainAmount} đ</span>
-                    <span>Limit: {limitMoney} đ</span>
+                    }
+                    <div className="timeline-info">
+                        <span>{budget.type === 'income' ? "Receive" : "Spent"}: {spentAmount} đ</span>
+                        <span>Remain: {remainAmount} đ</span>
+                        <span>Limit: {limitMoney} đ</span>
+                    </div>
                 </div>
-            </div>
+
+            }
         </div>
     );
 };
